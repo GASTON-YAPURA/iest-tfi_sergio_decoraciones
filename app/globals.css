@@ -1,0 +1,65 @@
+/* Variables de la marca. No escribir colores ni tipografias a mano fuera de este archivo. */
+:root {
+  --color-fondo: #FFFFFF;
+  --color-principal: #1A1A1A;
+  --color-acento: #815922;
+  --color-secundario: #6C6D6F;
+  --color-acento-suave: rgba(129, 89, 34, 0.10);
+  --fuente-titulos: var(--fuente-titulos-cinzel, "Cinzel"), serif;
+  --fuente-texto: var(--fuente-texto-lato, "Lato"), sans-serif;
+  --radio-borde: 4px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--color-fondo);
+  color: var(--color-principal);
+  font-family: var(--fuente-texto);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-principal);
+  font-family: var(--fuente-titulos);
+}
+
+h1 {
+  font-family: var(--fuente-titulos);
+  color: var(--color-principal);
+}
+
+p {
+  color: var(--color-secundario);
+}
+
+a {
+  color: var(--color-acento);
+}
+
+img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
+.contenedor {
+  margin: 0 auto;
+  max-width: 1120px;
+  padding: 0 1.25rem;
+}
+
+.portada {
+  background: linear-gradient(var(--color-fondo), var(--color-acento-suave));
+  padding: 5rem 0;
+}

@@ -1,0 +1,22 @@
+# Dependencias
+node_modules/
+
+# Next.js
+.next/
+out/
+build/
+
+# Variables de entorno
+.env.local
+.env*.local
+
+# Registros
+*.log
+npm-debug.log*
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel
