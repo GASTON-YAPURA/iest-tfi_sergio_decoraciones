@@ -15,10 +15,10 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Identidad de marca (logo, paleta, tipografías) | Hecha: `IDENTIDAD-MARCA.md` |
 | Especificaciones (`01` a `10` y `AGENTS.md`) | Hechas |
 | `Legends.md`, `Memory.md` y `Commits.md` | Hechos |
-| Código del sitio | Etapa 1 completa: proyecto Next.js, variables de marca, tipografías y logos listos, y repositorio publicado en GitHub |
+| Código del sitio | Etapa 2 completa: base en Neon con las tablas `trabajos` y `consultas`, conexión en `lib/db.js` y 6 trabajos de muestra |
 | Informe escrito del TP | Pendiente |
 
-**Próximo paso:** Etapa 2 de `08-TAREAS.md` (Base de datos): crear el proyecto en Neon, guardar `DATABASE_URL`, escribir `lib/db.js` y ejecutar el esquema.
+**Próximo paso:** Etapa 3 de `08-TAREAS.md` (Estructura común y contacto): `lib/contacto.js`, layout con encabezado, menú, pie y botones de WhatsApp y llamada.
 
 ## Decisiones tomadas
 
@@ -31,6 +31,7 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Número de WhatsApp y teléfono | Marcador `+54 9 3837 000000` en `lib/contacto.js` | Lo cambia Sergio si hace falta |
 | Panel privado | Entrada por `/admin`, sin aparecer en el menú ni en Google | Sergio ve las consultas sin tocar la base de datos |
 | Acceso al panel | Un solo usuario; contraseña como hash bcrypt en variables de entorno; sesión de 8 horas; 5 intentos fallidos cada 15 minutos | No hace falta una tabla de usuarios |
+| Acceso a la base | `@neondatabase/serverless` | Driver oficial de Neon, compatible con Vercel y con consultas parametrizadas |
 | Carga de trabajos | Directamente en la base de datos, sin panel de carga | El panel solo muestra consultas |
 | Nombres | La galería se llama "Trabajos" en el menú (TRABAJOS), en la dirección (`/trabajos`), en el código y en la base de datos | Un solo nombre en todo el proyecto, sin confusiones |
 | Idioma del código | Español, sin tildes ni ñ | Definido en `07-CONVENCIONES.md` |
@@ -44,7 +45,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 ## Pendientes
 
-- **Datos reales:** reemplazar el teléfono de muestra y cargar los trabajos reales de Sergio con sus fotos.
+- **Datos reales:** reemplazar el teléfono de muestra, cargar los trabajos reales de Sergio con sus fotos y reemplazar las imágenes de muestra.
 
 ## Reglas que no se rompen
 
@@ -59,6 +60,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 28/10/2026 | Etapa 2: proyecto en Neon, `lib/db.js`, tablas `trabajos` y `consultas`, 6 trabajos de muestra con fotos placeholder y pruebas de base de datos |
 | 28/10/2026 | Se publicó el repositorio en GitHub (`iest-tfi_sergio_decoraciones`) y se subió `main`; Etapa 1 completa |
 | 28/10/2026 | Etapa 1: proyecto Next.js con App Router, variables de marca en `app/globals.css`, tipografías Cinzel y Lato con `next/font`, logos en `public/img/marca/` y primer commit local `ceb1867`; se agregó `node:test` a `03 - TECNOLOGÍAS.md` |
 | 09/10/2026 | Kit de especificaciones completo y creación de `Legends.md`, `Memory.md` y `Commits.md` |

@@ -33,6 +33,8 @@ El sitio queda disponible en `http://localhost:3000`.
 | `npm run build` | Genera la versión de producción |
 | `npm start` | Sirve la versión de producción |
 | `npm test` | Ejecuta las pruebas con `node --test` |
+| `npm run db:esquema` | Crea las tablas en Neon |
+| `npm run db:datos` | Carga los trabajos de muestra |
 
 ## Variables de entorno
 

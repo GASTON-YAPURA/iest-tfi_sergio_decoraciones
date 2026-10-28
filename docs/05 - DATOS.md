@@ -40,7 +40,7 @@ La base de datos es PostgreSQL (Neon) y tiene dos tablas: `trabajos` (la galerí
 
 ```sql
 -- db/esquema.sql
-CREATE TABLE trabajos (
+CREATE TABLE IF NOT EXISTS trabajos (
   id          SERIAL PRIMARY KEY,
   titulo      VARCHAR(120) NOT NULL,
   servicio    VARCHAR(20)  NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE trabajos (
   visible     BOOLEAN DEFAULT TRUE
 );
 
-CREATE TABLE consultas (
+CREATE TABLE IF NOT EXISTS consultas (
   id        SERIAL PRIMARY KEY,
   nombre    VARCHAR(80) NOT NULL,
   telefono  VARCHAR(30) NOT NULL,
@@ -60,7 +60,9 @@ CREATE TABLE consultas (
 );
 ```
 
-## Ejemplos de datos
+## Datos de muestra
+
+Los trabajos de muestra se cargan con `db/datos.sql` y usan las fotos de `public/img/trabajos/`. Los datos de abajo son un ejemplo del contenido.
 
 Ejemplo de un trabajo (datos de muestra):
 

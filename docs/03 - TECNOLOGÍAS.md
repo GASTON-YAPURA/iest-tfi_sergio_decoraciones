@@ -8,6 +8,7 @@
 | Framework | Next.js | Rutas por carpetas, rutas de API y buen SEO para que Sergio aparezca en Google; además optimiza las fotos para cargar rápido (RNF02) |
 | Estilos | CSS + variables | Los colores y tipografías de IDENTIDAD-MARCA.md se escriben una sola vez y se aplican en todo el sitio |
 | Base de datos | PostgreSQL (Neon) | Guarda las consultas del formulario (RF07) y los trabajos de la galería; Neon tiene plan gratuito |
+| Acceso a la base | `@neondatabase/serverless` | Driver oficial de Neon: permite consultas con `sql` y parámetros, y funciona en Vercel |
 | Acceso al panel | Cookie de sesión + bcryptjs | La contraseña de Sergio se guarda cifrada (hash) y la sesión se protege con una cookie segura; no hace falta una base de usuarios porque hay un solo acceso |
 | Pruebas | `node:test` | Viene incluido en Node.js: no agrega dependencias y permite probar validaciones, sesión y enlaces antes de cada commit |
 | Repositorio | Git + GitHub | Historial de cambios del proyecto y respaldo del código |

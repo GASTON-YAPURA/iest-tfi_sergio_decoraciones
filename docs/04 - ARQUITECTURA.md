@@ -38,7 +38,12 @@ sergio-decoraciones/
 │   ├── contacto.js                ← número de WhatsApp y teléfono
 │   └── sesion.js                  ← crea y verifica la sesión de Sergio
 ├── db/
-│   └── esquema.sql                ← tablas de la base de datos
+│   ├── esquema.sql                ← tablas de la base de datos
+│   ├── datos.sql                  ← trabajos de muestra
+│   └── ejecutar-sql.js            ← ejecuta un archivo SQL con lib/db.js
+├── test/
+│   ├── estructura.test.js         ← variables, idioma y portada
+│   └── base-datos.test.js         ← esquema, datos y conexión
 ├── public/
 │   └── img/
 │       ├── marca/                 ← logos
@@ -59,6 +64,9 @@ sergio-decoraciones/
 | `app/admin/` | Panel privado de Sergio: ingreso y listado de consultas |
 | `lib/sesion.js` | Único lugar donde se crea y se verifica la sesión del panel |
 | `db/esquema.sql` | Definición de las tablas (ver 05-DATOS.md) |
+| `db/datos.sql` | Trabajos de muestra para la galería |
+| `db/ejecutar-sql.js` | Ejecuta `esquema.sql` o `datos.sql` usando la conexión de `lib/db.js` |
+| `test/` | Pruebas automáticas con `node:test` |
 | `public/img/` | Imágenes que el navegador puede pedir directamente |
 | `.env.local` | Variables secretas; está en `.gitignore` y nunca se sube |
 

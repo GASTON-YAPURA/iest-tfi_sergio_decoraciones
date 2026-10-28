@@ -23,11 +23,11 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 
 ## Etapa 2: Base de datos
 
-- [ ] Crear el proyecto en Neon y guardar `DATABASE_URL` en `.env.local`
-- [ ] Agregar `.env.local` al `.gitignore`
-- [ ] Escribir `lib/db.js` con la única conexión a la base
-- [ ] Ejecutar `db/esquema.sql` para crear las tablas `trabajos` y `consultas`
-- [ ] Cargar trabajos de muestra con sus fotos y texto alternativo
+- [x] Crear el proyecto en Neon y guardar `DATABASE_URL` en `.env.local`
+- [x] Agregar `.env.local` al `.gitignore`
+- [x] Escribir `lib/db.js` con la única conexión a la base
+- [x] Ejecutar `db/esquema.sql` para crear las tablas `trabajos` y `consultas`
+- [x] Cargar trabajos de muestra con sus fotos y texto alternativo
 
 ## Etapa 3: Estructura común y contacto
 

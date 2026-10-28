@@ -57,6 +57,7 @@ Se anotan los commits importantes. Para ver el historial completo se usa `git lo
 |---|---|---|---|---|
 | 28/10/2026 | 1. Preparación | `main` | `crea el proyecto next.js con la identidad de marca` | Proyecto Next.js, variables de marca, tipografías y logos |
 | 28/10/2026 | 1. Preparación | `main` | `actualiza el estado de la etapa 1` | Estado del proyecto y registro de commits |
+| 28/10/2026 | 2. Base de datos | `main` | `crea las tablas y carga los trabajos de muestra` | Neon, `lib/db.js`, esquema, datos y fotos de muestra |
 
 Repositorio: https://github.com/GASTON-YAPURA/iest-tfi_sergio_decoraciones
 
