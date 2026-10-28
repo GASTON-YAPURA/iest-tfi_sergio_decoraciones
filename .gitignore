@@ -20,3 +20,7 @@ Thumbs.db
 
 # Vercel
 .vercel
+
+# Lanzador local para ver el sitio (no se sube)
+/ver-sitio-local.bat
+/scripts/ver-local.mjs

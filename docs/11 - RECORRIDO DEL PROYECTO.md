@@ -424,8 +424,12 @@ Al abrir `http://192.168.1.14:3000` desde el teléfono, el navegador pedía los 
 
    ```js
    allowedDevOrigins: (process.env.ORIGENES_DESARROLLO ?? "")
-     .split(",").map((origen) => origen.trim()).filter(Boolean)
+     .split(",")
+     .map(normalizarOrigen)   // quita http://, la ruta y el puerto
+     .filter(Boolean)
    ```
+
+   La normalización importa porque Next compara **solo el hostname**: si la variable dice `192.168.1.14:3000`, sin ese paso no coincide con nada y todo sigue bloqueado.
 
 2. En `.env.local` se agregó `ORIGENES_DESARROLLO=192.168.1.14`. Va en el archivo ignorado para no dejar una IP fija en el repositorio (y porque cambia si cambia la red).
 3. Se detuvo el servidor viejo y se reinició: la configuración solo se lee al arrancar.
@@ -469,6 +473,17 @@ Con un navegador real (Chrome sin ventana) emulando un celular de 390×844:
 | `npm start` | Sirve el build de producción |
 | `npm run db:esquema` | Crea las tablas |
 | `npm run db:datos` | Carga los trabajos de muestra |
+
+### Abrir el sitio sin escribir comandos
+
+En la raíz del proyecto hay un lanzador para ver el sitio con doble clic:
+
+| Archivo | Para qué |
+|---|---|
+| `ver-sitio-local.bat` | Verifica Node, instala las dependencias si faltan y arranca el sitio |
+| `scripts/ver-local.mjs` | Si el servidor ya está corriendo lo reutiliza; si no, lo arranca, espera la primera respuesta y recién ahí abre el navegador; al cerrar la ventana termina también el servidor |
+
+Los dos archivos están en `.gitignore`: funcionan en la computadora donde se crearon, pero no se suben al repositorio. Se puede probar sin abrir el navegador con `SIN_NAVEGADOR=1`.
 
 ### Qué cubre cada archivo de pruebas
 

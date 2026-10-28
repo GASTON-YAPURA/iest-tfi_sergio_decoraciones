@@ -55,3 +55,14 @@ test("la configuracion permite el origen del celular en desarrollo", () => {
   assert.match(configuracion, /process\.env\.ORIGENES_DESARROLLO/);
   assert.doesNotMatch(configuracion, /NEXT_PUBLIC_/);
 });
+
+test("el origen de desarrollo se normaliza al hostname que compara Next", async () => {
+  const { normalizarOrigen } = await import("../next.config.mjs");
+
+  // Next compara solo el hostname: sin esquema, sin ruta y sin puerto.
+  assert.equal(normalizarOrigen("192.168.1.14:3000"), "192.168.1.14");
+  assert.equal(normalizarOrigen("http://192.168.1.14:3000/"), "192.168.1.14");
+  assert.equal(normalizarOrigen("  192.168.1.14  "), "192.168.1.14");
+  assert.equal(normalizarOrigen("Mi-Pc.Local"), "mi-pc.local");
+  assert.equal(normalizarOrigen(""), "");
+});
