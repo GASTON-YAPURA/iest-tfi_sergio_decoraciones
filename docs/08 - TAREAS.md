@@ -46,11 +46,11 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 
 ## Etapa 5: Trabajos
 
-- [ ] Crear la ruta `app/api/trabajos/route.js`
-- [ ] Crear el componente `TarjetaTrabajo`
-- [ ] Armar la página `/trabajos` con la galería (RF01)
-- [ ] Crear `FiltroServicios` y filtrar por tipo de servicio (RF02)
-- [ ] Crear `VisorFoto` para ver un trabajo en grande (RF03)
+- [x] Crear la ruta `app/api/trabajos/route.js`
+- [x] Crear el componente `TarjetaTrabajo`
+- [x] Armar la página `/trabajos` con la galería (RF01)
+- [x] Crear `FiltroServicios` y filtrar por tipo de servicio (RF02)
+- [x] Crear `VisorFoto` para ver un trabajo en grande (RF03)
 
 ## Etapa 6: Nosotros y consulta
 

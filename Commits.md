@@ -60,6 +60,7 @@ Se anotan los commits importantes. Para ver el historial completo se usa `git lo
 | 28/10/2026 | 2. Base de datos | `main` | `crea las tablas y carga los trabajos de muestra` | Neon, `lib/db.js`, esquema, datos y fotos de muestra |
 | 28/10/2026 | 3. Estructura común y contacto | `main` | `agrega la estructura comun y los botones de contacto` | Encabezado, menú responsive, pie, WhatsApp, llamada y pruebas |
 | 28/10/2026 | 4. Inicio y servicios | `main` | `maqueta el inicio y la pagina de servicios` | Portada, trabajos destacados, resumen y página de servicios |
+| 28/10/2026 | 5. Trabajos | `main` | `agrega la galeria de trabajos con filtro y visor` | API, galería, filtro por servicio, visor y pruebas |
 
 Repositorio: https://github.com/GASTON-YAPURA/iest-tfi_sergio_decoraciones
 

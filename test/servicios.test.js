@@ -22,6 +22,7 @@ test("hay seis servicios con los identificadores de la base", () => {
 test("cada servicio tiene nombre, detalle, descripcion y tareas", () => {
   for (const servicio of SERVICIOS) {
     assert.ok(servicio.nombre.length > 0);
+    assert.ok(servicio.etiqueta.length > 0);
     assert.ok(servicio.detalle.length > 0);
     assert.ok(servicio.descripcion.length > 0);
     assert.ok(Array.isArray(servicio.incluye));

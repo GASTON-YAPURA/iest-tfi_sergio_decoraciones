@@ -26,6 +26,7 @@ sergio-decoraciones/
 │           └── salir/route.js     ← cierra la sesión
 ├── components/
 │   ├── TarjetaTrabajo.js          ← foto y título de un trabajo
+│   ├── GaleriaTrabajos.js         ← galería, filtro y visor de fotos
 │   ├── FiltroServicios.js         ← botones para filtrar por servicio
 │   ├── VisorFoto.js               ← foto en tamaño grande
 │   ├── BotonWhatsApp.js           ← abre WhatsApp con mensaje escrito
@@ -48,7 +49,8 @@ sergio-decoraciones/
 │   ├── estructura.test.js         ← variables, idioma y portada
 │   ├── base-datos.test.js         ← esquema, datos y conexión
 │   ├── contacto.test.js           ← enlaces de WhatsApp y llamada
-│   └── servicios.test.js          ← datos y página de servicios
+│   ├── servicios.test.js          ← datos y página de servicios
+│   └── galeria.test.js            ← página, filtro y visor de trabajos
 ├── public/
 │   └── img/
 │       ├── marca/                 ← logos
@@ -65,6 +67,7 @@ sergio-decoraciones/
 | `app/api/` | Rutas del servidor que leen y escriben en la base de datos |
 | `components/` | Piezas de pantalla reutilizables |
 | `components/MenuPrincipal.js` | Menú de navegación con la página activa y el botón de tres rayas en celular |
+| `components/GaleriaTrabajos.js` | Galería de trabajos con el filtro por servicio y el visor de foto |
 | `lib/db.js` | Único lugar donde se conecta con la base de datos |
 | `lib/trabajos.js` | Consultas de los trabajos (destacados del inicio y galería) |
 | `lib/servicios.js` | Datos de los seis servicios y sus nombres para las etiquetas |
