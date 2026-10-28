@@ -39,6 +39,9 @@ sergio-decoraciones/
 │   ├── db.js                      ← única conexión a la base
 │   ├── trabajos.js                ← consultas de los trabajos para las páginas
 │   ├── servicios.js               ← datos de los seis servicios
+│   ├── consultas.js               ← guarda las consultas del formulario
+│   ├── validacion.js              ← valida nombre, teléfono y mensaje
+│   ├── limite.js                  ← limita las consultas por minuto
 │   ├── contacto.js                ← número de WhatsApp y teléfono
 │   └── sesion.js                  ← crea y verifica la sesión de Sergio
 ├── db/
@@ -50,7 +53,8 @@ sergio-decoraciones/
 │   ├── base-datos.test.js         ← esquema, datos y conexión
 │   ├── contacto.test.js           ← enlaces de WhatsApp y llamada
 │   ├── servicios.test.js          ← datos y página de servicios
-│   └── galeria.test.js            ← página, filtro y visor de trabajos
+│   ├── galeria.test.js            ← página, filtro y visor de trabajos
+│   └── consultas.test.js          ← validación, límite y formulario
 ├── public/
 │   └── img/
 │       ├── marca/                 ← logos
@@ -68,9 +72,13 @@ sergio-decoraciones/
 | `components/` | Piezas de pantalla reutilizables |
 | `components/MenuPrincipal.js` | Menú de navegación con la página activa y el botón de tres rayas en celular |
 | `components/GaleriaTrabajos.js` | Galería de trabajos con el filtro por servicio y el visor de foto |
+| `components/FormularioConsulta.js` | Formulario con nombre, teléfono y mensaje, con aviso de uso de datos y mensajes de estado |
 | `lib/db.js` | Único lugar donde se conecta con la base de datos |
 | `lib/trabajos.js` | Consultas de los trabajos (destacados del inicio y galería) |
 | `lib/servicios.js` | Datos de los seis servicios y sus nombres para las etiquetas |
+| `lib/consultas.js` | Guarda una consulta en la base con SQL parametrizado |
+| `lib/validacion.js` | Valida nombre, teléfono y mensaje antes de guardar |
+| `lib/limite.js` | Limita la cantidad de consultas por minuto desde la misma conexión |
 | `lib/contacto.js` | Único lugar donde se escribe el número de contacto (marcador `+54 9 3837 000000`) |
 | `app/admin/` | Panel privado de Sergio: ingreso y listado de consultas |
 | `lib/sesion.js` | Único lugar donde se crea y se verifica la sesión del panel |

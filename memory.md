@@ -15,10 +15,10 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Identidad de marca (logo, paleta, tipografías) | Hecha: `IDENTIDAD-MARCA.md` |
 | Especificaciones (`01` a `10` y `AGENTS.md`) | Hechas |
 | `Legends.md`, `Memory.md` y `Commits.md` | Hechos |
-| Código del sitio | Etapa 5 completa: galería `/trabajos` con los seis trabajos, filtro por servicio, visor de foto y API de trabajos |
+| Código del sitio | Etapa 6 completa: página `/nosotros`, formulario en `/contacto`, API `/api/consultas` con validación y límite de envíos, y pruebas |
 | Informe escrito del TP | Pendiente |
 
-**Próximo paso:** Etapa 6 de `08-TAREAS.md` (Nosotros y consulta): página `/nosotros`, formulario de consulta, ruta que la guarda, mensaje de confirmación y página `/contacto`.
+**Próximo paso:** Etapa 7 de `08-TAREAS.md` (Panel privado de consultas): variables de acceso, `lib/sesion.js`, ingreso en `/admin`, listado protegido en `/admin/consultas`, marcar como atendida y salir.
 
 ## Decisiones tomadas
 
@@ -38,6 +38,7 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Tipografías | Cinzel Bold para títulos, Lato Regular para textos | Cinzel es la tipografía del logo |
 | Tono de voz | Cercano y respetuoso, se trata de "usted" al cliente | Definido en `IDENTIDAD-MARCA.md` |
 | Texto de portada | "Decoraciones que transforman tus espacios" | El texto de ejemplo del mockup original no se usa |
+| Consultas del formulario | Se validan en el navegador y otra vez en `app/api/consultas/route.js`; se guardan con SQL parametrizado y un máximo de 5 envíos por minuto por conexión | El navegador se puede manipular y hay que evitar envíos masivos |
 
 ## Fuera de alcance (por ahora)
 
@@ -60,6 +61,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 28/10/2026 | Etapa 6: página `/nosotros`, formulario en `/contacto`, `lib/validacion.js`, `lib/limite.js`, `lib/consultas.js`, API `/api/consultas`, confirmación de envío y pruebas |
 | 28/10/2026 | Etapa 5: API de trabajos, galería `/trabajos`, filtro por servicio, visor accesible, `GaleriaTrabajos` y pruebas del filtro |
 | 28/10/2026 | Etapa 4: inicio con portada, trabajos destacados desde la base, resumen de servicios, página `/servicios`, `TarjetaTrabajo` y pruebas de servicios |
 | 28/10/2026 | Etapa 3: `lib/contacto.js`, encabezado con logo, menú responsive con página activa, pie oscuro, botones de WhatsApp y llamada, botón flotante y pruebas de contacto |

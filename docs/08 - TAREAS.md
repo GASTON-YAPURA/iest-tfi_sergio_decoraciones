@@ -54,11 +54,11 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 
 ## Etapa 6: Nosotros y consulta
 
-- [ ] Crear la página `/nosotros` (RF08)
-- [ ] Crear el componente `FormularioConsulta` con nombre, teléfono y mensaje (RF07)
-- [ ] Crear la ruta `app/api/consultas/route.js` que valida y guarda la consulta
-- [ ] Mostrar un mensaje de confirmación al enviar el formulario
-- [ ] Armar la página `/contacto` con WhatsApp, llamada y formulario
+- [x] Crear la página `/nosotros` (RF08)
+- [x] Crear el componente `FormularioConsulta` con nombre, teléfono y mensaje (RF07)
+- [x] Crear la ruta `app/api/consultas/route.js` que valida y guarda la consulta
+- [x] Mostrar un mensaje de confirmación al enviar el formulario
+- [x] Armar la página `/contacto` con WhatsApp, llamada y formulario
 
 ## Etapa 7: Panel privado de consultas
 

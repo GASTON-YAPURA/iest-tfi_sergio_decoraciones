@@ -798,3 +798,254 @@ button.tarjeta-foto:focus-visible,
     padding: 1.5rem;
   }
 }
+
+/* Nosotros, contacto y formulario de consulta. */
+
+.nosotros-contenido,
+.contacto-contenido {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.nosotros-texto h2,
+.contacto-datos h2,
+.contacto-formulario h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  line-height: 1.2;
+  margin: 0 0 1rem;
+}
+
+.nosotros-texto h2:not(:first-child) {
+  margin-top: 2rem;
+}
+
+.nosotros-texto p,
+.contacto-datos p,
+.contacto-formulario > p {
+  margin: 0 0 1rem;
+}
+
+.nosotros-lista,
+.nosotros-pasos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nosotros-lista {
+  display: grid;
+  gap: 1rem;
+}
+
+.nosotros-lista li {
+  border-left: 2px solid var(--color-acento);
+  padding-left: 1rem;
+}
+
+.nosotros-lista strong {
+  color: var(--color-principal);
+}
+
+.nosotros-foto img {
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radio-borde);
+  object-fit: cover;
+  width: 100%;
+}
+
+.nosotros-epigrafe {
+  color: var(--color-secundario);
+  font-size: 0.85rem;
+  margin: 0.75rem 0 0;
+}
+
+.nosotros-pasos {
+  display: grid;
+  gap: 2rem;
+}
+
+.nosotros-pasos li {
+  border-top: 1px solid var(--color-secundario);
+  padding-top: 1.25rem;
+}
+
+.nosotros-pasos h3 {
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+}
+
+.nosotros-pasos p {
+  margin: 0;
+}
+
+.contacto-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.contacto-info {
+  border-top: 1px solid var(--color-secundario);
+  display: grid;
+  gap: 0.35rem;
+  padding-top: 1.5rem;
+}
+
+.contacto-info h3 {
+  color: var(--color-acento);
+  font-family: var(--fuente-texto);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 1rem 0 0;
+  text-transform: uppercase;
+}
+
+.contacto-info h3:first-child {
+  margin-top: 0;
+}
+
+.contacto-info p {
+  margin: 0;
+}
+
+.contacto-formulario {
+  background: var(--color-acento-suave);
+  border-radius: var(--radio-borde);
+  padding: 1.5rem;
+}
+
+.formulario-consulta {
+  background: var(--color-fondo);
+  border: 1px solid var(--color-secundario);
+  border-radius: var(--radio-borde);
+  padding: 1.25rem;
+}
+
+.campo {
+  margin-bottom: 1.25rem;
+}
+
+.campo label {
+  color: var(--color-principal);
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.campo input,
+.campo textarea {
+  background: var(--color-fondo);
+  border: 1px solid var(--color-secundario);
+  border-radius: var(--radio-borde);
+  color: var(--color-principal);
+  font-family: var(--fuente-texto);
+  font-size: 1rem;
+  padding: 0.75rem;
+  width: 100%;
+}
+
+.campo textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+  border-color: var(--color-acento);
+  outline: 2px solid var(--color-acento);
+  outline-offset: 1px;
+}
+
+.campo-ayuda {
+  color: var(--color-secundario);
+  font-size: 0.8rem;
+  margin: 0.4rem 0 0;
+}
+
+.campo-error {
+  border-left: 2px solid var(--color-acento);
+  color: var(--color-principal);
+  font-size: 0.85rem;
+  margin: 0.5rem 0 0;
+  padding-left: 0.5rem;
+}
+
+.formulario-error {
+  background: var(--color-acento-suave);
+  border: 1px solid var(--color-acento);
+  border-radius: var(--radio-borde);
+  color: var(--color-principal);
+  font-size: 0.9rem;
+  margin: 0 0 1.25rem;
+  padding: 0.75rem 1rem;
+}
+
+.formulario-aviso {
+  color: var(--color-secundario);
+  font-size: 0.8rem;
+  margin: 1rem 0 0;
+}
+
+.formulario-consulta .boton-principal {
+  cursor: pointer;
+  width: 100%;
+}
+
+.formulario-consulta .boton-principal:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.formulario-exito {
+  text-align: center;
+}
+
+.formulario-exito h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.75rem;
+}
+
+.formulario-exito p {
+  margin: 0 0 1.5rem;
+}
+
+.formulario-exito .boton-secundario {
+  cursor: pointer;
+}
+
+.campo input:focus-visible,
+.campo textarea:focus-visible,
+.formulario-consulta .boton-principal:focus-visible,
+.formulario-exito .boton-secundario:focus-visible {
+  outline: 2px solid var(--color-acento);
+  outline-offset: 2px;
+}
+
+@media (min-width: 600px) {
+  .nosotros-pasos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .nosotros-contenido {
+    align-items: start;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
+
+  .contacto-contenido {
+    align-items: start;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  }
+
+  .contacto-formulario {
+    padding: 2rem;
+  }
+
+  .formulario-consulta {
+    padding: 1.5rem;
+  }
+}
