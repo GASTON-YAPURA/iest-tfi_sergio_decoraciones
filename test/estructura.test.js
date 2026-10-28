@@ -37,3 +37,20 @@ test("la portada usa el titulo de la marca", () => {
   const inicio = leerArchivo("app/page.js");
   assert.match(inicio, /Decoraciones que transforman tus espacios/);
 });
+
+test("la portada tiene el boton Ver trabajos", () => {
+  const inicio = leerArchivo("app/page.js");
+
+  assert.match(inicio, /Ver trabajos/);
+  assert.match(inicio, /href="\/trabajos"/);
+  assert.equal((inicio.match(/<h1>/g) ?? []).length, 1);
+});
+
+test("el inicio muestra trabajos destacados y el resumen de servicios", () => {
+  const inicio = leerArchivo("app/page.js");
+
+  assert.match(inicio, /obtenerTrabajosDestacados/);
+  assert.match(inicio, /TarjetaTrabajo/);
+  assert.match(inicio, /Trabajos destacados/);
+  assert.match(inicio, /SERVICIOS\.map/);
+});

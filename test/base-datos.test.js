@@ -39,3 +39,12 @@ test("la conexion lee DATABASE_URL del entorno", () => {
   assert.match(conexion, /process\.env\.DATABASE_URL/);
   assert.doesNotMatch(conexion, /postgres(ql)?:\/\//);
 });
+
+test("la consulta de trabajos destacados usa parametros", () => {
+  const consulta = leerArchivo("lib/trabajos.js");
+
+  assert.match(consulta, /sql\.query\(/);
+  assert.match(consulta, /LIMIT \$1/);
+  assert.match(consulta, /\[cantidad\]/);
+  assert.doesNotMatch(consulta, /\$\{limite\}/);
+});

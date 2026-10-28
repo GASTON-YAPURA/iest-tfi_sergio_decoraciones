@@ -15,10 +15,10 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Identidad de marca (logo, paleta, tipografías) | Hecha: `IDENTIDAD-MARCA.md` |
 | Especificaciones (`01` a `10` y `AGENTS.md`) | Hechas |
 | `Legends.md`, `Memory.md` y `Commits.md` | Hechos |
-| Código del sitio | Etapa 3 completa: estructura común con encabezado, menú de tres rayas, pie de página, botones de WhatsApp y llamada, y mensaje prellenado |
+| Código del sitio | Etapa 4 completa: inicio con portada, trabajos destacados y resumen de servicios, más la página `/servicios` con los seis servicios |
 | Informe escrito del TP | Pendiente |
 
-**Próximo paso:** Etapa 4 de `08-TAREAS.md` (Inicio y servicios): portada con título, subtítulo y botón "Ver trabajos", trabajos destacados y página `/servicios` con los seis servicios.
+**Próximo paso:** Etapa 5 de `08-TAREAS.md` (Trabajos): ruta de la API, `TarjetaTrabajo`, galería `/trabajos`, filtro por servicio y visor de foto.
 
 ## Decisiones tomadas
 
@@ -60,6 +60,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 28/10/2026 | Etapa 4: inicio con portada, trabajos destacados desde la base, resumen de servicios, página `/servicios`, `TarjetaTrabajo` y pruebas de servicios |
 | 28/10/2026 | Etapa 3: `lib/contacto.js`, encabezado con logo, menú responsive con página activa, pie oscuro, botones de WhatsApp y llamada, botón flotante y pruebas de contacto |
 | 28/10/2026 | Etapa 2: proyecto en Neon, `lib/db.js`, tablas `trabajos` y `consultas`, 6 trabajos de muestra con fotos placeholder y pruebas de base de datos |
 | 28/10/2026 | Se publicó el repositorio en GitHub (`iest-tfi_sergio_decoraciones`) y se subió `main`; Etapa 1 completa |

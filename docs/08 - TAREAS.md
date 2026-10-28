@@ -40,9 +40,9 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 
 ## Etapa 4: Inicio y servicios
 
-- [ ] Maquetar la portada de inicio con título, subtítulo y botón "Ver trabajos"
-- [ ] Mostrar trabajos destacados en el inicio
-- [ ] Crear la página `/servicios` con los seis servicios (RF04)
+- [x] Maquetar la portada de inicio con título, subtítulo y botón "Ver trabajos"
+- [x] Mostrar trabajos destacados en el inicio
+- [x] Crear la página `/servicios` con los seis servicios (RF04)
 
 ## Etapa 5: Trabajos
 
