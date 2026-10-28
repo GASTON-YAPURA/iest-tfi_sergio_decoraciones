@@ -15,10 +15,10 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Identidad de marca (logo, paleta, tipografías) | Hecha: `IDENTIDAD-MARCA.md` |
 | Especificaciones (`01` a `10` y `AGENTS.md`) | Hechas |
 | `Legends.md`, `Memory.md` y `Commits.md` | Hechos |
-| Código del sitio | Etapa 1 casi completa: proyecto Next.js, variables de marca, tipografías y logos listos; falta crear el repositorio en GitHub y subir el primer commit |
+| Código del sitio | Etapa 1 completa: proyecto Next.js, variables de marca, tipografías y logos listos, y repositorio publicado en GitHub |
 | Informe escrito del TP | Pendiente |
 
-**Próximo paso:** Crear el repositorio en GitHub y subir el primer commit. Después, Etapa 2 de `08-TAREAS.md` (Base de datos): crear el proyecto en Neon, guardar `DATABASE_URL`, escribir `lib/db.js` y ejecutar el esquema.
+**Próximo paso:** Etapa 2 de `08-TAREAS.md` (Base de datos): crear el proyecto en Neon, guardar `DATABASE_URL`, escribir `lib/db.js` y ejecutar el esquema.
 
 ## Decisiones tomadas
 
@@ -59,6 +59,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 28/10/2026 | Se publicó el repositorio en GitHub (`iest-tfi_sergio_decoraciones`) y se subió `main`; Etapa 1 completa |
 | 28/10/2026 | Etapa 1: proyecto Next.js con App Router, variables de marca en `app/globals.css`, tipografías Cinzel y Lato con `next/font`, logos en `public/img/marca/` y primer commit local `ceb1867`; se agregó `node:test` a `03 - TECNOLOGÍAS.md` |
 | 09/10/2026 | Kit de especificaciones completo y creación de `Legends.md`, `Memory.md` y `Commits.md` |
 | 09/10/2026 | Se unificó el nombre "Trabajos" (menú, ruta `/trabajos`, código y base de datos); se quitó de `08-TAREAS.md` la tarea duplicada del campo `atendida` y se aclaró el comentario de `.env.local` en `04-ARQUITECTURA.md` |

@@ -56,8 +56,9 @@ Se anotan los commits importantes. Para ver el historial completo se usa `git lo
 | Fecha | Etapa | Rama | Mensaje del commit | Qué cambió |
 |---|---|---|---|---|
 | 28/10/2026 | 1. Preparación | `main` | `crea el proyecto next.js con la identidad de marca` | Proyecto Next.js, variables de marca, tipografías y logos |
+| 28/10/2026 | 1. Preparación | `main` | `actualiza el estado de la etapa 1` | Estado del proyecto y registro de commits |
 
-*El proyecto todavía no tiene código, así que el registro empieza con el primer commit de la Etapa 1.*
+Repositorio: https://github.com/GASTON-YAPURA/iest-tfi_sergio_decoraciones
 
 ### Mensajes sugeridos por etapa
 

@@ -16,7 +16,7 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 ## Etapa 1: Preparación
 
 - [x] Crear el proyecto Next.js `sergio-decoraciones`
-- [ ] Crear el repositorio en GitHub y subir el primer commit
+- [x] Crear el repositorio en GitHub y subir el primer commit
 - [x] Copiar las variables de color y tipografía de IDENTIDAD-MARCA.md en `app/globals.css`
 - [x] Cargar las tipografías Cinzel y Lato desde Google Fonts
 - [x] Copiar los logos a `public/img/marca/`
