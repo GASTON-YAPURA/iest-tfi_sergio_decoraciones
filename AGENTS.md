@@ -23,6 +23,7 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | `docs/08-TAREAS.md` | Etapas de trabajo con casillas para tildar |
 | `docs/09-SEO.md` | Título, descripción, palabras clave y texto alternativo de cada página |
 | `docs/10-SEGURIDAD.md` | Datos sensibles, variables de entorno, validaciones y panel privado |
+| `docs/11 - RECORRIDO DEL PROYECTO.md` | Qué se hizo en cada etapa, por qué y cómo se comprobó (para leer y entender el proyecto) |
 
 ## Reglas obligatorias
 

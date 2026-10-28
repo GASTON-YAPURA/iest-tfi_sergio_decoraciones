@@ -67,6 +67,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 | Fecha | Cambio |
 |---|---|
 | 28/10/2026 | Menú del celular: `allowedDevOrigins` desde `ORIGENES_DESARROLLO`, cierre con Escape, al tocar fuera, al cambiar de ruta y al pasar a escritorio; bloqueo del scroll del fondo, cruz animada en el botón y `prefers-reduced-motion` |
+| 28/10/2026 | Documentación: `docs/11 - RECORRIDO DEL PROYECTO.md` con el paso a paso de las ocho etapas, el arreglo del menú y un glosario |
 | 28/10/2026 | Etapa 7: panel `/admin` con ingreso, `lib/acceso.js` (firma de sesión y bcrypt), `lib/sesion.js`, límite de 5 intentos cada 15 minutos, API protegida de consultas, tabla con marca de atendida, salida y pruebas |
 | 28/10/2026 | Etapa 6: página `/nosotros`, formulario en `/contacto`, `lib/validacion.js`, `lib/limite.js`, `lib/consultas.js`, API `/api/consultas`, confirmación de envío y pruebas |
 | 28/10/2026 | Etapa 5: API de trabajos, galería `/trabajos`, filtro por servicio, visor accesible, `GaleriaTrabajos` y pruebas del filtro |
