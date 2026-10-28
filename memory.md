@@ -40,6 +40,7 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Texto de portada | "Decoraciones que transforman tus espacios" | El texto de ejemplo del mockup original no se usa |
 | Consultas del formulario | Se validan en el navegador y otra vez en `app/api/consultas/route.js`; se guardan con SQL parametrizado y un máximo de 5 envíos por minuto por conexión | El navegador se puede manipular y hay que evitar envíos masivos |
 | Hash del panel en `.env.local` | Los `$` del hash bcrypt se guardan escapados (`\$`) solo en `.env.local`; en Vercel se cargan tal cual | Next expande las variables al leer `.env.local` y, sin escapar, el hash llega incompleto |
+| Prueba en el celular con `next dev` | La IP de la computadora se carga en `ORIGENES_DESARROLLO` dentro de `.env.local` y `next.config.mjs` la pasa a `allowedDevOrigins` | Next bloquea los archivos de desarrollo pedidos desde otro origen, y sin eso el menú y los demás botones no responden en el celular |
 
 ## Fuera de alcance (por ahora)
 
@@ -48,6 +49,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 ## Pendientes
 
 - **Datos reales:** reemplazar el teléfono de muestra, cargar los trabajos reales de Sergio con sus fotos y reemplazar las imágenes de muestra.
+- **Prueba en el celular:** si cambia la red, actualizar la IP en `ORIGENES_DESARROLLO` dentro de `.env.local` y reiniciar `npm run dev`.
 - **Variables en Vercel:** cargar `DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH` y `SESION_SECRETA` al publicar (Etapa 8).
 - **Contraseña del panel:** cambiar la clave temporal antes de publicar y actualizar `ADMIN_CLAVE_HASH`.
 
@@ -64,6 +66,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 28/10/2026 | Menú del celular: `allowedDevOrigins` desde `ORIGENES_DESARROLLO`, cierre con Escape, al tocar fuera, al cambiar de ruta y al pasar a escritorio; bloqueo del scroll del fondo, cruz animada en el botón y `prefers-reduced-motion` |
 | 28/10/2026 | Etapa 7: panel `/admin` con ingreso, `lib/acceso.js` (firma de sesión y bcrypt), `lib/sesion.js`, límite de 5 intentos cada 15 minutos, API protegida de consultas, tabla con marca de atendida, salida y pruebas |
 | 28/10/2026 | Etapa 6: página `/nosotros`, formulario en `/contacto`, `lib/validacion.js`, `lib/limite.js`, `lib/consultas.js`, API `/api/consultas`, confirmación de envío y pruebas |
 | 28/10/2026 | Etapa 5: API de trabajos, galería `/trabajos`, filtro por servicio, visor accesible, `GaleriaTrabajos` y pruebas del filtro |

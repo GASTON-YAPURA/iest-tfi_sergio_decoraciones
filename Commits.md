@@ -63,6 +63,7 @@ Se anotan los commits importantes. Para ver el historial completo se usa `git lo
 | 28/10/2026 | 5. Trabajos | `main` | `agrega la galeria de trabajos con filtro y visor` | API, galería, filtro por servicio, visor y pruebas |
 | 28/10/2026 | 6. Nosotros y consulta | `main` | `valida y guarda las consultas del formulario` | Página Nosotros, Contacto, formulario, API, validación, límite y pruebas |
 | 28/10/2026 | 7. Panel privado de consultas | `main` | `protege el panel de consultas con sesion` | Ingreso, sesión firmada, límite de intentos, listado protegido, marcar atendida, salir y pruebas |
+| 28/10/2026 | 8. Calidad y publicación | `main` | `arregla el menu hamburguesa en el celular` | Origen de desarrollo permitido, cierre con Escape, al tocar fuera y al cambiar de ruta, scroll del fondo bloqueado, cruz animada y pruebas |
 
 Repositorio: https://github.com/GASTON-YAPURA/iest-tfi_sergio_decoraciones
 

@@ -27,6 +27,11 @@ body {
   line-height: 1.6;
 }
 
+/* Evita que la pagina de fondo se desplace con el menu del celular abierto. */
+body.cuerpo-menu-abierto {
+  overflow: hidden;
+}
+
 h1,
 h2,
 h3 {
@@ -156,7 +161,21 @@ img {
   border-radius: var(--radio-borde);
   display: block;
   height: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
   width: 22px;
+}
+
+/* Con el menu abierto, las tres rayas se convierten en una cruz. */
+.menu-boton[aria-expanded="true"] .menu-linea:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menu-boton[aria-expanded="true"] .menu-linea:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-boton[aria-expanded="true"] .menu-linea:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 .menu-navegacion {
@@ -306,12 +325,16 @@ img {
   .menu-navegacion.menu-abierto {
     background: var(--color-fondo);
     border-top: 1px solid var(--color-acento-suave);
+    box-shadow: 0 12px 24px var(--color-acento-suave);
     display: block;
     left: 0;
+    max-height: 80vh;
+    overflow-y: auto;
     padding: 0.75rem 1.25rem 1.25rem;
     position: absolute;
     right: 0;
     top: 100%;
+    z-index: 1;
   }
 }
 
@@ -362,6 +385,13 @@ img {
 
   .pie-contacto {
     align-items: flex-end;
+  }
+}
+
+/* Respeta a quien prefiere ver menos movimiento. */
+@media (prefers-reduced-motion: reduce) {
+  .menu-linea {
+    transition: none;
   }
 }
 

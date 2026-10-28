@@ -74,6 +74,8 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 
 ## Etapa 8: Calidad y publicación
 
+> Para probar en el celular con `npm run dev`, la IP de la computadora va en `ORIGENES_DESARROLLO` dentro de `.env.local` y el servidor se reinicia; si no, Next bloquea los archivos de desarrollo y los botones no responden.
+
 - [ ] Cargar `DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH` y `SESION_SECRETA` en Vercel
 - [ ] Agregar título, descripción y texto alternativo en cada página (09-SEO.md)
 - [ ] Revisar la lista de control de 10-SEGURIDAD.md
