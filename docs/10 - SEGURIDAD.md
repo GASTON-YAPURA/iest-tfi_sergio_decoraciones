@@ -15,6 +15,7 @@ El sitio de Sergio Decoraciones no tiene cuentas de clientes ni pagos, así que 
 
 - `DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH` y `SESION_SECRETA` viven solo en `.env.local` y en la configuración de Vercel.
 - `.env.local` está en `.gitignore`.
+- En `.env.local`, los `$` del hash bcrypt se escriben escapados (`\$`) porque Next expande las variables al leer el archivo; en Vercel el valor se carga tal cual, con sus `$`.
 - Si la dirección de la base llegara a mostrarse por error, se cambia la contraseña en Neon y se actualiza la variable.
 
 ```text

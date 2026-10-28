@@ -15,6 +15,7 @@ sergio-decoraciones/
 │   ├── nosotros/page.js           ← quién es Sergio y cómo trabaja
 │   ├── contacto/page.js           ← WhatsApp, llamada y formulario
 │   ├── admin/
+│   │   ├── layout.js              ← noindex del panel privado
 │   │   ├── page.js                ← ingreso de Sergio
 │   │   └── consultas/page.js      ← listado de consultas (privado)
 │   └── api/
@@ -39,11 +40,13 @@ sergio-decoraciones/
 │   ├── db.js                      ← única conexión a la base
 │   ├── trabajos.js                ← consultas de los trabajos para las páginas
 │   ├── servicios.js               ← datos de los seis servicios
-│   ├── consultas.js               ← guarda las consultas del formulario
+│   ├── consultas.js               ← guarda, lista y marca consultas
 │   ├── validacion.js              ← valida nombre, teléfono y mensaje
-│   ├── limite.js                  ← limita las consultas por minuto
+│   ├── limite.js                  ← límites de consultas e intentos de ingreso
+│   ├── fechas.js                  ← formato de las fechas de las consultas
 │   ├── contacto.js                ← número de WhatsApp y teléfono
-│   └── sesion.js                  ← crea y verifica la sesión de Sergio
+│   ├── acceso.js                  ← firma de la sesión y credenciales
+│   └── sesion.js                  ← cookie y verificación de la sesión
 ├── db/
 │   ├── esquema.sql                ← tablas de la base de datos
 │   ├── datos.sql                  ← trabajos de muestra
@@ -54,7 +57,8 @@ sergio-decoraciones/
 │   ├── contacto.test.js           ← enlaces de WhatsApp y llamada
 │   ├── servicios.test.js          ← datos y página de servicios
 │   ├── galeria.test.js            ← página, filtro y visor de trabajos
-│   └── consultas.test.js          ← validación, límite y formulario
+│   ├── consultas.test.js          ← validación, límite y formulario
+│   └── panel.test.js              ← sesión, credenciales y panel privado
 ├── public/
 │   └── img/
 │       ├── marca/                 ← logos
@@ -76,12 +80,15 @@ sergio-decoraciones/
 | `lib/db.js` | Único lugar donde se conecta con la base de datos |
 | `lib/trabajos.js` | Consultas de los trabajos (destacados del inicio y galería) |
 | `lib/servicios.js` | Datos de los seis servicios y sus nombres para las etiquetas |
-| `lib/consultas.js` | Guarda una consulta en la base con SQL parametrizado |
+| `lib/consultas.js` | Guarda, lista y marca consultas con SQL parametrizado |
 | `lib/validacion.js` | Valida nombre, teléfono y mensaje antes de guardar |
-| `lib/limite.js` | Limita la cantidad de consultas por minuto desde la misma conexión |
+| `lib/limite.js` | Limita las consultas por minuto y los intentos fallidos de ingreso |
+| `lib/fechas.js` | Formatea las fechas de las consultas en la hora de Tinogasta |
 | `lib/contacto.js` | Único lugar donde se escribe el número de contacto (marcador `+54 9 3837 000000`) |
 | `app/admin/` | Panel privado de Sergio: ingreso y listado de consultas |
-| `lib/sesion.js` | Único lugar donde se crea y se verifica la sesión del panel |
+| `app/admin/layout.js` | Marca las páginas del panel como `noindex` para los buscadores |
+| `lib/acceso.js` | Crea y verifica la firma de la sesión y compara las credenciales con bcrypt |
+| `lib/sesion.js` | Único lugar donde se crea, se verifica y se borra la cookie de sesión |
 | `db/esquema.sql` | Definición de las tablas (ver 05-DATOS.md) |
 | `db/datos.sql` | Trabajos de muestra para la galería |
 | `db/ejecutar-sql.js` | Ejecuta `esquema.sql` o `datos.sql` usando la conexión de `lib/db.js` |

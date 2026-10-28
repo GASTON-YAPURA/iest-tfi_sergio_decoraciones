@@ -62,18 +62,19 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 
 ## Etapa 7: Panel privado de consultas
 
-- [ ] Guardar `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH` y `SESION_SECRETA` en `.env.local` y en Vercel
-- [ ] Crear `lib/sesion.js` para crear y verificar la sesión
-- [ ] Crear la ruta `app/api/admin/ingresar/route.js` con límite de intentos fallidos (RF09)
-- [ ] Crear la página `/admin` con el componente `FormularioIngreso` (RF09)
-- [ ] Crear la ruta `app/api/admin/consultas/route.js` protegida por sesión
-- [ ] Crear la página `/admin/consultas` con `TablaConsultas`, las más recientes primero (RF10)
-- [ ] Permitir marcar una consulta como atendida (RF11)
-- [ ] Crear la ruta `app/api/admin/salir/route.js` y el botón "Salir"
-- [ ] Verificar que sin sesión `/admin/consultas` y `/api/admin/consultas` no devuelven datos
+- [x] Guardar `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH` y `SESION_SECRETA` en `.env.local`
+- [x] Crear `lib/sesion.js` para crear y verificar la sesión
+- [x] Crear la ruta `app/api/admin/ingresar/route.js` con límite de intentos fallidos (RF09)
+- [x] Crear la página `/admin` con el componente `FormularioIngreso` (RF09)
+- [x] Crear la ruta `app/api/admin/consultas/route.js` protegida por sesión
+- [x] Crear la página `/admin/consultas` con `TablaConsultas`, las más recientes primero (RF10)
+- [x] Permitir marcar una consulta como atendida (RF11)
+- [x] Crear la ruta `app/api/admin/salir/route.js` y el botón "Salir"
+- [x] Verificar que sin sesión `/admin/consultas` y `/api/admin/consultas` no devuelven datos
 
 ## Etapa 8: Calidad y publicación
 
+- [ ] Cargar `DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH` y `SESION_SECRETA` en Vercel
 - [ ] Agregar título, descripción y texto alternativo en cada página (09-SEO.md)
 - [ ] Revisar la lista de control de 10-SEGURIDAD.md
 - [ ] Comprobar que `/admin` no aparece en el menú ni en los resultados de Google

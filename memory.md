@@ -15,10 +15,10 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Identidad de marca (logo, paleta, tipografías) | Hecha: `IDENTIDAD-MARCA.md` |
 | Especificaciones (`01` a `10` y `AGENTS.md`) | Hechas |
 | `Legends.md`, `Memory.md` y `Commits.md` | Hechos |
-| Código del sitio | Etapa 6 completa: página `/nosotros`, formulario en `/contacto`, API `/api/consultas` con validación y límite de envíos, y pruebas |
+| Código del sitio | Etapa 7 completa: panel privado `/admin`, ingreso con sesión firmada, listado protegido `/admin/consultas`, marcar consultas como atendidas y salir |
 | Informe escrito del TP | Pendiente |
 
-**Próximo paso:** Etapa 7 de `08-TAREAS.md` (Panel privado de consultas): variables de acceso, `lib/sesion.js`, ingreso en `/admin`, listado protegido en `/admin/consultas`, marcar como atendida y salir.
+**Próximo paso:** Etapa 8 de `08-TAREAS.md` (Calidad y publicación): cargar las variables en Vercel, revisar SEO y seguridad, probar en celular y publicar.
 
 ## Decisiones tomadas
 
@@ -39,6 +39,7 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Tono de voz | Cercano y respetuoso, se trata de "usted" al cliente | Definido en `IDENTIDAD-MARCA.md` |
 | Texto de portada | "Decoraciones que transforman tus espacios" | El texto de ejemplo del mockup original no se usa |
 | Consultas del formulario | Se validan en el navegador y otra vez en `app/api/consultas/route.js`; se guardan con SQL parametrizado y un máximo de 5 envíos por minuto por conexión | El navegador se puede manipular y hay que evitar envíos masivos |
+| Hash del panel en `.env.local` | Los `$` del hash bcrypt se guardan escapados (`\$`) solo en `.env.local`; en Vercel se cargan tal cual | Next expande las variables al leer `.env.local` y, sin escapar, el hash llega incompleto |
 
 ## Fuera de alcance (por ahora)
 
@@ -47,6 +48,8 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 ## Pendientes
 
 - **Datos reales:** reemplazar el teléfono de muestra, cargar los trabajos reales de Sergio con sus fotos y reemplazar las imágenes de muestra.
+- **Variables en Vercel:** cargar `DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH` y `SESION_SECRETA` al publicar (Etapa 8).
+- **Contraseña del panel:** cambiar la clave temporal antes de publicar y actualizar `ADMIN_CLAVE_HASH`.
 
 ## Reglas que no se rompen
 
@@ -61,12 +64,13 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 28/10/2026 | Etapa 7: panel `/admin` con ingreso, `lib/acceso.js` (firma de sesión y bcrypt), `lib/sesion.js`, límite de 5 intentos cada 15 minutos, API protegida de consultas, tabla con marca de atendida, salida y pruebas |
 | 28/10/2026 | Etapa 6: página `/nosotros`, formulario en `/contacto`, `lib/validacion.js`, `lib/limite.js`, `lib/consultas.js`, API `/api/consultas`, confirmación de envío y pruebas |
 | 28/10/2026 | Etapa 5: API de trabajos, galería `/trabajos`, filtro por servicio, visor accesible, `GaleriaTrabajos` y pruebas del filtro |
-| 28/10/2026 | Etapa 4: inicio con portada, trabajos destacados desde la base, resumen de servicios, página `/servicios`, `TarjetaTrabajo` y pruebas de servicios |
-| 28/10/2026 | Etapa 3: `lib/contacto.js`, encabezado con logo, menú responsive con página activa, pie oscuro, botones de WhatsApp y llamada, botón flotante y pruebas de contacto |
-| 28/10/2026 | Etapa 2: proyecto en Neon, `lib/db.js`, tablas `trabajos` y `consultas`, 6 trabajos de muestra con fotos placeholder y pruebas de base de datos |
-| 28/10/2026 | Se publicó el repositorio en GitHub (`iest-tfi_sergio_decoraciones`) y se subió `main`; Etapa 1 completa |
-| 28/10/2026 | Etapa 1: proyecto Next.js con App Router, variables de marca en `app/globals.css`, tipografías Cinzel y Lato con `next/font`, logos en `public/img/marca/` y primer commit local `ceb1867`; se agregó `node:test` a `03 - TECNOLOGÍAS.md` |
+| 27/10/2026 | Etapa 4: inicio con portada, trabajos destacados desde la base, resumen de servicios, página `/servicios`, `TarjetaTrabajo` y pruebas de servicios |
+| 27/10/2026 | Etapa 3: `lib/contacto.js`, encabezado con logo, menú responsive con página activa, pie oscuro, botones de WhatsApp y llamada, botón flotante y pruebas de contacto |
+| 25/10/2026 | Etapa 2: proyecto en Neon, `lib/db.js`, tablas `trabajos` y `consultas`, 6 trabajos de muestra con fotos placeholder y pruebas de base de datos |
+| 25/10/2026 | Se publicó el repositorio en GitHub (`iest-tfi_sergio_decoraciones`) y se subió `main`; Etapa 1 completa |
+| 24/10/2026 | Etapa 1: proyecto Next.js con App Router, variables de marca en `app/globals.css`, tipografías Cinzel y Lato con `next/font`, logos en `public/img/marca/` y primer commit local `ceb1867`; se agregó `node:test` a `03 - TECNOLOGÍAS.md` |
 | 09/10/2026 | Kit de especificaciones completo y creación de `Legends.md`, `Memory.md` y `Commits.md` |
 | 09/10/2026 | Se unificó el nombre "Trabajos" (menú, ruta `/trabajos`, código y base de datos); se quitó de `08-TAREAS.md` la tarea duplicada del campo `atendida` y se aclaró el comentario de `.env.local` en `04-ARQUITECTURA.md` |

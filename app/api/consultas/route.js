@@ -1,20 +1,10 @@
 import { NextResponse } from "next/server";
 import { guardarConsulta } from "../../../lib/consultas";
-import { permitirConsulta } from "../../../lib/limite";
+import { obtenerClaveConexion, permitirConsulta } from "../../../lib/limite";
 import { validarConsulta } from "../../../lib/validacion";
 
-function obtenerClave(request) {
-  const reenviada = request.headers.get("x-forwarded-for");
-
-  if (reenviada) {
-    return reenviada.split(",")[0].trim();
-  }
-
-  return request.headers.get("x-real-ip") ?? "conexion-local";
-}
-
 export async function POST(request) {
-  if (!permitirConsulta(obtenerClave(request))) {
+  if (!permitirConsulta(obtenerClaveConexion(request))) {
     return NextResponse.json(
       {
         error:
