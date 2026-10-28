@@ -31,12 +31,12 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 
 ## Etapa 3: Estructura común y contacto
 
-- [ ] Crear `lib/contacto.js` con el número de WhatsApp y teléfono (marcador)
-- [ ] Armar `app/layout.js` con encabezado, menú y pie de página
-- [ ] Crear el componente `BotonWhatsApp` con el mensaje prellenado (RF05)
-- [ ] Crear el componente `BotonLlamar` (RF06)
-- [ ] Agregar el botón flotante de WhatsApp en todas las páginas
-- [ ] Hacer que el menú se vea como tres rayas en celular
+- [x] Crear `lib/contacto.js` con el número de WhatsApp y teléfono (marcador)
+- [x] Armar `app/layout.js` con encabezado, menú y pie de página
+- [x] Crear el componente `BotonWhatsApp` con el mensaje prellenado (RF05)
+- [x] Crear el componente `BotonLlamar` (RF06)
+- [x] Agregar el botón flotante de WhatsApp en todas las páginas
+- [x] Hacer que el menú se vea como tres rayas en celular
 
 ## Etapa 4: Inicio y servicios
 

@@ -30,6 +30,7 @@ sergio-decoraciones/
 │   ├── VisorFoto.js               ← foto en tamaño grande
 │   ├── BotonWhatsApp.js           ← abre WhatsApp con mensaje escrito
 │   ├── BotonLlamar.js             ← llama por teléfono
+│   ├── MenuPrincipal.js           ← menú de navegación y versión de tres rayas
 │   ├── FormularioConsulta.js      ← formulario de consulta
 │   ├── FormularioIngreso.js       ← usuario y contraseña del panel
 │   └── TablaConsultas.js          ← listado de consultas del panel
@@ -43,7 +44,8 @@ sergio-decoraciones/
 │   └── ejecutar-sql.js            ← ejecuta un archivo SQL con lib/db.js
 ├── test/
 │   ├── estructura.test.js         ← variables, idioma y portada
-│   └── base-datos.test.js         ← esquema, datos y conexión
+│   ├── base-datos.test.js         ← esquema, datos y conexión
+│   └── contacto.test.js           ← enlaces de WhatsApp y llamada
 ├── public/
 │   └── img/
 │       ├── marca/                 ← logos
@@ -59,6 +61,7 @@ sergio-decoraciones/
 | `app/layout.js` | Estructura común de todas las páginas: encabezado con el logo, pie y botones de contacto |
 | `app/api/` | Rutas del servidor que leen y escriben en la base de datos |
 | `components/` | Piezas de pantalla reutilizables |
+| `components/MenuPrincipal.js` | Menú de navegación con la página activa y el botón de tres rayas en celular |
 | `lib/db.js` | Único lugar donde se conecta con la base de datos |
 | `lib/contacto.js` | Único lugar donde se escribe el número de contacto (marcador `+54 9 3837 000000`) |
 | `app/admin/` | Panel privado de Sergio: ingreso y listado de consultas |

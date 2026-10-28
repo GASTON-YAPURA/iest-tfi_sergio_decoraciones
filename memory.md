@@ -15,10 +15,10 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Identidad de marca (logo, paleta, tipografías) | Hecha: `IDENTIDAD-MARCA.md` |
 | Especificaciones (`01` a `10` y `AGENTS.md`) | Hechas |
 | `Legends.md`, `Memory.md` y `Commits.md` | Hechos |
-| Código del sitio | Etapa 2 completa: base en Neon con las tablas `trabajos` y `consultas`, conexión en `lib/db.js` y 6 trabajos de muestra |
+| Código del sitio | Etapa 3 completa: estructura común con encabezado, menú de tres rayas, pie de página, botones de WhatsApp y llamada, y mensaje prellenado |
 | Informe escrito del TP | Pendiente |
 
-**Próximo paso:** Etapa 3 de `08-TAREAS.md` (Estructura común y contacto): `lib/contacto.js`, layout con encabezado, menú, pie y botones de WhatsApp y llamada.
+**Próximo paso:** Etapa 4 de `08-TAREAS.md` (Inicio y servicios): portada con título, subtítulo y botón "Ver trabajos", trabajos destacados y página `/servicios` con los seis servicios.
 
 ## Decisiones tomadas
 
@@ -60,6 +60,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 28/10/2026 | Etapa 3: `lib/contacto.js`, encabezado con logo, menú responsive con página activa, pie oscuro, botones de WhatsApp y llamada, botón flotante y pruebas de contacto |
 | 28/10/2026 | Etapa 2: proyecto en Neon, `lib/db.js`, tablas `trabajos` y `consultas`, 6 trabajos de muestra con fotos placeholder y pruebas de base de datos |
 | 28/10/2026 | Se publicó el repositorio en GitHub (`iest-tfi_sergio_decoraciones`) y se subió `main`; Etapa 1 completa |
 | 28/10/2026 | Etapa 1: proyecto Next.js con App Router, variables de marca en `app/globals.css`, tipografías Cinzel y Lato con `next/font`, logos en `public/img/marca/` y primer commit local `ceb1867`; se agregó `node:test` a `03 - TECNOLOGÍAS.md` |
