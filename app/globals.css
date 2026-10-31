@@ -23,8 +23,17 @@ body {
 body {
   background: var(--color-fondo);
   color: var(--color-principal);
+  display: flex;
+  flex-direction: column;
   font-family: var(--fuente-texto);
   line-height: 1.6;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* El contenido empuja el pie hasta el fondo, tambien en paginas cortas. */
+main {
+  flex: 1 0 auto;
 }
 
 /* Evita que la pagina de fondo se desplace con el menu del celular abierto. */
@@ -100,6 +109,7 @@ img {
 .encabezado {
   background: var(--color-fondo);
   border-bottom: 1px solid var(--color-acento-suave);
+  flex-shrink: 0;
   position: sticky;
   top: 0;
   z-index: 50;
@@ -265,6 +275,7 @@ img {
 .pie {
   background: var(--color-principal);
   color: var(--color-fondo);
+  flex-shrink: 0;
   margin-top: 4rem;
   padding: 2.5rem 0;
 }
