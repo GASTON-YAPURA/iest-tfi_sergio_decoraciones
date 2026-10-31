@@ -64,12 +64,7 @@ Se anotan los commits importantes. Para ver el historial completo se usa `git lo
 | 28/10/2026 | 6. Nosotros y consulta | `main` | `valida y guarda las consultas del formulario` | Página Nosotros, Contacto, formulario, API, validación, límite y pruebas |
 | 28/10/2026 | 7. Panel privado de consultas | `main` | `protege el panel de consultas con sesion` | Ingreso, sesión firmada, límite de intentos, listado protegido, marcar atendida, salir y pruebas |
 | 28/10/2026 | 8. Calidad y publicación | `main` | `arregla el menu hamburguesa en el celular` | Origen de desarrollo permitido, cierre con Escape, al tocar fuera y al cambiar de ruta, scroll del fondo bloqueado, cruz animada y pruebas |
-
-### Etapa 8: Calidad y publicación (31/10/2026)
-
-| Etapa | Mensaje sugerido | Qué cambió |
-|---|---|---|
-| 8. Calidad y publicación | `completa la etapa de calidad y publicación` | SEO, seguridad, declaración de IA y actualización de las especificaciones del proyecto |
+| 31/10/2026 | 8. Calidad y publicación | `main` | `completa la etapa de calidad y publicación` | SEO, seguridad, declaración de IA y actualización de las especificaciones del proyecto |
 
 Repositorio: https://github.com/GASTON-YAPURA/iest-tfi_sergio_decoraciones
 

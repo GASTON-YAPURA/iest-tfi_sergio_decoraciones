@@ -70,7 +70,7 @@ Las ocho etapas están en `08 - TAREAS.md`. Cada una tiene sus tareas con casill
 | 28/10/2026 | `401b25d valida y guarda las consultas del formulario` | 6 |
 | 28/10/2026 | `520fab7 protege el panel de consultas con sesion` | 7 |
 | 28/10/2026 | `8877162 arregla el menu hamburguesa en el celular` | 8 (en curso) |
-| 31/10/2026 | `completa la etapa de calidad y publicación` | 8 (en curso) |
+| 31/10/2026 | `82f9365 completa la etapa de calidad y publicación` | 8 (en curso) |
 
 ---
 
