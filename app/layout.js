@@ -4,6 +4,7 @@ import { Cinzel, Lato } from "next/font/google";
 import BotonLlamar from "../components/BotonLlamar";
 import BotonWhatsApp from "../components/BotonWhatsApp";
 import MenuPrincipal from "../components/MenuPrincipal";
+import { IMAGEN_COMPARTIDA, obtenerUrlSitio, TITULO_SITIO, DESCRIPCION_SITIO } from "../lib/sitio";
 import "./globals.css";
 
 // Cinzel se usa solo en titulos y Lato en textos, segun IDENTIDAD-MARCA.md.
@@ -22,9 +23,27 @@ const lato = Lato({
 });
 
 export const metadata = {
-  title: "Sergio Decoraciones | Decoración en Tinogasta",
-  description:
-    "Pintura, durlock, enduido, empapelado, machimbre y molduras en Tinogasta, Catamarca. Mirá nuestros trabajos y consultá por WhatsApp.",
+  metadataBase: new URL(obtenerUrlSitio()),
+  title: TITULO_SITIO,
+  description: DESCRIPCION_SITIO,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "es_AR",
+    siteName: "Sergio Decoraciones",
+    title: TITULO_SITIO,
+    description: DESCRIPCION_SITIO,
+    url: "/",
+    images: [IMAGEN_COMPARTIDA],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITULO_SITIO,
+    description: DESCRIPCION_SITIO,
+    images: [IMAGEN_COMPARTIDA.url],
+  },
   icons: {
     icon: "/img/marca/logo-sd-dorado.png",
   },
@@ -48,16 +67,16 @@ export default function LayoutRaiz({ children: contenido }) {
               <Image
                 src="/img/marca/logo-horizontal-principal.png"
                 alt="Logo de Sergio Decoraciones"
-                width={200}
-                height={64}
+                width={314}
+                height={100}
                 className="logo-escritorio"
                 preload
               />
               <Image
                 src="/img/marca/logo-sd-dorado.png"
                 alt="Monograma SD de Sergio Decoraciones"
-                width={44}
-                height={52}
+                width={87}
+                height={102}
                 className="logo-movil"
                 preload
               />
@@ -74,8 +93,8 @@ export default function LayoutRaiz({ children: contenido }) {
             <Image
               src="/img/marca/logo-horizontal-blanco.png"
               alt="Logo de Sergio Decoraciones"
-              width={200}
-              height={64}
+              width={315}
+              height={100}
             />
 
             <div className="pie-contacto">

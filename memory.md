@@ -16,9 +16,12 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Especificaciones (`01` a `10` y `AGENTS.md`) | Hechas |
 | `Legends.md`, `Memory.md` y `Commits.md` | Hechos |
 | Código del sitio | Etapa 7 completa: panel privado `/admin`, ingreso con sesión firmada, listado protegido `/admin/consultas`, marcar consultas como atendidas y salir |
+| SEO y calidad (Etapa 8) | Hechos: `lib/sitio.js`, `robots.txt`, `sitemap.xml`, metadatos por página, contraste, lista de seguridad y pruebas (63) |
+| Declaración de IA | Hecha: `docs/DECLARACION-IA.md` y `multimedia/FICHAS-IA.md` |
+| Publicación en Vercel | Pendiente: variables de entorno, contraseña definitiva y deploy con HTTPS |
 | Informe escrito del TP | Pendiente |
 
-**Próximo paso:** Etapa 8 de `08-TAREAS.md` (Calidad y publicación): cargar las variables en Vercel, revisar SEO y seguridad, probar en celular y publicar.
+**Próximo paso:** publicar en Vercel (Etapa 8 de `08 - TAREAS.md`): cargar las variables, cambiar la contraseña temporal, desplegar y después probar en dispositivos reales y medir la velocidad.
 
 ## Decisiones tomadas
 
@@ -41,6 +44,9 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Consultas del formulario | Se validan en el navegador y otra vez en `app/api/consultas/route.js`; se guardan con SQL parametrizado y un máximo de 5 envíos por minuto por conexión | El navegador se puede manipular y hay que evitar envíos masivos |
 | Hash del panel en `.env.local` | Los `$` del hash bcrypt se guardan escapados (`\$`) solo en `.env.local`; en Vercel se cargan tal cual | Next expande las variables al leer `.env.local` y, sin escapar, el hash llega incompleto |
 | Prueba en el celular con `next dev` | La IP de la computadora se carga en `ORIGENES_DESARROLLO` dentro de `.env.local` y `next.config.mjs` la pasa a `allowedDevOrigins` | Next bloquea los archivos de desarrollo pedidos desde otro origen, y sin eso el menú y los demás botones no responden en el celular |
+| Dirección pública y SEO | `lib/sitio.js` toma `SITIO_URL`; si no está, usa la URL del proyecto en Vercel; si tampoco, `http://localhost:3000`. De ahí salen las canónicas, `robots.txt`, el sitemap y la imagen para compartir | Un solo lugar para cambiar la dirección cuando el sitio se publique, sin inventar un dominio |
+| Pie de página | `body` en columna flex con `min-height: 100dvh`, `main` con `flex: 1 0 auto` y encabezado y pie sin encogerse | El pie queda abajo en las páginas cortas del panel sin fijar alturas a mano |
+| Declaración de IA | El monograma SD se generó con IA y cada logo se armó en Canva; las seis fotos de muestra son generadas con IA; los textos visibles los escribió el autor | Cumple el principio 8 de la Constitución y deja claro qué es de muestra |
 
 ## Fuera de alcance (por ahora)
 
@@ -48,10 +54,11 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 ## Pendientes
 
-- **Datos reales:** reemplazar el teléfono de muestra, cargar los trabajos reales de Sergio con sus fotos y reemplazar las imágenes de muestra.
+- **Datos reales:** reemplazar el teléfono de muestra, cargar los trabajos reales de Sergio con sus fotos y reemplazar las imágenes de muestra. Al reemplazar las fotos, actualizar `multimedia/FICHAS-IA.md` y quitar la leyenda de `/trabajos`.
 - **Prueba en el celular:** si cambia la red, actualizar la IP en `ORIGENES_DESARROLLO` dentro de `.env.local` y reiniciar `npm run dev`.
-- **Variables en Vercel:** cargar `DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH` y `SESION_SECRETA` al publicar (Etapa 8).
+- **Variables en Vercel:** cargar `DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH`, `SESION_SECRETA` y `SITIO_URL` al publicar (Etapa 8).
 - **Contraseña del panel:** cambiar la clave temporal antes de publicar y actualizar `ADMIN_CLAVE_HASH`.
+- **Publicación:** desplegar en Vercel con HTTPS y después probar en celular, tablet y computadora, medir PageSpeed y confirmar que `/admin` no aparece en Google.
 
 ## Reglas que no se rompen
 
@@ -66,6 +73,9 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 31/10/2026 | Declaración de IA: `docs/DECLARACION-IA.md`, `multimedia/FICHAS-IA.md`, nota en `docs/00 - IDENTIDAD-MARCA.md` y leyenda "Fotos de muestra generadas con IA" en `/trabajos` |
+| 31/10/2026 | Etapa 8: SEO completo (`lib/sitio.js`, `robots.js`, `sitemap.js`, canónicas y Open Graph por página), revisión de seguridad, contraste y `test/seo.test.js` (63 pruebas) |
+| 31/10/2026 | Pie de página: `body` en columna flex y `main` con `flex: 1 0 auto` para que el pie quede abajo en `/admin` y `/admin/consultas` |
 | 28/10/2026 | Menú del celular: `allowedDevOrigins` desde `ORIGENES_DESARROLLO`, cierre con Escape, al tocar fuera, al cambiar de ruta y al pasar a escritorio; bloqueo del scroll del fondo, cruz animada en el botón y `prefers-reduced-motion` |
 | 28/10/2026 | Documentación: `docs/11 - RECORRIDO DEL PROYECTO.md` con el paso a paso de las ocho etapas, el arreglo del menú y un glosario |
 | 28/10/2026 | Lanzador local `ver-sitio-local.bat` + `scripts/ver-local.mjs` (ambos en `.gitignore`): doble clic para abrir el sitio, espera la respuesta del servidor, abre el navegador solo y cierra el proceso al salir; `normalizarOrigen` en `next.config.mjs` para aceptar el host con puerto o esquema |

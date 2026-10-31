@@ -49,6 +49,8 @@ Computadora (VS Code + OpenCode) --git push--> GitHub --publica en cada push--> 
 | `ADMIN_USUARIO` | Nombre de usuario de Sergio para el panel | No, nunca |
 | `ADMIN_CLAVE_HASH` | Contraseña de Sergio cifrada (hash bcrypt) | No, nunca |
 | `SESION_SECRETA` | Clave para firmar la cookie de sesión | No, nunca |
+| `SITIO_URL` | Dirección pública del sitio: se usa en el sitemap, en `robots.txt` y en la vista previa al compartir un enlace | Sí, es un dato público |
+| `ORIGENES_DESARROLLO` | IP de la computadora para probar en el celular con `npm run dev` | No hace falta: solo se usa en desarrollo |
 
 ## Pruebas
 

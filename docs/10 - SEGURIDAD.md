@@ -48,7 +48,7 @@ El panel permite a Sergio ver las consultas desde un enlace (`/admin`). Como esa
 - Cada página y cada ruta de `admin/` verifica la sesión en el servidor antes de mostrar o devolver datos.
 - Para marcar una consulta como atendida, el `id` se valida como número y se usa como parámetro SQL.
 - El botón "Salir" borra la cookie de sesión.
-- Si hay que cambiar la contraseña, se genera un hash nuevo y se actualiza `ADMIN_CLAVE_HASH`.
+- Si hay que cambiar la contraseña, se ejecuta `cambiar-clave.bat` (o `node scripts/cambiar-clave.mjs`): pide la clave nueva sin mostrarla, actualiza `ADMIN_CLAVE_HASH` en `.env.local` y al final muestra el mismo hash sin escapar para pegarlo en Vercel.
 
 ```js
 // lib/sesion.js (idea)
@@ -94,13 +94,13 @@ Reglas:
 
 ## Lista de control
 
-- [ ] `.env.local` está en `.gitignore`
-- [ ] No hay ninguna variable con `NEXT_PUBLIC_` que contenga datos secretos
-- [ ] Todas las consultas SQL usan parámetros
-- [ ] La API valida nombre, teléfono y mensaje
-- [ ] El formulario muestra el aviso sobre el uso de los datos
-- [ ] Ningún error interno se muestra en pantalla
-- [ ] `npm audit` sin problemas graves
-- [ ] Sin sesión iniciada, `/admin/consultas` y `/api/admin/consultas` no devuelven datos
-- [ ] La contraseña de Sergio se guarda solo como hash y los intentos de ingreso están limitados
-- [ ] La cookie de sesión es `httpOnly`, `secure` y `sameSite: strict`
+- [x] `.env.local` está en `.gitignore`
+- [x] No hay ninguna variable con `NEXT_PUBLIC_` que contenga datos secretos
+- [x] Todas las consultas SQL usan parámetros
+- [x] La API valida nombre, teléfono y mensaje
+- [x] El formulario muestra el aviso sobre el uso de los datos
+- [x] Ningún error interno se muestra en pantalla
+- [x] `npm audit` sin problemas graves
+- [x] Sin sesión iniciada, `/admin/consultas` y `/api/admin/consultas` no devuelven datos
+- [x] La contraseña de Sergio se guarda solo como hash y los intentos de ingreso están limitados
+- [x] La cookie de sesión es `httpOnly`, `secure` y `sameSite: strict`

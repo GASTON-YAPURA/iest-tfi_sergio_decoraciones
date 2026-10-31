@@ -1,10 +1,21 @@
 import GaleriaTrabajos from "../../components/GaleriaTrabajos";
+import { IMAGEN_COMPARTIDA } from "../../lib/sitio";
 import { obtenerTrabajos } from "../../lib/trabajos";
 
 export const metadata = {
   title: "Trabajos terminados | Sergio Decoraciones",
   description:
     "Mirá trabajos de pintura, durlock, enduido, machimbre y molduras realizados por Sergio Decoraciones en Tinogasta.",
+  alternates: {
+    canonical: "/trabajos",
+  },
+  openGraph: {
+    title: "Trabajos terminados | Sergio Decoraciones",
+    description:
+      "Mirá trabajos de pintura, durlock, enduido, machimbre y molduras realizados por Sergio Decoraciones en Tinogasta.",
+    url: "/trabajos",
+    images: [IMAGEN_COMPARTIDA],
+  },
 };
 
 export const revalidate = 3600;
@@ -32,6 +43,8 @@ export default async function PaginaTrabajos() {
           ) : (
             <p>Todavía no hay trabajos publicados.</p>
           )}
+
+          <p className="galeria-aviso">Fotos de muestra generadas con IA.</p>
         </div>
       </section>
     </>

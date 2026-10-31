@@ -37,6 +37,8 @@ La IA nunca debe:
 
 Tamaño mínimo digital: 32 px de alto.
 
+> **Generado con IA:** las letras S y D del monograma se generaron con una herramienta de imágenes por IA y cada diseño se armó después en Canva. El detalle está en `multimedia/FICHAS-IA.md` y en `docs/DECLARACION-IA.md`. La leyenda no se estampa sobre el logo: este manual prohíbe agregarle textos o efectos.
+
 ## Colores
 
 | Nombre | HEX | Uso | Proporción |

@@ -28,10 +28,11 @@ export default function GaleriaTrabajos({ trabajos }) {
 
       {trabajosVisibles.length > 0 ? (
         <ul className="grilla-trabajos">
-          {trabajosVisibles.map((trabajo) => (
+          {trabajosVisibles.map((trabajo, indice) => (
             <li key={trabajo.id}>
               <TarjetaTrabajo
                 trabajo={trabajo}
+                prioridad={indice === 0}
                 onAbrir={() => setTrabajoAbierto(trabajo)}
               />
             </li>

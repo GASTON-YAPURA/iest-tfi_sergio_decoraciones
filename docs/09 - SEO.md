@@ -66,14 +66,22 @@ export const metadata = {
 };
 ```
 
+## Cómo se arma cada etiqueta
+
+- `metadataBase` en `app/layout.js` toma la dirección pública de `SITIO_URL` (o, en Vercel, la del propio proyecto). Así las direcciones canónicas y las imágenes para compartir quedan completas.
+- Cada página define su `title`, su `description`, su `alternates.canonical` y su bloque `openGraph` con la misma información, para que al compartir un enlace se vea el título correcto y no siempre el del inicio.
+- `app/robots.js` genera `robots.txt`: permite todo el sitio público, bloquea `/admin` y `/api/`, y apunta al sitemap.
+- `app/sitemap.js` genera `sitemap.xml` con las cinco páginas públicas; `/admin` no aparece.
+- La imagen para compartir es el logo horizontal principal, declarado una sola vez en `lib/sitio.js`.
+
 ## Lista de control
 
-- [ ] Cada página tiene su propio título y descripción
-- [ ] Un solo `<h1>` por página
-- [ ] Todas las imágenes tienen texto alternativo descriptivo
-- [ ] Se usan etiquetas semánticas: `<header>`, `<nav>`, `<main>`, `<footer>`
-- [ ] `<html lang="es">` en `app/layout.js`
-- [ ] Direcciones en minúsculas y sin tildes: `/trabajos`, `/servicios`
+- [x] Cada página tiene su propio título y descripción
+- [x] Un solo `<h1>` por página
+- [x] Todas las imágenes tienen texto alternativo descriptivo
+- [x] Se usan etiquetas semánticas: `<header>`, `<nav>`, `<main>`, `<footer>`
+- [x] `<html lang="es">` en `app/layout.js`
+- [x] Direcciones en minúsculas y sin tildes: `/trabajos`, `/servicios`
 - [ ] El logo y la imagen para compartir se ven al compartir un enlace
 - [ ] PageSpeed Insights de 90 o más
-- [ ] Las páginas de `/admin` tienen `noindex` y no están en el menú
+- [x] Las páginas de `/admin` tienen `noindex` y no están en el menú

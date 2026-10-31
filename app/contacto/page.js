@@ -2,11 +2,22 @@ import BotonLlamar from "../../components/BotonLlamar";
 import BotonWhatsApp from "../../components/BotonWhatsApp";
 import FormularioConsulta from "../../components/FormularioConsulta";
 import { NUMERO_TELEFONO } from "../../lib/contacto";
+import { IMAGEN_COMPARTIDA } from "../../lib/sitio";
 
 export const metadata = {
   title: "Contacto | Sergio Decoraciones",
   description:
     "Escribinos por WhatsApp, llamanos o dejá tu consulta para un trabajo de decoración en Tinogasta.",
+  alternates: {
+    canonical: "/contacto",
+  },
+  openGraph: {
+    title: "Contacto | Sergio Decoraciones",
+    description:
+      "Escribinos por WhatsApp, llamanos o dejá tu consulta para un trabajo de decoración en Tinogasta.",
+    url: "/contacto",
+    images: [IMAGEN_COMPARTIDA],
+  },
 };
 
 export default function PaginaContacto() {

@@ -76,12 +76,13 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 
 > Para probar en el celular con `npm run dev`, la IP de la computadora va en `ORIGENES_DESARROLLO` dentro de `.env.local` y el servidor se reinicia; si no, Next bloquea los archivos de desarrollo y los botones no responden.
 
-- [ ] Cargar `DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH` y `SESION_SECRETA` en Vercel
-- [ ] Agregar título, descripción y texto alternativo en cada página (09-SEO.md)
-- [ ] Revisar la lista de control de 10-SEGURIDAD.md
+- [ ] Cargar `DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH`, `SESION_SECRETA` y `SITIO_URL` en Vercel
+- [x] Agregar título, descripción y texto alternativo en cada página (09-SEO.md)
+- [x] Revisar la lista de control de 10-SEGURIDAD.md
+- [x] Crear `docs/DECLARACION-IA.md` y `multimedia/FICHAS-IA.md`, y poner la leyenda "Generado con IA" en las fotos de muestra (principio 8)
 - [ ] Comprobar que `/admin` no aparece en el menú ni en los resultados de Google
 - [ ] Probar el sitio en celular, tablet y computadora (RNF01)
 - [ ] Medir la velocidad con PageSpeed Insights: menos de 3 segundos (RNF02)
-- [ ] Revisar contraste y texto alternativo de las fotos (RNF03)
+- [x] Revisar contraste y texto alternativo de las fotos (RNF03)
 - [ ] Publicar en Vercel con HTTPS (RNF05)
 - [ ] Verificar que los botones de WhatsApp y llamada funcionan en un celular real

@@ -6,10 +6,14 @@
 sergio-decoraciones/
 ├── AGENTS.md                      ← reglas para la IA
 ├── docs/                          ← especificaciones (.md)
+├── docs/DECLARACION-IA.md         ← qué se generó con IA y qué no
+├── multimedia/FICHAS-IA.md        ← ficha de cada pieza generada con IA
 ├── app/
 │   ├── layout.js                  ← encabezado, pie y botones de contacto
 │   ├── page.js                    ← inicio
 │   ├── globals.css                ← variables de la marca
+│   ├── robots.js                  ← indica a los buscadores qué pueden leer
+│   ├── sitemap.js                 ← lista de páginas para Google
 │   ├── trabajos/page.js           ← galería de trabajos con filtro
 │   ├── servicios/page.js          ← lista de servicios
 │   ├── nosotros/page.js           ← quién es Sergio y cómo trabaja
@@ -46,6 +50,7 @@ sergio-decoraciones/
 │   ├── fechas.js                  ← formato de las fechas de las consultas
 │   ├── contacto.js                ← número de WhatsApp y teléfono
 │   ├── acceso.js                  ← firma de la sesión y credenciales
+│   ├── sitio.js                   ← dirección pública e imagen para compartir
 │   └── sesion.js                  ← cookie y verificación de la sesión
 ├── db/
 │   ├── esquema.sql                ← tablas de la base de datos
@@ -58,6 +63,7 @@ sergio-decoraciones/
 │   ├── servicios.test.js          ← datos y página de servicios
 │   ├── galeria.test.js            ← página, filtro y visor de trabajos
 │   ├── consultas.test.js          ← validación, límite y formulario
+│   ├── seo.test.js                ← títulos, canónicas, robots y sitemap
 │   └── panel.test.js              ← sesión, credenciales y panel privado
 ├── public/
 │   └── img/
@@ -72,6 +78,8 @@ sergio-decoraciones/
 |---|---|
 | `app/` | Páginas del sitio: cada carpeta con `page.js` es una dirección (`/trabajos`, `/servicios`, `/nosotros`, `/contacto`) |
 | `app/layout.js` | Estructura común de todas las páginas: encabezado con el logo, pie y botones de contacto |
+| `app/robots.js` | Genera `robots.txt`: deja leer el sitio público y bloquea `/admin` y `/api/` |
+| `app/sitemap.js` | Genera `sitemap.xml` con las páginas públicas para Google |
 | `app/api/` | Rutas del servidor que leen y escriben en la base de datos |
 | `components/` | Piezas de pantalla reutilizables |
 | `components/MenuPrincipal.js` | Menú de navegación con la página activa y el botón de tres rayas en celular |
@@ -88,12 +96,15 @@ sergio-decoraciones/
 | `app/admin/` | Panel privado de Sergio: ingreso y listado de consultas |
 | `app/admin/layout.js` | Marca las páginas del panel como `noindex` para los buscadores |
 | `lib/acceso.js` | Crea y verifica la firma de la sesión y compara las credenciales con bcrypt |
+| `lib/sitio.js` | Único lugar donde se arma la dirección pública del sitio y la imagen para compartir |
 | `lib/sesion.js` | Único lugar donde se crea, se verifica y se borra la cookie de sesión |
 | `db/esquema.sql` | Definición de las tablas (ver 05-DATOS.md) |
 | `db/datos.sql` | Trabajos de muestra para la galería |
 | `db/ejecutar-sql.js` | Ejecuta `esquema.sql` o `datos.sql` usando la conexión de `lib/db.js` |
 | `test/` | Pruebas automáticas con `node:test` |
 | `public/img/` | Imágenes que el navegador puede pedir directamente |
+| `docs/DECLARACION-IA.md` | Declaración de uso de IA: piezas generadas, herramientas y cuidados |
+| `multimedia/FICHAS-IA.md` | Ficha de cada pieza visual generada con IA y dónde lleva la leyenda |
 | `.env.local` | Variables secretas; está en `.gitignore` y nunca se sube |
 
 ## Reglas de la arquitectura

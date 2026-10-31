@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { obtenerNombreServicio } from "../lib/servicios";
 
-export default function TarjetaTrabajo({ trabajo, onAbrir }) {
+export default function TarjetaTrabajo({ trabajo, onAbrir, prioridad = false }) {
   const foto = (
     <Image
       src={trabajo.foto}
@@ -9,6 +9,7 @@ export default function TarjetaTrabajo({ trabajo, onAbrir }) {
       width={1200}
       height={800}
       sizes="(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw"
+      priority={prioridad}
     />
   );
 

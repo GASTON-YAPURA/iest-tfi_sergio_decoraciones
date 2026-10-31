@@ -1,7 +1,27 @@
 import Link from "next/link";
 import TarjetaTrabajo from "../components/TarjetaTrabajo";
 import { SERVICIOS } from "../lib/servicios";
+import {
+  DESCRIPCION_SITIO,
+  IMAGEN_COMPARTIDA,
+  TITULO_SITIO,
+} from "../lib/sitio";
 import { obtenerTrabajosDestacados } from "../lib/trabajos";
+
+// El inicio hereda el titulo y la descripcion de la marca.
+export const metadata = {
+  title: TITULO_SITIO,
+  description: DESCRIPCION_SITIO,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: TITULO_SITIO,
+    description: DESCRIPCION_SITIO,
+    url: "/",
+    images: [IMAGEN_COMPARTIDA],
+  },
+};
 
 // Los trabajos se cargan en la base; el inicio se refresca cada hora.
 export const revalidate = 3600;

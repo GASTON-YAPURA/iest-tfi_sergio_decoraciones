@@ -55,15 +55,21 @@ Se anotan los commits importantes. Para ver el historial completo se usa `git lo
 
 | Fecha | Etapa | Rama | Mensaje del commit | Qué cambió |
 |---|---|---|---|---|
-| 28/10/2026 | 1. Preparación | `main` | `crea el proyecto next.js con la identidad de marca` | Proyecto Next.js, variables de marca, tipografías y logos |
-| 28/10/2026 | 1. Preparación | `main` | `actualiza el estado de la etapa 1` | Estado del proyecto y registro de commits |
-| 28/10/2026 | 2. Base de datos | `main` | `crea las tablas y carga los trabajos de muestra` | Neon, `lib/db.js`, esquema, datos y fotos de muestra |
-| 28/10/2026 | 3. Estructura común y contacto | `main` | `agrega la estructura comun y los botones de contacto` | Encabezado, menú responsive, pie, WhatsApp, llamada y pruebas |
-| 28/10/2026 | 4. Inicio y servicios | `main` | `maqueta el inicio y la pagina de servicios` | Portada, trabajos destacados, resumen y página de servicios |
-| 28/10/2026 | 5. Trabajos | `main` | `agrega la galeria de trabajos con filtro y visor` | API, galería, filtro por servicio, visor y pruebas |
+| 24/10/2026 | 1. Preparación | `main` | `crea el proyecto next.js con la identidad de marca` | Proyecto Next.js, variables de marca, tipografías y logos |
+| 24/10/2026 | 1. Preparación | `main` | `actualiza el estado de la etapa 1` | Estado del proyecto y registro de commits |
+| 25/10/2026 | 2. Base de datos | `main` | `crea las tablas y carga los trabajos de muestra` | Neon, `lib/db.js`, esquema, datos y fotos de muestra |
+| 25/10/2026 | 3. Estructura común y contacto | `main` | `agrega la estructura comun y los botones de contacto` | Encabezado, menú responsive, pie, WhatsApp, llamada y pruebas |
+| 27/10/2026 | 4. Inicio y servicios | `main` | `maqueta el inicio y la pagina de servicios` | Portada, trabajos destacados, resumen y página de servicios |
+| 27/10/2026 | 5. Trabajos | `main` | `agrega la galeria de trabajos con filtro y visor` | API, galería, filtro por servicio, visor y pruebas |
 | 28/10/2026 | 6. Nosotros y consulta | `main` | `valida y guarda las consultas del formulario` | Página Nosotros, Contacto, formulario, API, validación, límite y pruebas |
 | 28/10/2026 | 7. Panel privado de consultas | `main` | `protege el panel de consultas con sesion` | Ingreso, sesión firmada, límite de intentos, listado protegido, marcar atendida, salir y pruebas |
 | 28/10/2026 | 8. Calidad y publicación | `main` | `arregla el menu hamburguesa en el celular` | Origen de desarrollo permitido, cierre con Escape, al tocar fuera y al cambiar de ruta, scroll del fondo bloqueado, cruz animada y pruebas |
+
+### Etapa 8: Calidad y publicación (31/10/2026)
+
+| Etapa | Mensaje sugerido | Qué cambió |
+|---|---|---|
+| 8. Calidad y publicación | `completa la etapa de calidad y publicación` | SEO, seguridad, declaración de IA y actualización de las especificaciones del proyecto |
 
 Repositorio: https://github.com/GASTON-YAPURA/iest-tfi_sergio_decoraciones
 

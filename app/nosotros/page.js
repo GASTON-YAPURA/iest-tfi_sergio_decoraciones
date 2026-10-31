@@ -1,11 +1,22 @@
 import Image from "next/image";
 import BotonLlamar from "../../components/BotonLlamar";
 import BotonWhatsApp from "../../components/BotonWhatsApp";
+import { IMAGEN_COMPARTIDA } from "../../lib/sitio";
 
 export const metadata = {
   title: "Nosotros | Sergio Decoraciones",
   description:
     "Conocé a Sergio y cómo trabaja: prolijidad, detalle y buen oficio en cada ambiente.",
+  alternates: {
+    canonical: "/nosotros",
+  },
+  openGraph: {
+    title: "Nosotros | Sergio Decoraciones",
+    description:
+      "Conocé a Sergio y cómo trabaja: prolijidad, detalle y buen oficio en cada ambiente.",
+    url: "/nosotros",
+    images: [IMAGEN_COMPARTIDA],
+  },
 };
 
 export default function PaginaNosotros() {

@@ -70,6 +70,7 @@ Las ocho etapas están en `08 - TAREAS.md`. Cada una tiene sus tareas con casill
 | 28/10/2026 | `401b25d valida y guarda las consultas del formulario` | 6 |
 | 28/10/2026 | `520fab7 protege el panel de consultas con sesion` | 7 |
 | 28/10/2026 | `8877162 arregla el menu hamburguesa en el celular` | 8 (en curso) |
+| 31/10/2026 | `completa la etapa de calidad y publicación` | 8 (en curso) |
 
 ---
 
@@ -375,26 +376,41 @@ Es la etapa con más cuidado, porque acá hay datos de terceros.
 ### Lo que ya se hizo en esta etapa
 
 1. **Arreglo del menú del celular** (ver sección 11).
-2. **Nota de entorno** en `08 - TAREAS.md` para poder probar desde el teléfono.
+2. **Arreglo del pie de página.** En `/admin` y `/admin/consultas` el pie quedaba flotando en el medio cuando la página tenía poco contenido. Se resolvió en la estructura, sin tocar colores ni medidas: `body` es una columna flex con `min-height: 100dvh`, `main` crece (`flex: 1 0 auto`) y el encabezado y el pie no se encogen (`flex-shrink: 0`). Así el pie queda abajo en las páginas cortas y sigue el contenido en las largas.
+3. **SEO completo** (`09 - SEO.md`):
+   - `lib/sitio.js` centraliza la dirección pública y la imagen para compartir. La dirección sale de `SITIO_URL`; si no está, de la URL del proyecto en Vercel; si tampoco, de `http://localhost:3000`.
+   - `app/layout.js` define `metadataBase`, título, descripción, canónica, Open Graph y Twitter.
+   - Cada página pública declara su propio `title`, `description`, `alternates.canonical` y `openGraph`.
+   - `app/robots.js` genera `robots.txt`: permite el sitio público y bloquea `/admin` y `/api/`.
+   - `app/sitemap.js` genera `sitemap.xml` con las cinco páginas públicas; `/admin` no aparece.
+   - Se revisó que cada página tenga un solo `<h1>` y que todas las imágenes tengan texto alternativo.
+4. **Revisión de seguridad** (`10 - SEGURIDAD.md`):
+   - `npm audit --omit=dev`: 0 vulnerabilidades.
+   - Ninguna variable sensible lleva el prefijo `NEXT_PUBLIC_`.
+   - No se usa `dangerouslySetInnerHTML`.
+   - Todo el SQL va con parámetros (`$1`, `$2`, …) desde `lib/db.js`.
+   - Sin sesión, `/admin/consultas` redirige a `/admin` y `/api/admin/consultas` responde 401 sin datos.
+   - La cookie es `httpOnly`, `secure` en producción y `sameSite: strict`.
+   - El formulario muestra el aviso sobre el uso de los datos.
+   - Contraste comprobado: 17,40:1 para texto principal, 5,18:1 para texto secundario y 6,20:1 para el acento sobre blanco.
+5. **Pruebas y build:** `npm test` pasa 63 pruebas (se agregó `test/seo.test.js`) y `npm run build` genera 13 rutas, con `/robots.txt` y `/sitemap.xml` estáticas. Se probó también con el servidor de producción: páginas públicas 200, panel sin sesión 307/401 y `noindex` en `/admin`.
+6. **Declaración de IA** (principio 8 de la Constitución): se crearon `docs/DECLARACION-IA.md` y `multimedia/FICHAS-IA.md`, con una ficha por el monograma, una por las variantes del logo y una por cada foto de muestra. La leyenda "Fotos de muestra generadas con IA" aparece al pie de `/trabajos`.
+7. **Documentación actualizada:** `03 - TECNOLOGÍAS.md` (variables `SITIO_URL` y `ORIGENES_DESARROLLO`), `04 - ARQUITECTURA.md` (`robots.js`, `sitemap.js`, `sitio.js`), `08 - TAREAS.md`, `09 - SEO.md` y `10 - SEGURIDAD.md`.
 
 ### Lo que falta
 
 | Pendiente | Qué implica |
 |---|---|
-| Variables en Vercel | Cargar `DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH` y `SESION_SECRETA` |
-| SEO | Revisar títulos, descripciones y textos alternativos según `09 - SEO.md` |
-| Seguridad | Recorrer la lista de control de `10 - SEGURIDAD.md` |
-| Privacidad | Confirmar que `/admin` no aparece en el menú ni en Google |
-| Pruebas de dispositivo | Celular, tablet y computadora |
-| Velocidad | PageSpeed Insights por debajo de 3 segundos |
-| Contraste | Revisar contraste y textos alternativos de las fotos |
+| Variables en Vercel | Cargar `DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH`, `SESION_SECRETA` y `SITIO_URL` |
+| Contraseña definitiva | Reemplazar la clave temporal del panel y actualizar `ADMIN_CLAVE_HASH` |
 | Publicación | Deploy en Vercel con HTTPS |
+| Privacidad | Confirmar que `/admin` no aparece en el menú ni en Google |
+| Pruebas de dispositivo | Celular, tablet y computadora (RNF01) |
+| Velocidad | PageSpeed Insights: menos de 3 segundos (RNF02) |
 | Contacto real | Probar WhatsApp y llamada desde un celular real |
+| Datos reales | Reemplazar el teléfono de muestra, las fotos y los trabajos de muestra por los de Sergio |
 
-Además hay dos pendientes de datos, anotados en `memory.md`:
-
-- reemplazar el teléfono de muestra y las fotos de muestra por los datos reales de Sergio;
-- cambiar la contraseña temporal del panel antes de publicar.
+Los pendientes de datos están anotados también en `memory.md`.
 
 ---
 
@@ -468,7 +484,7 @@ Con un navegador real (Chrome sin ventana) emulando un celular de 390×844:
 | Comando | Para qué |
 |---|---|
 | `npm run dev` | Servidor de desarrollo en `http://localhost:3000` |
-| `npm test` | Las 57 pruebas automáticas |
+| `npm test` | Las 63 pruebas automáticas |
 | `npm run build` | Build de producción (falla si algo está roto) |
 | `npm start` | Sirve el build de producción |
 | `npm run db:esquema` | Crea las tablas |
@@ -497,6 +513,7 @@ Los dos archivos están en `.gitignore`: funcionan en la computadora donde se cr
 | `test/consultas.test.js` | Validación, límite de envíos y respuestas de la API |
 | `test/panel.test.js` | Sesión firmada, vencimiento, credenciales, límite de intentos, rutas protegidas y tabla |
 | `test/menu.test.js` | Estado del botón, cierres del menú, bloqueo del scroll y origen de desarrollo |
+| `test/seo.test.js` | Dirección base, canónicas, Open Graph, `robots.txt` y `sitemap.xml` |
 
 ### Variables de entorno necesarias
 
@@ -506,6 +523,7 @@ Los dos archivos están en `.gitignore`: funcionan en la computadora donde se cr
 | `ADMIN_USUARIO` | `lib/acceso.js` y `lib/sesion.js` |
 | `ADMIN_CLAVE_HASH` | `lib/acceso.js` (bcrypt) |
 | `SESION_SECRETA` | `lib/acceso.js` (firma HMAC) |
+| `SITIO_URL` | `lib/sitio.js` (dirección pública del sitemap y de la vista previa) |
 | `ORIGENES_DESARROLLO` | `next.config.mjs` (solo para probar desde el celular) |
 
 Ninguna lleva el prefijo `NEXT_PUBLIC_`: ese prefijo haría que la variable llegue al navegador.
@@ -519,6 +537,8 @@ app/
   layout.js                 estructura común: encabezado, menú, pie, botón flotante
   page.js                   inicio (portada, destacados, servicios)
   globals.css               todos los estilos y las variables de marca
+  robots.js                 reglas para los buscadores
+  sitemap.js                páginas públicas para Google
   servicios/page.js         los seis servicios
   trabajos/page.js          galería
   nosotros/page.js          quién es Sergio
@@ -556,6 +576,7 @@ lib/
   servicios.js              catálogo de servicios
   acceso.js                 firma de sesión y verificación de clave
   sesion.js                 cookie de sesión
+  sitio.js                  dirección pública e imagen para compartir
   fechas.js                 fechas en hora de Catamarca
 
 db/

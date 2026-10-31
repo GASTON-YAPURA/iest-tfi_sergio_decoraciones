@@ -1,11 +1,22 @@
 import BotonLlamar from "../../components/BotonLlamar";
 import BotonWhatsApp from "../../components/BotonWhatsApp";
 import { SERVICIOS } from "../../lib/servicios";
+import { IMAGEN_COMPARTIDA } from "../../lib/sitio";
 
 export const metadata = {
   title: "Servicios | Sergio Decoraciones",
   description:
     "Durlock, pintura, enduido, empapelado, alfombra, machimbre y molduras para interiores y exteriores. Consultá por WhatsApp.",
+  alternates: {
+    canonical: "/servicios",
+  },
+  openGraph: {
+    title: "Servicios | Sergio Decoraciones",
+    description:
+      "Durlock, pintura, enduido, empapelado, alfombra, machimbre y molduras para interiores y exteriores. Consultá por WhatsApp.",
+    url: "/servicios",
+    images: [IMAGEN_COMPARTIDA],
+  },
 };
 
 export default function PaginaServicios() {

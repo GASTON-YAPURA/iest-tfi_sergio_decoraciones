@@ -24,8 +24,8 @@ export default async function PaginaIngreso() {
           <Image
             src="/img/marca/logo-sd-dorado.png"
             alt="Monograma SD de Sergio Decoraciones"
-            width={88}
-            height={104}
+            width={104}
+            height={122}
             className="admin-monograma"
           />
 
