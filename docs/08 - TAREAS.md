@@ -100,13 +100,13 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 
 ### Consultas
 
-- [ ] Buscar consultas por nombre o teléfono (RF12)
-- [ ] Filtrar por pendientes, atendidas y archivadas (RF13)
-- [ ] Mostrar las consultas de a 10, con anterior y siguiente (RF14)
-- [ ] Escribir el mensaje antes de responder por WhatsApp (RF15)
-- [ ] Archivar, restaurar y borrar consultas con confirmación (RF16)
-- [ ] Exportar las consultas filtradas a CSV (RF17)
-- [ ] Mostrar el resumen de pendientes, atendidas y total (RF18)
+- [x] Buscar consultas por nombre o teléfono (RF12)
+- [x] Filtrar por pendientes, atendidas y archivadas (RF13)
+- [x] Mostrar las consultas de a 10, con anterior y siguiente (RF14)
+- [x] Escribir el mensaje antes de responder por WhatsApp (RF15)
+- [x] Archivar, restaurar y borrar consultas con confirmación (RF16)
+- [x] Exportar las consultas filtradas a CSV (RF17)
+- [x] Mostrar el resumen de pendientes, atendidas y total (RF18)
 - [ ] Revisar el orden visual del panel con la paleta de marca
 
 ### Trabajos

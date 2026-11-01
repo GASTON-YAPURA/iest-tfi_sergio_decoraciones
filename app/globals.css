@@ -224,7 +224,8 @@ img {
 }
 
 .boton-principal,
-.boton-secundario {
+.boton-secundario,
+.boton-peligro {
   align-items: center;
   border-radius: var(--radio-borde);
   display: inline-flex;
@@ -261,10 +262,28 @@ img {
   color: var(--color-fondo);
 }
 
+.boton-peligro {
+  background: transparent;
+  border: 1px solid var(--color-secundario);
+  color: var(--color-secundario);
+}
+
+.boton-peligro:hover {
+  background: var(--color-principal);
+  border-color: var(--color-principal);
+  color: var(--color-fondo);
+}
+
+.boton-peligro:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
 .menu-boton:focus-visible,
 .menu-enlace:focus-visible,
 .boton-principal:focus-visible,
 .boton-secundario:focus-visible,
+.boton-peligro:focus-visible,
 .enlace-pie:focus-visible,
 .boton-whatsapp-flotante:focus-visible,
 .saltar-contenido:focus-visible {
@@ -1247,9 +1266,134 @@ button.tarjeta-foto:focus-visible,
 }
 
 .admin-resumen {
-  font-size: 0.95rem;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 0 1.5rem;
+}
+
+.admin-dato {
+  background: var(--color-acento-suave);
+  border: 1px solid transparent;
+  border-radius: var(--radio-borde);
+  color: var(--color-principal);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem;
+  text-decoration: none;
+}
+
+a.admin-dato:hover {
+  border-color: var(--color-secundario);
+}
+
+.admin-dato-destacado {
+  background: var(--color-fondo);
+  border-color: var(--color-acento);
+}
+
+.admin-dato-numero {
+  font-family: var(--fuente-titulos);
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 700;
-  margin: 0 0 1rem;
+  line-height: 1;
+}
+
+.admin-dato-destacado .admin-dato-numero {
+  color: var(--color-acento);
+}
+
+.admin-dato-etiqueta {
+  color: var(--color-secundario);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-herramientas {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.admin-buscador {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.admin-buscador input {
+  background: var(--color-fondo);
+  border: 1px solid var(--color-secundario);
+  border-radius: var(--radio-borde);
+  color: var(--color-principal);
+  flex: 1 1 16rem;
+  font-family: var(--fuente-texto);
+  font-size: 0.95rem;
+  min-width: 0;
+  padding: 0.55rem 0.75rem;
+}
+
+.admin-buscador input:focus {
+  border-color: var(--color-acento);
+  outline: 2px solid var(--color-acento);
+  outline-offset: 1px;
+}
+
+.admin-buscador .boton-chico,
+.admin-exportar,
+.admin-paginado .boton-chico {
+  cursor: pointer;
+}
+
+.admin-limpiar {
+  align-self: center;
+  color: var(--color-acento);
+  font-size: 0.85rem;
+}
+
+.admin-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.admin-filtros .filtro-boton {
+  font-size: 0.7rem;
+}
+
+.admin-exportar {
+  align-self: flex-start;
+}
+
+.admin-contador {
+  color: var(--color-secundario);
+  font-size: 0.85rem;
+  margin: 0 0 0.75rem;
+}
+
+.admin-paginado {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+}
+
+.admin-paginado-inactivo {
+  color: var(--color-secundario);
+  font-size: 0.75rem;
+  opacity: 0.6;
+  padding: 0.5rem 0.75rem;
+  text-transform: uppercase;
+}
+
+.admin-paginado-pagina {
+  font-size: 0.85rem;
+  text-align: center;
 }
 
 .admin-vacio {
@@ -1318,7 +1462,7 @@ button.tarjeta-foto:focus-visible,
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  min-width: 12rem;
+  min-width: 14rem;
 }
 
 .boton-chico {
@@ -1354,6 +1498,59 @@ button.tarjeta-foto:focus-visible,
 .estado-atendida {
   border: 1px solid var(--color-secundario);
   color: var(--color-secundario);
+}
+
+.estado-archivada {
+  background: var(--color-acento-suave);
+  border: 1px dashed var(--color-secundario);
+  color: var(--color-secundario);
+}
+
+.modal-fondo {
+  align-items: center;
+  background: var(--color-principal);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 1rem;
+  position: fixed;
+  z-index: 90;
+}
+
+.modal-caja {
+  background: var(--color-fondo);
+  border-radius: var(--radio-borde);
+  max-height: 92vh;
+  max-width: 520px;
+  overflow-y: auto;
+  padding: 1.5rem;
+  position: relative;
+  width: 100%;
+}
+
+.modal-caja h2 {
+  font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+  line-height: 1.2;
+  margin: 0 0 0.5rem;
+  padding-right: 2.5rem;
+}
+
+.modal-bajada {
+  color: var(--color-secundario);
+  font-size: 0.9rem;
+  margin: 0 0 1.25rem;
+}
+
+.modal-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.modal-acciones .boton-principal,
+.modal-acciones .boton-secundario {
+  cursor: pointer;
 }
 
 @media (max-width: 699px) {
@@ -1460,8 +1657,26 @@ button.tarjeta-foto:focus-visible,
 
 .consulta-acciones .boton-principal:focus-visible,
 .consulta-acciones .boton-secundario:focus-visible,
+.consulta-acciones .boton-peligro:focus-visible,
 .admin-encabezado .boton-secundario:focus-visible,
 .formulario-ingreso .boton-principal:focus-visible {
   outline: 2px solid var(--color-acento);
   outline-offset: 2px;
+}
+
+@media (min-width: 900px) {
+  .admin-herramientas {
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .admin-buscador {
+    flex: 1 1 22rem;
+  }
+
+  .admin-exportar {
+    align-self: center;
+    margin-left: auto;
+  }
 }

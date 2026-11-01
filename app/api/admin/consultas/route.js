@@ -1,40 +1,39 @@
 import { NextResponse } from "next/server";
 import {
+  borrarConsultaArchivada,
+  cambiarConsultaArchivada,
   marcarConsultaAtendida,
-  obtenerConsultas,
+  obtenerConsulta,
 } from "../../../../lib/consultas";
 import { leerSesion } from "../../../../lib/sesion";
 
 export const dynamic = "force-dynamic";
 
-async function sinSesion() {
+const ACCIONES = ["atender", "archivar", "restaurar"];
+
+function sinSesion() {
   return NextResponse.json(
     { error: "Tenés que ingresar para ver las consultas." },
     { status: 401 }
   );
 }
 
-export async function GET() {
-  const sesion = await leerSesion();
+function idInvalido() {
+  return NextResponse.json(
+    { error: "El número de consulta no es válido." },
+    { status: 400 }
+  );
+}
 
-  if (!sesion) {
-    return sinSesion();
-  }
-
+async function leerCuerpo(request) {
   try {
-    const consultas = await obtenerConsultas();
-
-    return NextResponse.json({ consultas });
-  } catch (error) {
-    console.error("No se pudieron obtener las consultas", error);
-
-    return NextResponse.json(
-      { error: "No pudimos obtener las consultas." },
-      { status: 500 }
-    );
+    return await request.json();
+  } catch {
+    return null;
   }
 }
 
+// Atiende, archiva o restaura una consulta. Solo con sesión iniciada.
 export async function PATCH(request) {
   const sesion = await leerSesion();
 
@@ -42,28 +41,30 @@ export async function PATCH(request) {
     return sinSesion();
   }
 
-  let cuerpo;
-
-  try {
-    cuerpo = await request.json();
-  } catch {
-    return NextResponse.json(
-      { error: "No pudimos leer los datos enviados." },
-      { status: 400 }
-    );
-  }
-
+  const cuerpo = await leerCuerpo(request);
   const id = Number(cuerpo?.id);
 
   if (!Number.isInteger(id) || id <= 0) {
+    return idInvalido();
+  }
+
+  const accion = cuerpo?.accion;
+
+  if (!ACCIONES.includes(accion)) {
     return NextResponse.json(
-      { error: "El número de consulta no es válido." },
+      { error: "La acción pedida no es válida." },
       { status: 400 }
     );
   }
 
   try {
-    const consulta = await marcarConsultaAtendida(id);
+    let consulta;
+
+    if (accion === "atender") {
+      consulta = await marcarConsultaAtendida(id);
+    } else {
+      consulta = await cambiarConsultaArchivada(id, accion === "archivar");
+    }
 
     if (!consulta) {
       return NextResponse.json(
@@ -74,10 +75,55 @@ export async function PATCH(request) {
 
     return NextResponse.json({ consulta });
   } catch (error) {
-    console.error("No se pudo marcar la consulta como atendida", error);
+    console.error("No se pudo actualizar la consulta", error);
 
     return NextResponse.json(
       { error: "No pudimos actualizar la consulta." },
+      { status: 500 }
+    );
+  }
+}
+
+// Borra definitivamente una consulta archivada. No se puede deshacer.
+export async function DELETE(request) {
+  const sesion = await leerSesion();
+
+  if (!sesion) {
+    return sinSesion();
+  }
+
+  const cuerpo = await leerCuerpo(request);
+  const id = Number(cuerpo?.id);
+
+  if (!Number.isInteger(id) || id <= 0) {
+    return idInvalido();
+  }
+
+  try {
+    const consulta = await obtenerConsulta(id);
+
+    if (!consulta) {
+      return NextResponse.json(
+        { error: "No encontramos esa consulta." },
+        { status: 404 }
+      );
+    }
+
+    if (!consulta.archivada) {
+      return NextResponse.json(
+        { error: "Primero archivá la consulta para poder borrarla." },
+        { status: 409 }
+      );
+    }
+
+    await borrarConsultaArchivada(id);
+
+    return NextResponse.json({ borrada: true });
+  } catch (error) {
+    console.error("No se pudo borrar la consulta", error);
+
+    return NextResponse.json(
+      { error: "No pudimos borrar la consulta." },
       { status: 500 }
     );
   }

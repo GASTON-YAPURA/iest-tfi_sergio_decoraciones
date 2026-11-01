@@ -2,26 +2,36 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { crearEnlaceWhatsAppConNumero } from "../lib/contacto";
+import RespuestaWhatsApp from "./RespuestaWhatsApp";
 
-export default function TablaConsultas({ consultasIniciales }) {
+function estadoDeConsulta(consulta) {
+  if (consulta.archivada) {
+    return { texto: "Archivada", clase: "estado-archivada" };
+  }
+
+  if (consulta.atendida) {
+    return { texto: "Atendida", clase: "estado-atendida" };
+  }
+
+  return { texto: "Pendiente", clase: "estado-pendiente" };
+}
+
+export default function TablaConsultas({ consultas, mensajeVacio }) {
   const router = useRouter();
-  const [consultas, setConsultas] = useState(consultasIniciales);
-  const [marcando, setMarcando] = useState(null);
+  const [consultaRespondiendo, setConsultaRespondiendo] = useState(null);
+  const [procesando, setProcesando] = useState(null);
   const [aviso, setAviso] = useState("");
   const [error, setError] = useState("");
 
-  async function marcarAtendida(consulta) {
-    setMarcando(consulta.id);
-    setAviso("");
-    setError("");
-
+  async function enviar(url, opciones) {
     try {
-      const respuesta = await fetch("/api/admin/consultas", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: consulta.id }),
-      });
+      const respuesta = await fetch(url, opciones);
+
+      if (respuesta.status === 401) {
+        router.push("/admin");
+        router.refresh();
+        return null;
+      }
 
       let resultado = {};
 
@@ -31,37 +41,62 @@ export default function TablaConsultas({ consultasIniciales }) {
         resultado = {};
       }
 
-      if (respuesta.status === 401) {
-        router.push("/admin");
-        router.refresh();
-        return;
-      }
-
       if (!respuesta.ok) {
-        setError(
-          resultado.error ?? "No pudimos marcar la consulta como atendida."
-        );
-        return;
+        setError(resultado.error ?? "No pudimos guardar el cambio.");
+        return null;
       }
 
-      setConsultas((anteriores) =>
-        anteriores.map((item) =>
-          item.id === consulta.id ? { ...item, atendida: true } : item
-        )
-      );
-      setAviso(`La consulta de ${consulta.nombre} quedó marcada como atendida.`);
-      router.refresh();
+      return resultado;
     } catch {
-      setError(
-        "No pudimos marcar la consulta. Revisá tu conexión y probá de nuevo."
-      );
-    } finally {
-      setMarcando(null);
+      setError("No pudimos guardar el cambio. Revisá tu conexión.");
+      return null;
     }
   }
 
-  if (consultas.length === 0) {
-    return <p className="admin-vacio">Todavía no recibiste consultas.</p>;
+  async function cambiarEstado(consulta, accion, mensaje) {
+    setProcesando(consulta.id);
+    setAviso("");
+    setError("");
+
+    const resultado = await enviar("/api/admin/consultas", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: consulta.id, accion }),
+    });
+
+    if (resultado) {
+      setAviso(mensaje);
+      router.refresh();
+    }
+
+    setProcesando(null);
+  }
+
+  async function borrar(consulta) {
+    const confirmado = window.confirm(
+      `¿Borrar definitivamente la consulta de ${consulta.nombre}? También se borra el mensaje y no se puede recuperar.`
+    );
+
+    if (!confirmado) {
+      return;
+    }
+
+    setProcesando(consulta.id);
+    setAviso("");
+    setError("");
+
+    const resultado = await enviar("/api/admin/consultas", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: consulta.id }),
+    });
+
+    if (resultado) {
+      setAviso(`La consulta de ${consulta.nombre} se borró para siempre.`);
+      router.refresh();
+    }
+
+    setProcesando(null);
   }
 
   return (
@@ -78,79 +113,135 @@ export default function TablaConsultas({ consultasIniciales }) {
         </p>
       ) : null}
 
-      <table className="tabla-consultas">
-        <caption className="visualmente-oculto">
-          Consultas recibidas, de la más reciente a la más antigua
-        </caption>
-        <thead>
-          <tr>
-            <th scope="col">Fecha</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Teléfono</th>
-            <th scope="col">Mensaje</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {consultas.map((consulta) => {
-            const digitos = consulta.telefono.replace(/\D/g, "");
-            const enlaceWhatsApp = crearEnlaceWhatsAppConNumero(
-              consulta.telefono,
-              `Hola ${consulta.nombre}, le escribimos de Sergio Decoraciones por su consulta.`
-            );
+      {consultas.length === 0 ? (
+        <p className="admin-vacio">{mensajeVacio}</p>
+      ) : (
+        <table className="tabla-consultas">
+          <caption className="visualmente-oculto">
+            Consultas recibidas, de la más reciente a la más antigua
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Fecha</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Teléfono</th>
+              <th scope="col">Mensaje</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {consultas.map((consulta) => {
+              const digitos = consulta.telefono.replace(/\D/g, "");
+              const estado = estadoDeConsulta(consulta);
+              const ocupada = procesando === consulta.id;
 
-            return (
-              <tr key={consulta.id}>
-                <td data-etiqueta="Fecha">{consulta.fecha_texto}</td>
-                <td data-etiqueta="Nombre">{consulta.nombre}</td>
-                <td data-etiqueta="Teléfono">
-                  <a href={`tel:+${digitos}`}>{consulta.telefono}</a>
-                </td>
-                <td data-etiqueta="Mensaje" className="consulta-mensaje">
-                  {consulta.mensaje}
-                </td>
-                <td data-etiqueta="Estado">
-                  <span
-                    className={`estado-consulta ${
-                      consulta.atendida
-                        ? "estado-atendida"
-                        : "estado-pendiente"
-                    }`}
-                  >
-                    {consulta.atendida ? "Atendida" : "Pendiente"}
-                  </span>
-                </td>
-                <td data-etiqueta="Acciones" className="consulta-acciones">
-                  <a
-                    className="boton-secundario boton-chico"
-                    href={enlaceWhatsApp}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Responder por WhatsApp a ${consulta.nombre}`}
-                  >
-                    Responder por WhatsApp
-                  </a>
-
-                  {consulta.atendida ? null : (
+              return (
+                <tr key={consulta.id}>
+                  <td data-etiqueta="Fecha">{consulta.fecha_texto}</td>
+                  <td data-etiqueta="Nombre">{consulta.nombre}</td>
+                  <td data-etiqueta="Teléfono">
+                    <a href={`tel:+${digitos}`}>{consulta.telefono}</a>
+                  </td>
+                  <td data-etiqueta="Mensaje" className="consulta-mensaje">
+                    {consulta.mensaje}
+                  </td>
+                  <td data-etiqueta="Estado">
+                    <span className={`estado-consulta ${estado.clase}`}>
+                      {estado.texto}
+                    </span>
+                  </td>
+                  <td data-etiqueta="Acciones" className="consulta-acciones">
                     <button
                       type="button"
-                      className="boton-principal boton-chico"
-                      onClick={() => marcarAtendida(consulta)}
-                      disabled={marcando === consulta.id}
-                      aria-label={`Marcar la consulta de ${consulta.nombre} como atendida`}
+                      className="boton-secundario boton-chico"
+                      onClick={() => setConsultaRespondiendo(consulta)}
+                      aria-label={`Responder por WhatsApp a ${consulta.nombre}`}
                     >
-                      {marcando === consulta.id
-                        ? "Guardando..."
-                        : "Marcar como atendida"}
+                      Responder
                     </button>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+
+                    {consulta.archivada ? null : (
+                      <>
+                        {consulta.atendida ? null : (
+                          <button
+                            type="button"
+                            className="boton-principal boton-chico"
+                            onClick={() =>
+                              cambiarEstado(
+                                consulta,
+                                "atender",
+                                `La consulta de ${consulta.nombre} quedó marcada como atendida.`
+                              )
+                            }
+                            disabled={ocupada}
+                            aria-label={`Marcar la consulta de ${consulta.nombre} como atendida`}
+                          >
+                            {ocupada ? "Guardando..." : "Marcar como atendida"}
+                          </button>
+                        )}
+
+                        <button
+                          type="button"
+                          className="boton-secundario boton-chico"
+                          onClick={() =>
+                            cambiarEstado(
+                              consulta,
+                              "archivar",
+                              `La consulta de ${consulta.nombre} quedó archivada.`
+                            )
+                          }
+                          disabled={ocupada}
+                          aria-label={`Archivar la consulta de ${consulta.nombre}`}
+                        >
+                          Archivar
+                        </button>
+                      </>
+                    )}
+
+                    {consulta.archivada ? (
+                      <>
+                        <button
+                          type="button"
+                          className="boton-secundario boton-chico"
+                          onClick={() =>
+                            cambiarEstado(
+                              consulta,
+                              "restaurar",
+                              `La consulta de ${consulta.nombre} volvió a la lista.`
+                            )
+                          }
+                          disabled={ocupada}
+                          aria-label={`Restaurar la consulta de ${consulta.nombre}`}
+                        >
+                          Restaurar
+                        </button>
+
+                        <button
+                          type="button"
+                          className="boton-peligro boton-chico"
+                          onClick={() => borrar(consulta)}
+                          disabled={ocupada}
+                          aria-label={`Borrar definitivamente la consulta de ${consulta.nombre}`}
+                        >
+                          {ocupada ? "Borrando..." : "Borrar"}
+                        </button>
+                      </>
+                    ) : null}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+
+      {consultaRespondiendo ? (
+        <RespuestaWhatsApp
+          consulta={consultaRespondiendo}
+          onCerrar={() => setConsultaRespondiendo(null)}
+        />
+      ) : null}
     </div>
   );
 }

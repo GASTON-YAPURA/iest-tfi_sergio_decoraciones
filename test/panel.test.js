@@ -12,6 +12,13 @@ import {
 } from "../lib/acceso.js";
 import { formatearFechaConsulta } from "../lib/fechas.js";
 import {
+  POR_PAGINA,
+  normalizarBusqueda,
+  normalizarEstado,
+  normalizarPagina,
+} from "../lib/filtros-consultas.js";
+import { escaparCelda, generarCsv, nombreArchivoCsv } from "../lib/csv.js";
+import {
   MAXIMO_INTENTOS,
   ingresoBloqueado,
   limpiarIngresos,
@@ -128,15 +135,19 @@ test("la ruta de ingreso usa credenciales, limite y error generico", () => {
   assert.match(ruta, /status: 429/);
 });
 
-test("la ruta de consultas exige sesion para leer y actualizar", () => {
+test("la ruta de consultas exige sesion para actualizar y borrar", () => {
   const ruta = leerArchivo("app/api/admin/consultas/route.js");
 
-  assert.match(ruta, /export async function GET/);
   assert.match(ruta, /export async function PATCH/);
+  assert.match(ruta, /export async function DELETE/);
   assert.equal((ruta.match(/leerSesion\(\)/g) ?? []).length, 2);
   assert.match(ruta, /status: 401/);
   assert.match(ruta, /marcarConsultaAtendida/);
+  assert.match(ruta, /cambiarConsultaArchivada/);
+  assert.match(ruta, /borrarConsultaArchivada/);
   assert.match(ruta, /Number\.isInteger/);
+  assert.match(ruta, /accion === "archivar"/);
+  assert.match(ruta, /archivada/);
 });
 
 test("la ruta de salir borra la cookie y vuelve al ingreso", () => {
@@ -159,7 +170,7 @@ test("la cookie de sesion es httpOnly, secure y sameSite strict", () => {
   assert.match(sesion, /redirect\("\/admin"\)/);
 });
 
-test("el listado y la marca de atendida usan SQL con parametros", () => {
+test("el listado, la busqueda y el archivo usan SQL con parametros", () => {
   const consultas = leerArchivo("lib/consultas.js");
 
   assert.match(consultas, /ORDER BY creada_en DESC, id DESC/);
@@ -167,6 +178,12 @@ test("el listado y la marca de atendida usan SQL con parametros", () => {
   assert.match(consultas, /SET atendida = TRUE/);
   assert.match(consultas, /WHERE id = \$1/);
   assert.match(consultas, /\[id\]/);
+  assert.match(consultas, /ILIKE \$\$\{valores\.length\}/);
+  assert.match(consultas, /DELETE FROM consultas/);
+  assert.match(consultas, /archivada = TRUE/);
+  // La busqueda viaja como valor del parametro, nunca dentro del texto del SQL.
+  assert.match(consultas, /valores\.push\(`%\$\{busqueda\}%`\)/);
+  assert.doesNotMatch(consultas, /ILIKE '%/);
 });
 
 test("el panel no aparece en el menu y las paginas son noindex", () => {
@@ -193,7 +210,7 @@ test("el ingreso usa el formulario y redirige si ya hay sesion", () => {
 test("la pagina de consultas exige sesion antes de leer la base", () => {
   const pagina = leerArchivo("app/admin/consultas/page.js");
   const posicionSesion = pagina.indexOf("exigirSesion()");
-  const posicionConsulta = pagina.indexOf("obtenerConsultas()");
+  const posicionConsulta = pagina.indexOf("listarConsultas(");
 
   assert.ok(posicionSesion >= 0);
   assert.ok(posicionConsulta > posicionSesion);
@@ -202,7 +219,36 @@ test("la pagina de consultas exige sesion antes de leer la base", () => {
   assert.match(pagina, /action="\/api\/admin\/salir"/);
   assert.match(pagina, /method="post"/);
   assert.match(pagina, /formatearFechaConsulta/);
+  assert.match(pagina, /searchParams/);
+  assert.match(pagina, /contarConsultas/);
+  assert.match(pagina, /Exportar CSV/);
   assert.equal((pagina.match(/<h1>/g) ?? []).length, 1);
+});
+
+test("la pagina busca, filtra y pagina las consultas", () => {
+  const pagina = leerArchivo("app/admin/consultas/page.js");
+
+  assert.match(pagina, /name="buscar"/);
+  assert.match(pagina, /ESTADOS\.map/);
+  assert.match(pagina, /estado: "pendientes"/);
+  assert.match(pagina, /estado: "atendidas"/);
+  assert.match(pagina, /armarUrlCsv/);
+  assert.match(pagina, /admin-paginado/);
+  assert.match(pagina, /datos\.pagina - 1/);
+  assert.match(pagina, /datos\.pagina \+ 1/);
+});
+
+test("el panel normaliza la busqueda, el estado y el numero de pagina", () => {
+  assert.equal(normalizarBusqueda("  María  "), "María");
+  assert.equal(normalizarBusqueda("x".repeat(200)).length, 80);
+  assert.equal(normalizarBusqueda(null), "");
+  assert.equal(normalizarEstado("ARCHIVADAS"), "archivadas");
+  assert.equal(normalizarEstado("otra-cosa"), "todas");
+  assert.equal(normalizarPagina("3"), 3);
+  assert.equal(normalizarPagina("0"), 1);
+  assert.equal(normalizarPagina("-2"), 1);
+  assert.equal(normalizarPagina("no-es-numero"), 1);
+  assert.equal(POR_PAGINA, 10);
 });
 
 test("la tabla muestra los datos, el estado y las acciones", () => {
@@ -219,16 +265,82 @@ test("la tabla muestra los datos, el estado y las acciones", () => {
     assert.match(tabla, new RegExp(etiqueta));
   }
 
-  assert.match(tabla, /Responder por WhatsApp/);
+  assert.match(tabla, /RespuestaWhatsApp/);
   assert.match(tabla, /Marcar como atendida/);
+  assert.match(tabla, /Archivar/);
+  assert.match(tabla, /Restaurar/);
+  assert.match(tabla, /Borrar/);
+  assert.match(tabla, /window\.confirm/);
   assert.match(tabla, /\/api\/admin\/consultas/);
   assert.match(tabla, /role="alert"/);
   assert.match(tabla, /role="status"/);
   assert.match(tabla, /aria-label/);
   assert.match(tabla, /visualmente-oculto/);
-  assert.match(tabla, /Todavía no recibiste consultas/);
   assert.match(tabla, /router\.push\("\/admin"\)/);
   assert.match(tabla, /router\.refresh\(\)/);
+});
+
+test("el cuadro de respuesta deja editar el mensaje antes de WhatsApp", () => {
+  const respuesta = leerArchivo("components/RespuestaWhatsApp.js");
+
+  assert.match(respuesta, /role="dialog"/);
+  assert.match(respuesta, /aria-modal="true"/);
+  assert.match(respuesta, /textarea/);
+  assert.match(respuesta, /value=\{mensaje\}/);
+  assert.match(respuesta, /setMensaje/);
+  assert.match(respuesta, /crearEnlaceWhatsAppConNumero/);
+  assert.match(respuesta, /Abrir WhatsApp/);
+  assert.match(respuesta, /Escape/);
+});
+
+test("el csv escapa comas, comillas y formulas", () => {
+  assert.equal(escaparCelda("María Pérez"), "María Pérez");
+  assert.equal(escaparCelda("Hola, ¿cómo estás?"), '"Hola, ¿cómo estás?"');
+  assert.equal(escaparCelda('Dijo "hola"'), '"Dijo ""hola"""');
+  assert.equal(escaparCelda("=1+1"), "'=1+1");
+  assert.equal(escaparCelda("+54 9 3837"), "'+54 9 3837");
+  assert.equal(escaparCelda(null), "");
+});
+
+test("el csv arma las cinco columnas y el estado de cada consulta", () => {
+  const consultas = [
+    {
+      creada_en: "2026-10-28T15:30:00Z",
+      nombre: "María",
+      telefono: "+54 9 3837 000000",
+      mensaje: "Quiero pintar",
+      atendida: false,
+      archivada: false,
+    },
+    {
+      creada_en: "2026-10-27T15:30:00Z",
+      nombre: "José",
+      telefono: "+54 9 3837 111111",
+      mensaje: "Durlock",
+      atendida: true,
+      archivada: true,
+    },
+  ];
+  const csv = generarCsv(consultas, formatearFechaConsulta);
+  const filas = csv.split("\r\n");
+
+  assert.equal(filas[0], "Fecha,Nombre,Teléfono,Mensaje,Estado");
+  assert.match(filas[1], /Pendiente/);
+  assert.match(filas[2], /Archivada/);
+  assert.equal(filas.length, 3);
+  assert.match(nombreArchivoCsv(new Date(2026, 10, 1)), /consultas-2026-11-01\.csv/);
+});
+
+test("la descarga del csv exige sesion y respeta los filtros", () => {
+  const ruta = leerArchivo("app/api/admin/consultas/csv/route.js");
+
+  assert.match(ruta, /leerSesion\(\)/);
+  assert.match(ruta, /status: 401/);
+  assert.match(ruta, /listarConsultasParaCsv/);
+  assert.match(ruta, /searchParams/);
+  assert.match(ruta, /Content-Disposition/);
+  assert.match(ruta, /attachment/);
+  assert.match(ruta, /text\/csv/);
 });
 
 test("los estilos del panel usan las variables de la marca", () => {
@@ -236,9 +348,13 @@ test("los estilos del panel usan las variables de la marca", () => {
 
   assert.match(css, /\.visualmente-oculto/);
   assert.match(css, /\.admin-tarjeta/);
+  assert.match(css, /\.admin-dato/);
   assert.match(css, /\.tabla-consultas/);
   assert.match(css, /\.estado-pendiente/);
   assert.match(css, /\.estado-atendida/);
+  assert.match(css, /\.estado-archivada/);
+  assert.match(css, /\.modal-fondo/);
+  assert.match(css, /\.boton-peligro/);
   assert.match(css, /@media \(max-width: 699px\)/);
   assert.match(css, /var\(--color-acento\)/);
 });

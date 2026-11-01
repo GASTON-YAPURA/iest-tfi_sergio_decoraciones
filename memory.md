@@ -18,7 +18,7 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Código del sitio | Etapa 7 completa: panel privado `/admin`, ingreso con sesión firmada, listado protegido `/admin/consultas`, marcar consultas como atendidas y salir |
 | SEO y calidad (Etapa 8) | Hechos: `lib/sitio.js`, `robots.txt`, `sitemap.xml`, metadatos por página, contraste, lista de seguridad y pruebas (72) |
 | Fotos de trabajos en la base (Etapa 9) | Hechas: tabla `trabajo_fotos`, `/api/trabajos/[id]/foto`, importación con `npm run db:fotos`, galería y visor con varias fotos |
-| Panel completo de consultas y trabajos (Etapa 9) | En curso: falta buscar/filtrar/paginar, archivar y exportar consultas, y el CRUD de trabajos |
+| Panel completo de consultas y trabajos (Etapa 9) | En curso: consultas completas (buscar, filtrar, paginar, archivar, restaurar, borrar y exportar CSV); falta el CRUD de trabajos |
 | Declaración de IA | Hecha: `docs/DECLARACION-IA.md` y `multimedia/FICHAS-IA.md` (fotos con prompts de ChatGPT e imágenes de Gemini) |
 | Publicación en Vercel | Pendiente: variables de entorno, contraseña definitiva y deploy con HTTPS |
 | Informe escrito del TP | Pendiente |
