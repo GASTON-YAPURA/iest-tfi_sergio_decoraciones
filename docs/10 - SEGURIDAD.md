@@ -85,6 +85,24 @@ Reglas:
 | Las consultas guardadas | Son datos personales de otras personas; solo las ve Sergio con la sesión iniciada |
 | Mensajes de error con detalles internos | Ayudan a quien quiera atacar el sistema |
 
+## Fotos de trabajos
+
+Las fotos se guardan en la base y se suben solo desde el panel con sesión iniciada.
+
+- El formulario acepta únicamente imágenes JPG, PNG o WebP.
+- Antes de subir, el navegador achica la foto (máximo 1600 px de ancho y 1 MB) para que la base no crezca de más.
+- El servidor vuelve a comprobar el tipo real del archivo (no solo la extensión), el peso máximo y las medidas, y rechaza cualquier otro archivo.
+- El texto alternativo es obligatorio y tiene un máximo de 200 caracteres.
+- Las fotos se entregan con `Content-Type` correcto y caché; nunca se muestra el contenido binario en la página.
+- Para borrar un trabajo o una foto se exige sesión y confirmación en el panel.
+- `public/img/trabajos/` ya no se usa: las fotos no forman parte del código ni del repositorio público.
+
+## Exportación de consultas
+
+- El CSV solo se genera con sesión iniciada y con los mismos filtros que la persona ve en pantalla.
+- Se descarga con `Content-Disposition: attachment` y las celdas se escapan para que Excel no interprete fórmulas.
+- El archivo no queda guardado en el servidor: se arma en el momento y se envía.
+
 ## Otras reglas
 
 - React ya escapa el texto que se muestra; nunca se usa `dangerouslySetInnerHTML`.

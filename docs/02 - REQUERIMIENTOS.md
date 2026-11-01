@@ -15,6 +15,15 @@
 | RF09 | Acceso de Sergio al panel con usuario y contraseña, desde un enlace privado | Alta |
 | RF10 | Ver el listado de consultas recibidas, las más recientes primero | Alta |
 | RF11 | Marcar una consulta como atendida | Media |
+| RF12 | Buscar consultas por nombre o teléfono | Media |
+| RF13 | Filtrar las consultas por estado (pendientes, atendidas, archivadas) | Media |
+| RF14 | Ver las consultas de a 10 por página | Baja |
+| RF15 | Escribir el mensaje antes de responder por WhatsApp | Media |
+| RF16 | Archivar, restaurar y borrar consultas | Media |
+| RF17 | Exportar las consultas a un archivo CSV | Baja |
+| RF18 | Ver cuántas consultas quedan pendientes | Baja |
+| RF19 | Administrar los trabajos desde el panel: agregar, editar, ocultar y borrar | Alta |
+| RF20 | Cargar varias fotos por trabajo, guardadas en la base de datos | Alta |
 
 ## Requerimientos no funcionales
 
@@ -39,6 +48,7 @@
 - Cada trabajo se muestra con foto y nombre del servicio
 - Al elegir un tipo de servicio, solo se ven los trabajos de ese tipo
 - Al tocar una foto, se abre en tamaño grande
+- Si un trabajo tiene varias fotos, el visor permite pasarlas con flechas
 
 ### Contacto (RF05, RF06, RF07)
 
@@ -47,13 +57,33 @@
 - El formulario de consulta pide nombre, teléfono y mensaje, y confirma el envío
 - Los botones de contacto están visibles en todas las páginas
 
-### Panel de administración (RF09, RF10, RF11)
+### Panel de consultas (RF09 a RF18)
 
-*Como Sergio, quiero entrar con mi contraseña a un panel para ver las consultas que me hicieron desde el sitio.*
+*Como Sergio, quiero entrar con mi contraseña a un panel para ver y organizar las consultas que me hicieron desde el sitio.*
 
 - El enlace `/admin` muestra solo el ingreso; sin usuario y contraseña correctos no se ve ninguna consulta
 - Con el ingreso correcto se abre el listado, con la consulta más reciente arriba
 - Cada consulta muestra fecha, nombre, teléfono, mensaje y si está pendiente o atendida
 - Se puede marcar una consulta como atendida
+- Se puede buscar por nombre o teléfono y filtrar por estado
+- El listado se ve de a 10 consultas por página
+- Antes de responder por WhatsApp se puede escribir el mensaje
+- Las consultas se pueden archivar, restaurar y borrar; las archivadas no se mezclan con las pendientes
+- Se pueden descargar las consultas en un CSV
+- Arriba se ve cuántas consultas quedan pendientes
 - El botón Salir cierra la sesión
 - El enlace al panel no aparece en el menú del sitio
+
+### Panel de trabajos (RF19, RF20)
+
+*Como Sergio, quiero cargar y corregir mis trabajos sin depender de nadie.*
+
+- Solo con sesión iniciada se puede ver `/admin/trabajos`
+- Se puede agregar un trabajo con título, servicio, descripción, visibilidad y una o varias fotos
+- Cada foto pide su texto alternativo y se comprime antes de subirse
+- Se puede editar un trabajo existente y agregarle fotos nuevas
+- Se puede quitar una foto y cambiar el orden de las fotos
+- Se puede ocultar un trabajo sin borrarlo y volver a mostrarlo después
+- Al borrar un trabajo se borran también sus fotos, con confirmación previa
+- Los cambios se ven en el sitio sin tocar código: las fotos salen de la base de datos
+- Si la base falla, el panel muestra un mensaje claro y no pierde lo que estaba cargado

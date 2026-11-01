@@ -1,6 +1,6 @@
 # 05-DATOS: qué información guarda Sergio Decoraciones
 
-La base de datos es PostgreSQL (Neon) y tiene dos tablas: `trabajos` (la galería) y `consultas` (lo que envía el formulario). No guarda precios ni datos de pago. El usuario y la contraseña de Sergio para el panel no están en la base: van en variables de entorno (ver 03-TECNOLOGIAS.md y 10-SEGURIDAD.md).
+La base de datos es PostgreSQL (Neon) y tiene tres tablas: `trabajos` (la galería), `trabajo_fotos` (las fotos de cada trabajo) y `consultas` (lo que envía el formulario). No guarda precios ni datos de pago. El usuario y la contraseña de Sergio para el panel no están en la base: van en variables de entorno (ver 03-TECNOLOGIAS.md y 10-SEGURIDAD.md).
 
 ## Tabla `trabajos`
 
@@ -10,8 +10,6 @@ La base de datos es PostgreSQL (Neon) y tiene dos tablas: `trabajos` (la galerí
 | `titulo` | `VARCHAR(120)`, obligatorio | Nombre corto del trabajo |
 | `servicio` | `VARCHAR(20)`, obligatorio | Tipo de servicio (ver tabla de valores) |
 | `descripcion` | `TEXT` | Detalle del trabajo realizado |
-| `foto` | `VARCHAR(200)`, obligatorio | Ruta de la imagen dentro de `public/img/trabajos/` |
-| `texto_alt` | `VARCHAR(200)`, obligatorio | Descripción de la foto para accesibilidad y SEO |
 | `visible` | `BOOLEAN`, por defecto `TRUE` | Si se muestra o no en el sitio |
 
 ### Valores de `servicio`
@@ -25,6 +23,23 @@ La base de datos es PostgreSQL (Neon) y tiene dos tablas: `trabajos` (la galerí
 | `machimbre` | Colocación de machimbre |
 | `molduras` | Colocación de molduras |
 
+## Tabla `trabajo_fotos`
+
+Cada trabajo puede tener **varias fotos**. La imagen se guarda en la base, no en una carpeta del código.
+
+| Campo | Tipo | Descripción |
+|---|---|---|
+| `id` | `SERIAL` (clave primaria) | Número único de la foto |
+| `trabajo_id` | `INTEGER`, obligatorio | Trabajo al que pertenece; si se borra el trabajo, se borran sus fotos |
+| `datos` | `BYTEA`, obligatorio | La imagen comprimida (JPG, PNG o WebP) |
+| `tipo` | `VARCHAR(50)`, obligatorio | Tipo de archivo (`image/jpeg`, `image/png` o `image/webp`) |
+| `ancho` | `INTEGER`, obligatorio | Ancho en píxeles, para reservar el espacio y evitar saltos |
+| `alto` | `INTEGER`, obligatorio | Alto en píxeles |
+| `texto_alt` | `VARCHAR(200)`, obligatorio | Descripción de la foto para accesibilidad y SEO |
+| `orden` | `INTEGER`, por defecto `1` | Orden en que se muestran las fotos del trabajo |
+
+La primera foto (el `orden` más bajo) es la que aparece en la tarjeta de la galería. Las demás se ven al abrir el trabajo en grande.
+
 ## Tabla `consultas`
 
 | Campo | Tipo | Descripción |
@@ -35,6 +50,7 @@ La base de datos es PostgreSQL (Neon) y tiene dos tablas: `trabajos` (la galerí
 | `mensaje` | `TEXT`, obligatorio | Qué trabajo necesita |
 | `creada_en` | `TIMESTAMP`, por defecto la hora actual | Cuándo se envió |
 | `atendida` | `BOOLEAN`, por defecto `FALSE` | Si Sergio ya respondió la consulta |
+| `archivada` | `BOOLEAN`, por defecto `FALSE` | Si Sergio la guardó fuera de la lista principal. No se borra: se puede restaurar |
 
 ## Esquema SQL
 
@@ -45,9 +61,18 @@ CREATE TABLE IF NOT EXISTS trabajos (
   titulo      VARCHAR(120) NOT NULL,
   servicio    VARCHAR(20)  NOT NULL,
   descripcion TEXT,
-  foto        VARCHAR(200) NOT NULL,
-  texto_alt   VARCHAR(200) NOT NULL,
   visible     BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE IF NOT EXISTS trabajo_fotos (
+  id         SERIAL PRIMARY KEY,
+  trabajo_id INTEGER NOT NULL REFERENCES trabajos (id) ON DELETE CASCADE,
+  datos      BYTEA   NOT NULL,
+  tipo       VARCHAR(50) NOT NULL,
+  ancho      INTEGER NOT NULL,
+  alto       INTEGER NOT NULL,
+  texto_alt  VARCHAR(200) NOT NULL,
+  orden      INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS consultas (
@@ -56,29 +81,37 @@ CREATE TABLE IF NOT EXISTS consultas (
   telefono  VARCHAR(30) NOT NULL,
   mensaje   TEXT NOT NULL,
   creada_en TIMESTAMP DEFAULT NOW(),
-  atendida  BOOLEAN DEFAULT FALSE
+  atendida  BOOLEAN DEFAULT FALSE,
+  archivada BOOLEAN DEFAULT FALSE
 );
 ```
 
+`db/esquema.sql` también trae las sentencias `ALTER TABLE ... ADD COLUMN IF NOT EXISTS` para actualizar una base que ya existía (por ejemplo, la que tenía la columna `foto` con la ruta de la imagen) sin perder datos.
+
 ## Datos de muestra
 
-Los trabajos de muestra se cargan con `db/datos.sql` y usan las fotos de `public/img/trabajos/`. Los datos de abajo son un ejemplo del contenido.
+Los trabajos de muestra se cargan con `db/datos.sql` (título, servicio, descripción y visibilidad). Las fotos **no** se cargan con ese archivo: se importan a la base con `npm run db:fotos`, que lee los originales de `multimedia/trabajos/` y los guarda en `trabajo_fotos`. Después de la importación, `public/img/trabajos/` queda vacío: el sitio pide las fotos a `/api/trabajos/[id]/foto`.
 
 Ejemplo de un trabajo (datos de muestra):
 
 ```sql
-INSERT INTO trabajos (titulo, servicio, descripcion, foto, texto_alt)
+INSERT INTO trabajos (titulo, servicio, descripcion, visible)
 VALUES (
-  'Living con empapelado',
+  'Living con alfombrado y empapelado',
   'interiores',
-  'Empapelado de una pared del living.',
-  '/img/trabajos/living-empapelado.jpg',
-  'Living con una pared empapelada y molduras blancas'
+  'Alfombrado y empapelado de una pared del living.',
+  TRUE
 );
 ```
 
+Ejemplo de una foto (la carga el script de importación):
+
+| trabajo | tipo | ancho | alto | texto_alt | orden |
+|---|---|---|---|---|---|
+| Living con alfombrado y empapelado | `image/jpeg` | 1376 | 768 | Living con alfombra y una pared empapelada | 1 |
+
 Ejemplo de una consulta (datos de muestra):
 
-| nombre | telefono | mensaje | atendida |
-|---|---|---|---|
-| María Pérez | +54 9 3837 000000 | Quiero consultar por pintura de un dormitorio | no |
+| nombre | telefono | mensaje | atendida | archivada |
+|---|---|---|---|---|
+| María Pérez | +54 9 3837 000000 | Quiero consultar por pintura de un dormitorio | no | no |

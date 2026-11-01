@@ -52,16 +52,28 @@ El diseño sigue el mockup de la página de inicio: encabezado blanco con el log
 El enlace `/admin` no aparece en el menú ni en el pie de página. Sergio entra escribiendo la dirección o desde un favorito de su navegador.
 
 - **Ingreso:** tarjeta centrada sobre fondo blanco, con el monograma SD arriba, los campos de usuario y contraseña y el botón principal "Ingresar". Si los datos no son correctos se muestra el mensaje "Usuario o contraseña incorrectos".
-- **Consultas:** en computadora, una tabla con fecha, nombre, teléfono, mensaje y estado; en celular, una tarjeta por consulta. Arriba a la derecha va el botón secundario "Salir".
-- **Estado:** las consultas pendientes llevan una etiqueta en Ocre Profundo; las atendidas se ven en Gris Grafito.
-- **Acciones de cada consulta:** botón secundario "Responder por WhatsApp", que abre una conversación con el teléfono de esa persona, y botón principal "Marcar como atendida".
-- Usa los mismos colores, tipografías y botones que el resto del sitio.
+- **Encabezado del panel:** título "Consultas recibidas", una bajada corta y el botón secundario "Salir" a la derecha. En celular se apila.
+- **Resumen:** tres tarjetas chicas con las consultas **pendientes**, las **atendidas** y el **total**. Los números van en Cinzel; las pendientes se destacan en Ocre Profundo.
+- **Barra de herramientas:** buscador por nombre o teléfono, filtros tipo pastilla (Todas, Pendientes, Atendidas, Archivadas) y botón "Exportar CSV". En celular el buscador ocupa el ancho completo.
+- **Listado:** en computadora, una tabla con fecha, nombre, teléfono, mensaje, estado y acciones; en celular, una tarjeta por consulta. Se ven de a 10, con "Anterior" y "Siguiente".
+- **Estado:** las consultas pendientes llevan una etiqueta en Ocre Profundo; las atendidas en Gris Grafito; las archivadas en gris claro.
+- **Acciones de cada consulta:** "Responder" abre un cuadro con el mensaje ya escrito (se puede editar) y después WhatsApp; "Marcar como atendida"; "Archivar". Las archivadas muestran "Restaurar" y "Borrar".
+- Usa los mismos colores, tipografías y botones que el resto del sitio. No se agregan colores nuevos.
+
+### Panel de trabajos (`/admin/trabajos`)
+
+- **Listado:** una fila por trabajo con miniatura de la primera foto, título, servicio, cantidad de fotos y estado (visible u oculto). Botones "Editar", "Ocultar/Mostrar" y "Borrar".
+- **Formulario:** campos de título, servicio (lista de los seis), descripción y visible. Las fotos se agregan con un selector que acepta varias a la vez; cada una muestra su vista previa, su texto alternativo y botones para subir, bajar o quitar.
+- **Foto principal:** es la primera de la lista. Se avisa con una etiqueta "Portada".
+- **Borrar:** pide confirmación y avisa que también se borran las fotos.
+- **Vuelta al panel:** enlace "Consultas" para cambiar de sección sin escribir la dirección.
+- Todo se guarda en la base de datos: no se sube ni se edita ningún archivo del código.
 
 ## Pantalla de trabajos
 
 - La galería se ve en 3 columnas en computadora, 2 en tablet y 1 en celular.
 - Arriba hay botones para filtrar: Todos, Interiores, Durlock, Pintura, Enduido, Machimbre y Molduras.
-- Al tocar una tarjeta, la foto se abre en grande con su descripción.
+- Al tocar una tarjeta, la foto se abre en grande con su descripción. Si el trabajo tiene varias fotos, el visor muestra flechas y un contador ("2 de 4").
 
 ## Botones de contacto
 

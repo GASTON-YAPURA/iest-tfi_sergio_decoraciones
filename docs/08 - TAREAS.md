@@ -86,3 +86,41 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 - [x] Revisar contraste y texto alternativo de las fotos (RNF03)
 - [ ] Publicar en Vercel con HTTPS (RNF05)
 - [ ] Verificar que los botones de WhatsApp y llamada funcionan en un celular real
+
+## Etapa 9: Panel de administración completo
+
+> Los cambios de esta etapa se hacen con la base ya conectada. Cada punto se prueba con `npm test` y `npm run build` antes del commit.
+
+### Base de datos
+
+- [ ] Agregar a `db/esquema.sql` la tabla `trabajo_fotos` y la columna `archivada` de `consultas`
+- [ ] Sacar de `trabajos` la columna `foto` y el `texto_alt`, que ahora viven en `trabajo_fotos`
+- [ ] Crear `scripts/importar-fotos.mjs` y el comando `npm run db:fotos`
+- [ ] Importar las seis fotos actuales a la base y vaciar `public/img/trabajos/`
+
+### Consultas
+
+- [ ] Buscar consultas por nombre o teléfono (RF12)
+- [ ] Filtrar por pendientes, atendidas y archivadas (RF13)
+- [ ] Mostrar las consultas de a 10, con anterior y siguiente (RF14)
+- [ ] Escribir el mensaje antes de responder por WhatsApp (RF15)
+- [ ] Archivar, restaurar y borrar consultas con confirmación (RF16)
+- [ ] Exportar las consultas filtradas a CSV (RF17)
+- [ ] Mostrar el resumen de pendientes, atendidas y total (RF18)
+- [ ] Revisar el orden visual del panel con la paleta de marca
+
+### Trabajos
+
+- [ ] Crear la página `/admin/trabajos` protegida por sesión (RF19)
+- [ ] Crear la ruta `app/api/admin/trabajos/route.js` para alta, edición y borrado (RF19)
+- [ ] Crear la ruta `app/api/admin/trabajos/[id]/fotos/route.js` para las fotos (RF20)
+- [ ] Crear la ruta `app/api/trabajos/[id]/foto/route.js` que entrega la foto desde la base
+- [ ] Permitir varias fotos por trabajo, con texto alternativo y orden (RF20)
+- [ ] Comprimir la foto en el navegador antes de subirla y validarla en el servidor
+- [ ] Ocultar y volver a mostrar un trabajo sin borrarlo (RF19)
+- [ ] Pedir confirmación antes de borrar un trabajo y sus fotos (RF19)
+- [ ] Hacer que la galería y el inicio lean las fotos desde la base
+- [ ] Mostrar todas las fotos de un trabajo en el visor, con flechas y contador
+- [ ] Agregar pruebas de permisos, validaciones y del panel de trabajos
+- [ ] Reemplazar las fotos de muestra por las definitivas y actualizar las fichas de IA
+- [ ] Actualizar `memory.md`, `Commits.md` y `11 - RECORRIDO DEL PROYECTO.md`

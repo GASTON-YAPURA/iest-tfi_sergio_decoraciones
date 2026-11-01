@@ -19,33 +19,43 @@ sergio-decoraciones/
 │   ├── nosotros/page.js           ← quién es Sergio y cómo trabaja
 │   ├── contacto/page.js           ← WhatsApp, llamada y formulario
 │   ├── admin/
-│   │   ├── layout.js              ← noindex del panel privado
+│   │   ├── layout.js              ← noindex y navegación del panel privado
 │   │   ├── page.js                ← ingreso de Sergio
-│   │   └── consultas/page.js      ← listado de consultas (privado)
+│   │   ├── consultas/page.js      ← listado de consultas (privado)
+│   │   └── trabajos/page.js       ← alta, edición y borrado de trabajos (privado)
 │   └── api/
-│       ├── trabajos/route.js      ← devuelve los trabajos
+│       ├── trabajos/route.js      ← devuelve los trabajos publicados
+│       ├── trabajos/[id]/foto/route.js ← entrega una foto guardada en la base
 │       ├── consultas/route.js     ← guarda una consulta
 │       └── admin/
 │           ├── ingresar/route.js  ← valida usuario y contraseña
-│           ├── consultas/route.js ← lista las consultas y marca atendidas
+│           ├── consultas/route.js ← lista, busca, archiva y borra consultas
+│           ├── consultas/csv/route.js ← descarga las consultas en CSV
+│           ├── trabajos/route.js  ← alta, edición y borrado de trabajos
+│           ├── trabajos/[id]/fotos/route.js ← agrega, ordena y quita fotos
 │           └── salir/route.js     ← cierra la sesión
 ├── components/
 │   ├── TarjetaTrabajo.js          ← foto y título de un trabajo
 │   ├── GaleriaTrabajos.js         ← galería, filtro y visor de fotos
 │   ├── FiltroServicios.js         ← botones para filtrar por servicio
-│   ├── VisorFoto.js               ← foto en tamaño grande
+│   ├── VisorFoto.js               ← foto en tamaño grande con flechas
 │   ├── BotonWhatsApp.js           ← abre WhatsApp con mensaje escrito
 │   ├── BotonLlamar.js             ← llama por teléfono
 │   ├── MenuPrincipal.js           ← menú de navegación y versión de tres rayas
 │   ├── FormularioConsulta.js      ← formulario de consulta
 │   ├── FormularioIngreso.js       ← usuario y contraseña del panel
-│   └── TablaConsultas.js          ← listado de consultas del panel
+│   ├── TablaConsultas.js          ← listado, filtros y acciones de las consultas
+│   ├── RespuestaWhatsApp.js       ← cuadro para editar el mensaje antes de enviarlo
+│   ├── ListaTrabajos.js           ← listado de trabajos del panel
+│   └── FormularioTrabajo.js       ← alta y edición de un trabajo con sus fotos
 ├── lib/
 │   ├── db.js                      ← única conexión a la base
-│   ├── trabajos.js                ← consultas de los trabajos para las páginas
+│   ├── trabajos.js                ← consultas y cambios de trabajos y fotos
 │   ├── servicios.js               ← datos de los seis servicios
-│   ├── consultas.js               ← guarda, lista y marca consultas
+│   ├── consultas.js               ← guarda, lista, archiva y borra consultas
 │   ├── validacion.js              ← valida nombre, teléfono y mensaje
+│   ├── imagen.js                  ← valida el tipo, el peso y las medidas de una foto
+│   ├── csv.js                     ← arma el archivo CSV de consultas
 │   ├── limite.js                  ← límites de consultas e intentos de ingreso
 │   ├── fechas.js                  ← formato de las fechas de las consultas
 │   ├── contacto.js                ← número de WhatsApp y teléfono
@@ -53,9 +63,16 @@ sergio-decoraciones/
 │   ├── sitio.js                   ← dirección pública e imagen para compartir
 │   └── sesion.js                  ← cookie y verificación de la sesión
 ├── db/
-│   ├── esquema.sql                ← tablas de la base de datos
-│   ├── datos.sql                  ← trabajos de muestra
+│   ├── esquema.sql                ← tablas de la base de datos y actualizaciones
+│   ├── datos.sql                  ← trabajos de muestra (sin fotos)
 │   └── ejecutar-sql.js            ← ejecuta un archivo SQL con lib/db.js
+├── scripts/
+│   ├── importar-fotos.mjs         ← carga las fotos de multimedia/trabajos/ en la base
+│   ├── cambiar-clave.mjs          ← cambia la contraseña del panel
+│   └── ver-local.mjs              ← abre el sitio local
+├── multimedia/
+│   ├── FICHAS-IA.md               ← fichas de las piezas generadas con IA
+│   └── trabajos/                  ← fotos originales de respaldo (no se publican)
 ├── test/
 │   ├── estructura.test.js         ← variables, idioma y portada
 │   ├── base-datos.test.js         ← esquema, datos y conexión
@@ -64,11 +81,11 @@ sergio-decoraciones/
 │   ├── galeria.test.js            ← página, filtro y visor de trabajos
 │   ├── consultas.test.js          ← validación, límite y formulario
 │   ├── seo.test.js                ← títulos, canónicas, robots y sitemap
-│   └── panel.test.js              ← sesión, credenciales y panel privado
+│   ├── panel.test.js              ← sesión, credenciales y panel privado
+│   └── panel-admin.test.js        ← búsqueda, filtros, trabajos y fotos
 ├── public/
 │   └── img/
-│       ├── marca/                 ← logos
-│       └── trabajos/              ← fotos de trabajos terminados
+│       └── marca/                 ← logos
 └── .env.local                     ← variables secretas, no se sube a GitHub
 ```
 
@@ -85,16 +102,23 @@ sergio-decoraciones/
 | `components/MenuPrincipal.js` | Menú de navegación con la página activa y el botón de tres rayas en celular |
 | `components/GaleriaTrabajos.js` | Galería de trabajos con el filtro por servicio y el visor de foto |
 | `components/FormularioConsulta.js` | Formulario con nombre, teléfono y mensaje, con aviso de uso de datos y mensajes de estado |
+| `components/TablaConsultas.js` | Listado de consultas con buscador, filtros, paginado y acciones |
+| `components/RespuestaWhatsApp.js` | Cuadro para escribir el mensaje antes de abrir WhatsApp |
+| `components/FormularioTrabajo.js` | Alta y edición de un trabajo con sus fotos, con vista previa |
 | `lib/db.js` | Único lugar donde se conecta con la base de datos |
-| `lib/trabajos.js` | Consultas de los trabajos (destacados del inicio y galería) |
+| `lib/trabajos.js` | Consultas y cambios de los trabajos (destacados, galería y panel) |
+| `lib/imagen.js` | Valida tipo, peso y medidas de una foto antes de guardarla |
+| `lib/csv.js` | Arma el archivo CSV con las consultas filtradas |
 | `lib/servicios.js` | Datos de los seis servicios y sus nombres para las etiquetas |
-| `lib/consultas.js` | Guarda, lista y marca consultas con SQL parametrizado |
+| `lib/consultas.js` | Guarda, lista, busca, archiva y borra consultas con SQL parametrizado |
 | `lib/validacion.js` | Valida nombre, teléfono y mensaje antes de guardar |
 | `lib/limite.js` | Limita las consultas por minuto y los intentos fallidos de ingreso |
 | `lib/fechas.js` | Formatea las fechas de las consultas en la hora de Tinogasta |
 | `lib/contacto.js` | Único lugar donde se escribe el número de contacto (marcador `+54 9 3837 000000`) |
-| `app/admin/` | Panel privado de Sergio: ingreso y listado de consultas |
-| `app/admin/layout.js` | Marca las páginas del panel como `noindex` para los buscadores |
+| `app/admin/` | Panel privado de Sergio: ingreso, consultas y trabajos |
+| `app/admin/layout.js` | Marca las páginas del panel como `noindex` y arma la navegación privada |
+| `app/api/trabajos/[id]/foto/route.js` | Entrega una foto guardada en la base, con caché |
+| `scripts/importar-fotos.mjs` | Carga a la base las fotos originales de `multimedia/trabajos/` |
 | `lib/acceso.js` | Crea y verifica la firma de la sesión y compara las credenciales con bcrypt |
 | `lib/sitio.js` | Único lugar donde se arma la dirección pública del sitio y la imagen para compartir |
 | `lib/sesion.js` | Único lugar donde se crea, se verifica y se borra la cookie de sesión |
