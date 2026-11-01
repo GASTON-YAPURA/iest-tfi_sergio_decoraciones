@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
+import { urlFoto } from "../lib/fotos.js";
 import { filtrarTrabajosPorServicio } from "../lib/servicios.js";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -69,5 +70,39 @@ test("el visor es un dialogo accesible con la foto", () => {
   assert.match(visor, /aria-modal="true"/);
   assert.match(visor, /Escape/);
   assert.match(visor, /aria-label="Cerrar la foto"/);
-  assert.match(visor, /alt=\{trabajo\.texto_alt\}/);
+  assert.match(visor, /alt=\{fotoActual\.texto_alt\}/);
+});
+
+test("el visor muestra todas las fotos con flechas y contador", () => {
+  const visor = leerArchivo("components/VisorFoto.js");
+
+  assert.match(visor, /trabajo\.fotos \?\? \[\]/);
+  assert.match(visor, /aria-label="Foto anterior"/);
+  assert.match(visor, /aria-label="Foto siguiente"/);
+  assert.match(visor, /visor-contador/);
+  assert.match(visor, /ArrowLeft/);
+  assert.match(visor, /ArrowRight/);
+});
+
+test("la tarjeta usa la primera foto guardada en la base", () => {
+  const tarjeta = leerArchivo("components/TarjetaTrabajo.js");
+
+  assert.match(tarjeta, /trabajo\.fotos\?\.\[0\]/);
+  assert.match(tarjeta, /urlFoto\(trabajo\.id, portada\.id\)/);
+  assert.match(tarjeta, /alt=\{portada\.texto_alt\}/);
+  assert.match(tarjeta, /tarjeta-sin-foto/);
+});
+
+test("la foto se pide a la ruta que la lee de la base", () => {
+  const ruta = leerArchivo("app/api/trabajos/[id]/foto/route.js");
+
+  assert.match(ruta, /await params/);
+  assert.match(ruta, /leerFoto/);
+  assert.match(ruta, /Content-Type/);
+  assert.match(ruta, /leerSesion/);
+  assert.match(ruta, /status: 404/);
+});
+
+test("la direccion de la foto incluye el trabajo y la foto", () => {
+  assert.equal(urlFoto(3, 8), "/api/trabajos/3/foto?foto=8");
 });

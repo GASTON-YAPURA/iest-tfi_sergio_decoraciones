@@ -14,12 +14,14 @@ La declaración general está en `docs/DECLARACION-IA.md`.
 |---|---|---|---|---|
 | IA-01 | Monograma SD | `marca/logo-sd-dorado-principal.png` y variantes | Isotipo | IA + Canva |
 | IA-02 | Variantes del logo | `marca/` y `public/img/marca/` | Logos | IA + Canva |
-| IA-03 | Living con empapelado | `public/img/trabajos/living-empapelado.jpg` | Foto de muestra | IA |
-| IA-04 | Cielorraso de durlock | `public/img/trabajos/cielorraso-durlock.jpg` | Foto de muestra | IA |
-| IA-05 | Dormitorio pintado | `public/img/trabajos/dormitorio-pintado.jpg` | Foto de muestra | IA |
-| IA-06 | Paredes con enduido | `public/img/trabajos/paredes-enduido.jpg` | Foto de muestra | IA |
-| IA-07 | Piso de machimbre | `public/img/trabajos/piso-machimbre.jpg` | Foto de muestra | IA |
-| IA-08 | Molduras en el salón | `public/img/trabajos/molduras-salon.jpg` | Foto de muestra | IA |
+| IA-03 | Living con alfombrado y empapelado | `multimedia/trabajos/alfombrado-empapelado.jpg` | Foto de muestra | Gemini |
+| IA-04 | Cielorraso de durlock | `multimedia/trabajos/cielorraso-durlock.jpg` | Foto de muestra | Gemini |
+| IA-05 | Pintura general | `multimedia/trabajos/pintura-general.jpg` | Foto de muestra | Gemini |
+| IA-06 | Paredes con enduido | `multimedia/trabajos/paredes-enduido.jpg` | Foto de muestra | Gemini |
+| IA-07 | Piso de machimbre | `multimedia/trabajos/piso-machimbre.jpg` | Foto de muestra | Gemini |
+| IA-08 | Molduras en el salón | `multimedia/trabajos/molduras-salon.jpg` | Foto de muestra | Gemini |
+
+Las seis fotos de trabajos se generaron con **Gemini** a partir de prompts escritos con **ChatGPT**. Los originales quedan en `multimedia/trabajos/` como respaldo y la copia que se publica se carga en la base de datos con `npm run db:fotos`; por eso la carpeta `public/img/trabajos/` ya no existe.
 
 ---
 
@@ -63,19 +65,21 @@ La declaración general está en `docs/DECLARACION-IA.md`.
 
 ---
 
-## IA-03: Living con empapelado
+## IA-03: Living con alfombrado y empapelado
 
 > **Generado con IA.**
 
 | Campo | Detalle |
 |---|---|
-| **Archivo** | `public/img/trabajos/living-empapelado.jpg` |
-| **Medidas** | 1200 × 800 px |
+| **Archivo original** | `multimedia/trabajos/alfombrado-empapelado.jpg` |
+| **Dónde se publica** | Guardada en la tabla `trabajo_fotos` de la base y servida por `/api/trabajos/[id]/foto` |
+| **Medidas** | 1376 × 768 px |
 | **Tipo** | Foto de muestra de un trabajo |
-| **Herramienta** | Generador de imágenes con IA |
-| **Qué muestra** | Un living con una pared empapelada y molduras blancas |
+| **Prompt** | Escrito con **ChatGPT** |
+| **Herramienta** | **Gemini** (generación de imágenes) |
+| **Qué muestra** | Un living con alfombra y una pared empapelada |
 | **Dónde se usa** | Galería de `/trabajos` y trabajos destacados del inicio |
-| **Texto alternativo** | "Living con una pared empapelada y molduras blancas" |
+| **Texto alternativo** | "Living con alfombra y una pared empapelada" |
 | **Revisión** | El autor revisó que la imagen representara el rubro antes de publicarla |
 | **Personas reales** | No se usaron personas reales |
 | **Leyenda** | Al pie de la galería de `/trabajos`: "Fotos de muestra generadas con IA." |
@@ -88,10 +92,12 @@ La declaración general está en `docs/DECLARACION-IA.md`.
 
 | Campo | Detalle |
 |---|---|
-| **Archivo** | `public/img/trabajos/cielorraso-durlock.jpg` |
-| **Medidas** | 1200 × 800 px |
+| **Archivo original** | `multimedia/trabajos/cielorraso-durlock.jpg` |
+| **Dónde se publica** | Guardada en la tabla `trabajo_fotos` de la base y servida por `/api/trabajos/[id]/foto` |
+| **Medidas** | 1376 × 768 px |
 | **Tipo** | Foto de muestra de un trabajo |
-| **Herramienta** | Generador de imágenes con IA |
+| **Prompt** | Escrito con **ChatGPT** |
+| **Herramienta** | **Gemini** (generación de imágenes) |
 | **Qué muestra** | Un cielorraso de durlock con iluminación embutida |
 | **Dónde se usa** | Galería de `/trabajos` y trabajos destacados del inicio |
 | **Texto alternativo** | "Cielorraso de durlock con iluminación embutida" |
@@ -101,19 +107,21 @@ La declaración general está en `docs/DECLARACION-IA.md`.
 
 ---
 
-## IA-05: Dormitorio pintado
+## IA-05: Pintura general
 
 > **Generado con IA.**
 
 | Campo | Detalle |
 |---|---|
-| **Archivo** | `public/img/trabajos/dormitorio-pintado.jpg` |
-| **Medidas** | 1200 × 800 px |
+| **Archivo original** | `multimedia/trabajos/pintura-general.jpg` |
+| **Dónde se publica** | Guardada en la tabla `trabajo_fotos` de la base y servida por `/api/trabajos/[id]/foto` |
+| **Medidas** | 1376 × 768 px |
 | **Tipo** | Foto de muestra de un trabajo |
-| **Herramienta** | Generador de imágenes con IA |
-| **Qué muestra** | Un dormitorio pintado en tonos claros |
+| **Prompt** | Escrito con **ChatGPT** |
+| **Herramienta** | **Gemini** (generación de imágenes) |
+| **Qué muestra** | Paredes y techo pintados en tonos claros |
 | **Dónde se usa** | Galería de `/trabajos` y trabajos destacados del inicio |
-| **Texto alternativo** | "Dormitorio pintado en tonos claros con terminación prolija" |
+| **Texto alternativo** | "Paredes y techo pintados en tonos claros" |
 | **Revisión** | El autor revisó que la imagen representara el rubro antes de publicarla |
 | **Personas reales** | No se usaron personas reales |
 | **Leyenda** | Al pie de la galería de `/trabajos`: "Fotos de muestra generadas con IA." |
@@ -126,10 +134,12 @@ La declaración general está en `docs/DECLARACION-IA.md`.
 
 | Campo | Detalle |
 |---|---|
-| **Archivo** | `public/img/trabajos/paredes-enduido.jpg` |
-| **Medidas** | 1200 × 800 px |
+| **Archivo original** | `multimedia/trabajos/paredes-enduido.jpg` |
+| **Dónde se publica** | Guardada en la tabla `trabajo_fotos` de la base y servida por `/api/trabajos/[id]/foto` |
+| **Medidas** | 1376 × 768 px |
 | **Tipo** | Foto de muestra de un trabajo |
-| **Herramienta** | Generador de imágenes con IA |
+| **Prompt** | Escrito con **ChatGPT** |
+| **Herramienta** | **Gemini** (generación de imágenes) |
 | **Qué muestra** | Paredes interiores con enduido y terminación lisa |
 | **Dónde se usa** | Galería de `/trabajos` y trabajos destacados del inicio |
 | **Texto alternativo** | "Paredes interiores con enduido y terminación lisa" |
@@ -145,10 +155,12 @@ La declaración general está en `docs/DECLARACION-IA.md`.
 
 | Campo | Detalle |
 |---|---|
-| **Archivo** | `public/img/trabajos/piso-machimbre.jpg` |
-| **Medidas** | 1200 × 800 px |
+| **Archivo original** | `multimedia/trabajos/piso-machimbre.jpg` |
+| **Dónde se publica** | Guardada en la tabla `trabajo_fotos` de la base y servida por `/api/trabajos/[id]/foto` |
+| **Medidas** | 1376 × 768 px |
 | **Tipo** | Foto de muestra de un trabajo |
-| **Herramienta** | Generador de imágenes con IA |
+| **Prompt** | Escrito con **ChatGPT** |
+| **Herramienta** | **Gemini** (generación de imágenes) |
 | **Qué muestra** | Un piso de machimbre en un ambiente luminoso |
 | **Dónde se usa** | Galería de `/trabajos` y trabajos destacados del inicio |
 | **Texto alternativo** | "Piso de machimbre colocado en un ambiente luminoso" |
@@ -164,10 +176,12 @@ La declaración general está en `docs/DECLARACION-IA.md`.
 
 | Campo | Detalle |
 |---|---|
-| **Archivo** | `public/img/trabajos/molduras-salon.jpg` |
-| **Medidas** | 1200 × 800 px |
+| **Archivo original** | `multimedia/trabajos/molduras-salon.jpg` |
+| **Dónde se publica** | Guardada en la tabla `trabajo_fotos` de la base y servida por `/api/trabajos/[id]/foto` |
+| **Medidas** | 1376 × 768 px |
 | **Tipo** | Foto de muestra de un trabajo |
-| **Herramienta** | Generador de imágenes con IA |
+| **Prompt** | Escrito con **ChatGPT** |
+| **Herramienta** | **Gemini** (generación de imágenes) |
 | **Qué muestra** | Un salón con molduras decorativas en paredes y techo |
 | **Dónde se usa** | Galería de `/trabajos` y trabajos destacados del inicio |
 | **Texto alternativo** | "Salón con molduras decorativas en paredes y techo" |

@@ -1,21 +1,26 @@
 import Image from "next/image";
+import { urlFoto } from "../lib/fotos";
 import { obtenerNombreServicio } from "../lib/servicios";
 
 export default function TarjetaTrabajo({ trabajo, onAbrir, prioridad = false }) {
-  const foto = (
+  const portada = trabajo.fotos?.[0];
+
+  const foto = portada ? (
     <Image
-      src={trabajo.foto}
-      alt={trabajo.texto_alt}
-      width={1200}
-      height={800}
+      src={urlFoto(trabajo.id, portada.id)}
+      alt={portada.texto_alt}
+      width={portada.ancho}
+      height={portada.alto}
       sizes="(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw"
       priority={prioridad}
     />
+  ) : (
+    <span className="tarjeta-sin-foto">Foto en preparación</span>
   );
 
   return (
     <article className="tarjeta-trabajo">
-      {onAbrir ? (
+      {onAbrir && portada ? (
         <button
           type="button"
           className="tarjeta-foto"

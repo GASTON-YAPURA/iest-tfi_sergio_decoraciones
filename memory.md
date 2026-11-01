@@ -16,12 +16,14 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Especificaciones (`01` a `10` y `AGENTS.md`) | Hechas |
 | `Legends.md`, `Memory.md` y `Commits.md` | Hechos |
 | Código del sitio | Etapa 7 completa: panel privado `/admin`, ingreso con sesión firmada, listado protegido `/admin/consultas`, marcar consultas como atendidas y salir |
-| SEO y calidad (Etapa 8) | Hechos: `lib/sitio.js`, `robots.txt`, `sitemap.xml`, metadatos por página, contraste, lista de seguridad y pruebas (63) |
-| Declaración de IA | Hecha: `docs/DECLARACION-IA.md` y `multimedia/FICHAS-IA.md` |
+| SEO y calidad (Etapa 8) | Hechos: `lib/sitio.js`, `robots.txt`, `sitemap.xml`, metadatos por página, contraste, lista de seguridad y pruebas (72) |
+| Fotos de trabajos en la base (Etapa 9) | Hechas: tabla `trabajo_fotos`, `/api/trabajos/[id]/foto`, importación con `npm run db:fotos`, galería y visor con varias fotos |
+| Panel completo de consultas y trabajos (Etapa 9) | En curso: falta buscar/filtrar/paginar, archivar y exportar consultas, y el CRUD de trabajos |
+| Declaración de IA | Hecha: `docs/DECLARACION-IA.md` y `multimedia/FICHAS-IA.md` (fotos con prompts de ChatGPT e imágenes de Gemini) |
 | Publicación en Vercel | Pendiente: variables de entorno, contraseña definitiva y deploy con HTTPS |
 | Informe escrito del TP | Pendiente |
 
-**Próximo paso:** publicar en Vercel (Etapa 8 de `08 - TAREAS.md`): cargar las variables, cambiar la contraseña temporal, desplegar y después probar en dispositivos reales y medir la velocidad.
+**Próximo paso:** terminar el panel de consultas (buscador, filtros, paginado, archivar, CSV y mensaje editable) y después el panel de trabajos con carga de fotos.
 
 ## Decisiones tomadas
 
@@ -35,7 +37,10 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Panel privado | Entrada por `/admin`, sin aparecer en el menú ni en Google | Sergio ve las consultas sin tocar la base de datos |
 | Acceso al panel | Un solo usuario; contraseña como hash bcrypt en variables de entorno; sesión de 8 horas; 5 intentos fallidos cada 15 minutos | No hace falta una tabla de usuarios |
 | Acceso a la base | `@neondatabase/serverless` | Driver oficial de Neon, compatible con Vercel y con consultas parametrizadas |
-| Carga de trabajos | Directamente en la base de datos, sin panel de carga | El panel solo muestra consultas |
+| Carga de trabajos | Desde el panel privado, con título, servicio, descripción, visibilidad y varias fotos guardadas en la base | Sergio puede corregir sus trabajos sin tocar código ni la base |
+| Fotos de trabajos | Se guardan como `BYTEA` en la tabla `trabajo_fotos` y se sirven por `/api/trabajos/[id]/foto?foto=`; los originales quedan en `multimedia/trabajos/` como respaldo | No hace falta un servicio externo ni una carpeta pública; entran en el deploy de Vercel |
+| Varias fotos por trabajo | La primera (el `orden` más bajo) es la portada de la tarjeta; el visor muestra el resto con flechas y contador | Un trabajo suele tener más de una foto y se aprovecha el mismo formulario |
+| Consultas archivadas | Se archivan sin borrar y se pueden restaurar; el borrado definitivo solo se permite desde las archivadas, con confirmación | Evita perder consultas por un clic y mantiene limpia la lista principal |
 | Nombres | La galería se llama "Trabajos" en el menú (TRABAJOS), en la dirección (`/trabajos`), en el código y en la base de datos | Un solo nombre en todo el proyecto, sin confusiones |
 | Idioma del código | Español, sin tildes ni ñ | Definido en `07-CONVENCIONES.md` |
 | Tipografías | Cinzel Bold para títulos, Lato Regular para textos | Cinzel es la tipografía del logo |
@@ -46,11 +51,11 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Prueba en el celular con `next dev` | La IP de la computadora se carga en `ORIGENES_DESARROLLO` dentro de `.env.local` y `next.config.mjs` la pasa a `allowedDevOrigins` | Next bloquea los archivos de desarrollo pedidos desde otro origen, y sin eso el menú y los demás botones no responden en el celular |
 | Dirección pública y SEO | `lib/sitio.js` toma `SITIO_URL`; si no está, usa la URL del proyecto en Vercel; si tampoco, `http://localhost:3000`. De ahí salen las canónicas, `robots.txt`, el sitemap y la imagen para compartir | Un solo lugar para cambiar la dirección cuando el sitio se publique, sin inventar un dominio |
 | Pie de página | `body` en columna flex con `min-height: 100dvh`, `main` con `flex: 1 0 auto` y encabezado y pie sin encogerse | El pie queda abajo en las páginas cortas del panel sin fijar alturas a mano |
-| Declaración de IA | El monograma SD se generó con IA y cada logo se armó en Canva; las seis fotos de muestra son generadas con IA; los textos visibles los escribió el autor | Cumple el principio 8 de la Constitución y deja claro qué es de muestra |
+| Declaración de IA | El monograma SD se generó con IA y cada logo se armó en Canva; las seis fotos de muestra se generaron con **Gemini** a partir de prompts de **ChatGPT**; los textos visibles los escribió el autor | Cumple el principio 8 de la Constitución y deja claro qué es de muestra |
 
 ## Fuera de alcance (por ahora)
 
-Pago online, cuentas de clientes, tienda, precios publicados, redes sociales integradas y panel para cargar trabajos.
+Pago online, cuentas de clientes, tienda, precios publicados, redes sociales integradas y orden manual de los trabajos.
 
 ## Pendientes
 
@@ -73,6 +78,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 01/11/2026 | Etapa 9: las fotos de los trabajos pasaron a la base (`trabajo_fotos`), se importaron con `npm run db:fotos`, se sirven por `/api/trabajos/[id]/foto`, el visor muestra varias fotos con flechas y contador y `public/img/trabajos/` se vació; fichas de IA actualizadas (Gemini + ChatGPT) |
 | 31/10/2026 | Declaración de IA: `docs/DECLARACION-IA.md`, `multimedia/FICHAS-IA.md`, nota en `docs/00 - IDENTIDAD-MARCA.md` y leyenda "Fotos de muestra generadas con IA" en `/trabajos` |
 | 31/10/2026 | Etapa 8: SEO completo (`lib/sitio.js`, `robots.js`, `sitemap.js`, canónicas y Open Graph por página), revisión de seguridad, contraste y `test/seo.test.js` (63 pruebas) |
 | 31/10/2026 | Pie de página: `body` en columna flex y `main` con `flex: 1 0 auto` para que el pie quede abajo en `/admin` y `/admin/consultas` |

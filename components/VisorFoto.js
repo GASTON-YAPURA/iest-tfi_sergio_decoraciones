@@ -1,11 +1,25 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { urlFoto } from "../lib/fotos";
 import { obtenerNombreServicio } from "../lib/servicios";
 
 export default function VisorFoto({ trabajo, onCerrar }) {
+  const fotos = trabajo.fotos ?? [];
+  const total = fotos.length;
+  const [indice, setIndice] = useState(0);
+  const contenedor = useRef(null);
   const botonCerrar = useRef(null);
+  const fotoActual = fotos[indice];
+
+  const anterior = useCallback(() => {
+    setIndice((actual) => (actual - 1 + total) % total);
+  }, [total]);
+
+  const siguiente = useCallback(() => {
+    setIndice((actual) => (actual + 1) % total);
+  }, [total]);
 
   useEffect(() => {
     const elementoAnterior = document.activeElement;
@@ -17,11 +31,40 @@ export default function VisorFoto({ trabajo, onCerrar }) {
     function manejarTecla(evento) {
       if (evento.key === "Escape") {
         onCerrar();
+        return;
+      }
+
+      if (total > 1 && evento.key === "ArrowLeft") {
+        evento.preventDefault();
+        anterior();
+        return;
+      }
+
+      if (total > 1 && evento.key === "ArrowRight") {
+        evento.preventDefault();
+        siguiente();
+        return;
       }
 
       if (evento.key === "Tab") {
-        evento.preventDefault();
-        botonCerrar.current?.focus();
+        const enfocables = contenedor.current?.querySelectorAll(
+          "button, a[href]"
+        );
+
+        if (!enfocables || enfocables.length === 0) {
+          return;
+        }
+
+        const primero = enfocables[0];
+        const ultimo = enfocables[enfocables.length - 1];
+
+        if (evento.shiftKey && document.activeElement === primero) {
+          evento.preventDefault();
+          ultimo.focus();
+        } else if (!evento.shiftKey && document.activeElement === ultimo) {
+          evento.preventDefault();
+          primero.focus();
+        }
       }
     }
 
@@ -35,7 +78,7 @@ export default function VisorFoto({ trabajo, onCerrar }) {
         elementoAnterior.focus();
       }
     };
-  }, [onCerrar]);
+  }, [anterior, siguiente, onCerrar, total]);
 
   return (
     <div className="visor" onClick={onCerrar}>
@@ -44,6 +87,7 @@ export default function VisorFoto({ trabajo, onCerrar }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="visor-titulo"
+        ref={contenedor}
         onClick={(evento) => evento.stopPropagation()}
       >
         <button
@@ -57,13 +101,39 @@ export default function VisorFoto({ trabajo, onCerrar }) {
         </button>
 
         <div className="visor-foto">
-          <Image
-            src={trabajo.foto}
-            alt={trabajo.texto_alt}
-            width={1200}
-            height={800}
-            sizes="(min-width: 900px) 900px, 100vw"
-          />
+          {fotoActual ? (
+            <Image
+              key={fotoActual.id}
+              src={urlFoto(trabajo.id, fotoActual.id)}
+              alt={fotoActual.texto_alt}
+              width={fotoActual.ancho}
+              height={fotoActual.alto}
+              sizes="(min-width: 900px) 900px, 100vw"
+            />
+          ) : (
+            <p>Este trabajo todavía no tiene fotos.</p>
+          )}
+
+          {total > 1 ? (
+            <>
+              <button
+                type="button"
+                className="visor-flecha visor-flecha-izquierda"
+                onClick={anterior}
+                aria-label="Foto anterior"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                className="visor-flecha visor-flecha-derecha"
+                onClick={siguiente}
+                aria-label="Foto siguiente"
+              >
+                ›
+              </button>
+            </>
+          ) : null}
         </div>
 
         <div className="visor-datos">
@@ -72,6 +142,11 @@ export default function VisorFoto({ trabajo, onCerrar }) {
           </p>
           <h2 id="visor-titulo">{trabajo.titulo}</h2>
           {trabajo.descripcion ? <p>{trabajo.descripcion}</p> : null}
+          {total > 1 ? (
+            <p className="visor-contador" aria-live="polite">
+              Foto {indice + 1} de {total}
+            </p>
+          ) : null}
         </div>
       </div>
     </div>

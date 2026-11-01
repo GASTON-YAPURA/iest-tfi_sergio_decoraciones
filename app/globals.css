@@ -755,6 +755,22 @@ button.tarjeta-foto:hover img {
   margin: 0;
 }
 
+.galeria-aviso {
+  color: var(--color-secundario);
+  font-size: 0.85rem;
+  margin: 1.5rem 0 0;
+}
+
+.tarjeta-sin-foto {
+  align-items: center;
+  aspect-ratio: 3 / 2;
+  background: var(--color-acento-suave);
+  color: var(--color-secundario);
+  display: flex;
+  font-size: 0.9rem;
+  justify-content: center;
+}
+
 .visor {
   align-items: center;
   background: var(--color-principal);
@@ -808,6 +824,47 @@ button.tarjeta-foto:hover img {
   max-height: 65vh;
   max-width: 100%;
   width: auto;
+}
+
+.visor-foto {
+  position: relative;
+}
+
+.visor-flecha {
+  align-items: center;
+  background: var(--color-acento);
+  border: 0;
+  border-radius: 50%;
+  color: var(--color-fondo);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--fuente-texto);
+  font-size: 1.75rem;
+  height: 44px;
+  justify-content: center;
+  line-height: 1;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+}
+
+.visor-flecha:hover {
+  background: var(--color-principal);
+}
+
+.visor-flecha-izquierda {
+  left: 0.5rem;
+}
+
+.visor-flecha-derecha {
+  right: 0.5rem;
+}
+
+.visor-contador {
+  color: var(--color-secundario);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
 }
 
 .visor-datos {

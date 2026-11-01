@@ -146,7 +146,8 @@ test("las paginas de nosotros y contacto tienen su SEO y un solo h1", () => {
   assert.match(nosotros, /title: "Nosotros \| Sergio Decoraciones"/);
   assert.match(nosotros, /Conocé a Sergio y cómo trabaja/);
   assert.equal((nosotros.match(/<h1>/g) ?? []).length, 1);
-  assert.match(nosotros, /alt="Living con una pared empapelada y molduras blancas"/);
+  assert.match(nosotros, /alt=\{portada\.texto_alt\}/);
+  assert.match(nosotros, /urlFoto\(trabajo\.id, portada\.id\)/);
 
   assert.match(contacto, /title: "Contacto \| Sergio Decoraciones"/);
   assert.match(contacto, /Escribinos por WhatsApp, llamanos o dejá tu consulta/);

@@ -1,7 +1,9 @@
 import Image from "next/image";
 import BotonLlamar from "../../components/BotonLlamar";
 import BotonWhatsApp from "../../components/BotonWhatsApp";
+import { urlFoto } from "../../lib/fotos";
 import { IMAGEN_COMPARTIDA } from "../../lib/sitio";
+import { obtenerTrabajosDestacados } from "../../lib/trabajos";
 
 export const metadata = {
   title: "Nosotros | Sergio Decoraciones",
@@ -19,7 +21,12 @@ export const metadata = {
   },
 };
 
-export default function PaginaNosotros() {
+export const revalidate = 3600;
+
+export default async function PaginaNosotros() {
+  const [trabajo] = await obtenerTrabajosDestacados(1);
+  const portada = trabajo?.fotos?.[0];
+
   return (
     <>
       <section className="portada portada-interior">
@@ -73,18 +80,20 @@ export default function PaginaNosotros() {
             </ul>
           </div>
 
-          <div className="nosotros-foto">
-            <Image
-              src="/img/trabajos/living-empapelado.jpg"
-              alt="Living con una pared empapelada y molduras blancas"
-              width={1200}
-              height={800}
-              sizes="(min-width: 900px) 45vw, 100vw"
-            />
-            <p className="nosotros-epigrafe">
-              Un living terminado con empapelado y molduras.
-            </p>
-          </div>
+          {portada ? (
+            <div className="nosotros-foto">
+              <Image
+                src={urlFoto(trabajo.id, portada.id)}
+                alt={portada.texto_alt}
+                width={portada.ancho}
+                height={portada.alto}
+                sizes="(min-width: 900px) 45vw, 100vw"
+              />
+              <p className="nosotros-epigrafe">
+                Un living terminado con empapelado y molduras.
+              </p>
+            </div>
+          ) : null}
         </div>
       </section>
 

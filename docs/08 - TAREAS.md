@@ -93,10 +93,10 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 
 ### Base de datos
 
-- [ ] Agregar a `db/esquema.sql` la tabla `trabajo_fotos` y la columna `archivada` de `consultas`
-- [ ] Sacar de `trabajos` la columna `foto` y el `texto_alt`, que ahora viven en `trabajo_fotos`
-- [ ] Crear `scripts/importar-fotos.mjs` y el comando `npm run db:fotos`
-- [ ] Importar las seis fotos actuales a la base y vaciar `public/img/trabajos/`
+- [x] Agregar a `db/esquema.sql` la tabla `trabajo_fotos` y la columna `archivada` de `consultas`
+- [x] Sacar de `trabajos` la columna `foto` y el `texto_alt`, que ahora viven en `trabajo_fotos`
+- [x] Crear `scripts/importar-fotos.mjs` y el comando `npm run db:fotos`
+- [x] Importar las seis fotos actuales a la base y vaciar `public/img/trabajos/`
 
 ### Consultas
 
@@ -114,13 +114,13 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 - [ ] Crear la página `/admin/trabajos` protegida por sesión (RF19)
 - [ ] Crear la ruta `app/api/admin/trabajos/route.js` para alta, edición y borrado (RF19)
 - [ ] Crear la ruta `app/api/admin/trabajos/[id]/fotos/route.js` para las fotos (RF20)
-- [ ] Crear la ruta `app/api/trabajos/[id]/foto/route.js` que entrega la foto desde la base
+- [x] Crear la ruta `app/api/trabajos/[id]/foto/route.js` que entrega la foto desde la base
 - [ ] Permitir varias fotos por trabajo, con texto alternativo y orden (RF20)
 - [ ] Comprimir la foto en el navegador antes de subirla y validarla en el servidor
 - [ ] Ocultar y volver a mostrar un trabajo sin borrarlo (RF19)
 - [ ] Pedir confirmación antes de borrar un trabajo y sus fotos (RF19)
-- [ ] Hacer que la galería y el inicio lean las fotos desde la base
-- [ ] Mostrar todas las fotos de un trabajo en el visor, con flechas y contador
+- [x] Hacer que la galería y el inicio lean las fotos desde la base
+- [x] Mostrar todas las fotos de un trabajo en el visor, con flechas y contador
 - [ ] Agregar pruebas de permisos, validaciones y del panel de trabajos
-- [ ] Reemplazar las fotos de muestra por las definitivas y actualizar las fichas de IA
+- [x] Reemplazar las fotos de muestra por las definitivas y actualizar las fichas de IA
 - [ ] Actualizar `memory.md`, `Commits.md` y `11 - RECORRIDO DEL PROYECTO.md`

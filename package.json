@@ -9,7 +9,8 @@
     "start": "next start",
     "test": "node --test",
     "db:esquema": "node --env-file=.env.local db/ejecutar-sql.js db/esquema.sql",
-    "db:datos": "node --env-file=.env.local db/ejecutar-sql.js db/datos.sql"
+    "db:datos": "node --env-file=.env.local db/ejecutar-sql.js db/datos.sql",
+    "db:fotos": "node --env-file=.env.local scripts/importar-fotos.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",

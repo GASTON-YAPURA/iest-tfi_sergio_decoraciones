@@ -1,54 +1,43 @@
 -- Trabajos de muestra. Solo se cargan si la tabla esta vacia.
-INSERT INTO trabajos (titulo, servicio, descripcion, foto, texto_alt, visible)
+-- Las fotos no van aca: se importan con "npm run db:fotos" desde multimedia/trabajos/.
+INSERT INTO trabajos (titulo, servicio, descripcion, visible)
 SELECT * FROM (
   VALUES
     (
-      'Living con empapelado',
+      'Living con alfombrado y empapelado',
       'interiores',
-      'Empapelado de una pared del living con terminación prolija.',
-      '/img/trabajos/living-empapelado.jpg',
-      'Living con una pared empapelada y molduras blancas',
+      'Alfombrado y empapelado de una pared del living, con terminacion prolija.',
       TRUE
     ),
     (
       'Cielorraso de durlock',
       'durlock',
-      'Cielorraso de durlock con iluminación embutida.',
-      '/img/trabajos/cielorraso-durlock.jpg',
-      'Cielorraso de durlock con iluminación embutida',
+      'Cielorraso de durlock con iluminacion embutida.',
       TRUE
     ),
     (
-      'Dormitorio pintado',
+      'Pintura general',
       'pintura',
-      'Pintura de un dormitorio en tonos claros.',
-      '/img/trabajos/dormitorio-pintado.jpg',
-      'Dormitorio pintado en tonos claros con terminación prolija',
+      'Pintura de paredes y techo en tonos claros.',
       TRUE
     ),
     (
       'Paredes con enduido',
       'enduido',
-      'Enduido y lijado de paredes para una terminación lisa.',
-      '/img/trabajos/paredes-enduido.jpg',
-      'Paredes interiores con enduido y terminación lisa',
+      'Enduido y lijado de paredes para una terminacion lisa.',
       TRUE
     ),
     (
       'Piso de machimbre',
       'machimbre',
-      'Colocación de piso de machimbre en un ambiente luminoso.',
-      '/img/trabajos/piso-machimbre.jpg',
-      'Piso de machimbre colocado en un ambiente luminoso',
+      'Colocacion de piso de machimbre en un ambiente luminoso.',
       TRUE
     ),
     (
-      'Molduras en el salón',
+      'Molduras en el salon',
       'molduras',
-      'Colocación de molduras decorativas en paredes y techo.',
-      '/img/trabajos/molduras-salon.jpg',
-      'Salón con molduras decorativas en paredes y techo',
+      'Colocacion de molduras decorativas en paredes y techo.',
       TRUE
     )
-) AS datos(titulo, servicio, descripcion, foto, texto_alt, visible)
+) AS datos(titulo, servicio, descripcion, visible)
 WHERE NOT EXISTS (SELECT 1 FROM trabajos);

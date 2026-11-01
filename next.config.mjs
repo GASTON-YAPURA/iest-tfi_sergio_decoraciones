@@ -12,6 +12,14 @@ export function normalizarOrigen(valor) {
 }
 
 const configuracionNext = {
+  // Las fotos de los trabajos se piden a /api/trabajos/<id>/foto?foto=<id>.
+  // Los logos salen de public/img/marca/.
+  images: {
+    localPatterns: [
+      { pathname: "/img/marca/**", search: "" },
+      { pathname: "/api/trabajos/**" },
+    ],
+  },
   // Solo afecta a "next dev": permite abrir el sitio desde el celular por la red local.
   // Se carga desde .env.local para no dejar una IP fija en el repositorio.
   allowedDevOrigins: (process.env.ORIGENES_DESARROLLO ?? "")
