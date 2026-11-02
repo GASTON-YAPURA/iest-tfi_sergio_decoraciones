@@ -30,7 +30,7 @@ sergio-decoraciones/
 │       └── admin/
 │           ├── ingresar/route.js  ← valida usuario y contraseña
 │           ├── consultas/route.js ← lista, busca, archiva y borra consultas
-│           ├── consultas/csv/route.js ← descarga las consultas en CSV
+│           ├── consultas/pdf/route.js ← descarga las consultas en PDF
 │           ├── trabajos/route.js  ← alta, edición y borrado de trabajos
 │           ├── trabajos/[id]/fotos/route.js ← agrega, ordena y quita fotos
 │           └── salir/route.js     ← cierra la sesión
@@ -55,7 +55,7 @@ sergio-decoraciones/
 │   ├── consultas.js               ← guarda, lista, archiva y borra consultas
 │   ├── validacion.js              ← valida nombre, teléfono y mensaje
 │   ├── imagen.js                  ← valida el tipo, el peso y las medidas de una foto
-│   ├── csv.js                     ← arma el archivo CSV de consultas
+│   ├── pdf.js                     ← arma el archivo PDF de consultas
 │   ├── limite.js                  ← límites de consultas e intentos de ingreso
 │   ├── fechas.js                  ← formato de las fechas de las consultas
 │   ├── contacto.js                ← número de WhatsApp y teléfono
@@ -108,7 +108,7 @@ sergio-decoraciones/
 | `lib/db.js` | Único lugar donde se conecta con la base de datos |
 | `lib/trabajos.js` | Consultas y cambios de los trabajos (destacados, galería y panel) |
 | `lib/imagen.js` | Valida tipo, peso y medidas de una foto antes de guardarla |
-| `lib/csv.js` | Arma el archivo CSV con las consultas filtradas |
+| `lib/pdf.js` | Arma el archivo PDF con las consultas filtradas |
 | `lib/servicios.js` | Datos de los seis servicios y sus nombres para las etiquetas |
 | `lib/consultas.js` | Guarda, lista, busca, archiva y borra consultas con SQL parametrizado |
 | `lib/validacion.js` | Valida nombre, teléfono y mensaje antes de guardar |

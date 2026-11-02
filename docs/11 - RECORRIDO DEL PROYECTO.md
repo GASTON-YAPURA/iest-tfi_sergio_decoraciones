@@ -30,7 +30,7 @@ Este documento cuenta **cómo se construyó** el sitio de Sergio Decoraciones: q
 | `/nosotros` | Quién es Sergio y cómo trabaja | Estática |
 | `/contacto` | WhatsApp, llamada y formulario de consulta | Estática |
 | `/admin` | Ingreso con usuario y contraseña | Dinámica, fuera del menú |
-| `/admin/consultas` | Listado privado de consultas, con búsqueda, filtros, archivo y CSV | Dinámica, protegida |
+| `/admin/consultas` | Listado privado de consultas, con búsqueda, filtros, archivo y PDF | Dinámica, protegida |
 | `/admin/trabajos` | Listado y formulario privado de trabajos con sus fotos | Dinámica, protegida |
 
 ### Las APIs
@@ -42,7 +42,7 @@ Este documento cuenta **cómo se construyó** el sitio de Sergio Decoraciones: q
 | `/api/consultas` | POST | Valida y guarda una consulta del formulario |
 | `/api/admin/ingresar` | POST | Verifica credenciales y crea la sesión |
 | `/api/admin/consultas` | GET / PATCH / DELETE | Lista, marca como atendida, archiva, restaura o borra una consulta |
-| `/api/admin/consultas/csv` | GET | Descarga las consultas filtradas en CSV |
+| `/api/admin/consultas/pdf` | GET | Descarga las consultas filtradas en PDF |
 | `/api/admin/trabajos` | GET / POST / PATCH / DELETE | Lista, crea, edita, oculta o borra un trabajo |
 | `/api/admin/trabajos/[id]/fotos` | POST / PATCH / DELETE | Sube, ordena o quita las fotos de un trabajo |
 | `/api/admin/salir` | POST | Borra la cookie de sesión |
@@ -445,7 +445,7 @@ El listado pasó de mostrar todo a permitir trabajar con muchas consultas:
 - Paginado de a 10 con anterior y siguiente, y un resumen de pendientes, atendidas y total.
 - Archivar y restaurar sin borrar. El borrado definitivo solo se habilita desde las archivadas y pide confirmación.
 - Respuesta por WhatsApp con un mensaje editable antes de abrir la aplicación.
-- Exportación a CSV con los mismos filtros de la pantalla. Las celdas se escapan para que Excel no interprete fórmulas y el archivo lleva la fecha en el nombre.
+- Exportación a PDF con los mismos filtros de la pantalla. El PDF se arma en el servidor con `pdf-lib`, respeta los acentos, pagina la tabla y lleva la fecha en el nombre.
 
 La búsqueda, el filtro y la página viajan en la dirección (`?buscar=…&estado=…&pagina=…`), así el panel funciona sin JavaScript y el enlace se puede recargar sin perder el estado.
 
@@ -572,7 +572,7 @@ Los dos archivos están en `.gitignore`: funcionan en la computadora donde se cr
 | `test/estructura.test.js` | Encabezado, menú, pie, botón flotante y metadatos |
 | `test/galeria.test.js` | El filtro por servicio y el visor de fotos |
 | `test/consultas.test.js` | Validación, límite de envíos y respuestas de la API |
-| `test/panel.test.js` | Sesión firmada, vencimiento, credenciales, límite de intentos, rutas protegidas, búsqueda, archivo y CSV de consultas |
+| `test/panel.test.js` | Sesión firmada, vencimiento, credenciales, límite de intentos, rutas protegidas, búsqueda, archivo y PDF de consultas |
 | `test/panel-trabajos.test.js` | Validaciones de trabajos y fotos, límites de imagen, rutas del panel, compresión en el navegador y componentes de trabajos |
 | `test/menu.test.js` | Estado del botón, cierres del menú, bloqueo del scroll y origen de desarrollo |
 | `test/seo.test.js` | Dirección base, canónicas, Open Graph, `robots.txt` y `sitemap.xml` |
@@ -616,7 +616,7 @@ app/
     consultas/route.js      POST consulta
     admin/ingresar/route.js POST ingreso
     admin/consultas/route.js GET, PATCH y DELETE consultas (protegido)
-    admin/consultas/csv/route.js descarga CSV (protegido)
+    admin/consultas/pdf/route.js descarga PDF (protegido)
     admin/trabajos/route.js GET, POST, PATCH y DELETE trabajos (protegido)
     admin/trabajos/[id]/fotos/route.js POST, PATCH y DELETE fotos (protegido)
     admin/salir/route.js    POST salir
@@ -642,7 +642,7 @@ lib/
   trabajos.js               consultas de trabajos y sus fotos
   consultas.js              guardar y listar consultas
   filtros-consultas.js      normaliza búsqueda, estado y página
-  csv.js                    armado y escape del CSV
+  pdf.js                    armado del PDF de consultas
   validacion.js             reglas del formulario (cliente y servidor)
   validacion-trabajos.js    reglas del trabajo y de sus fotos
   limites-imagen.js         tipos, peso y medidas máximas
@@ -715,7 +715,7 @@ docs/                       especificaciones del proyecto
 
 Si hay que explicarlo en un minuto:
 
-> Es un sitio en Next.js para un emprendimiento de decoración. Muestra los trabajos terminados que están cargados en PostgreSQL (Neon), permite filtrarlos por servicio y verlos en grande, presenta los seis servicios y lleva al cliente a consultar por WhatsApp, por llamada o con un formulario que guarda la consulta en la base. Tiene un panel privado, protegido con contraseña hasheada y una sesión firmada de 8 horas, donde Sergio ve las consultas (las busca, filtra, archiva, responde por WhatsApp y exporta a CSV) y carga sus trabajos con varias fotos, texto alternativo, orden, visibilidad y compresión en el navegador. Todo se construyó en nueve etapas, cada una con sus pruebas automáticas, y se publica en Vercel.
+> Es un sitio en Next.js para un emprendimiento de decoración. Muestra los trabajos terminados que están cargados en PostgreSQL (Neon), permite filtrarlos por servicio y verlos en grande, presenta los seis servicios y lleva al cliente a consultar por WhatsApp, por llamada o con un formulario que guarda la consulta en la base. Tiene un panel privado, protegido con contraseña hasheada y una sesión firmada de 8 horas, donde Sergio ve las consultas (las busca, filtra, archiva, responde por WhatsApp y exporta a PDF) y carga sus trabajos con varias fotos, texto alternativo, orden, visibilidad y compresión en el navegador. Todo se construyó en nueve etapas, cada una con sus pruebas automáticas, y se publica en Vercel.
 
 Y si preguntan por las decisiones técnicas:
 

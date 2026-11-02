@@ -69,6 +69,9 @@ Se anotan los commits importantes. Para ver el historial completo se usa `git lo
 | 01/11/2026 | 9. Panel de administración | `main` | `guarda las fotos de los trabajos en la base` | Tabla `trabajo_fotos`, importación con `npm run db:fotos`, ruta de fotos, visor con varias fotos, fotos definitivas y fichas de IA |
 | 02/11/2026 | 9. Panel de administración | `main` | `agrega busqueda filtros y archivo de consultas` | Buscador, filtros, paginado, resumen, archivar/restaurar, borrado definitivo, respuesta editable y CSV |
 | 02/11/2026 | 9. Panel de administración | `main` | `feaa793 agrega el panel de trabajos con fotos` | Página y API de trabajos, fotos en la base, compresión en el navegador, texto alternativo, orden, visibilidad y borrado con confirmación |
+| 02/11/2026 | 9. Panel de administración | `main` | `ba51588 documenta el panel de trabajos` | Documentación y memoria del panel de trabajos |
+| 02/11/2026 | 9. Panel de administración | `main` | `cambia la exportación de consultas a pdf` | La descarga de consultas pasó de CSV a PDF con `pdf-lib`: tabla A4, cabecera de marca, acentos, paginado y filtros |
+| 02/11/2026 | 9. Panel de administración | `main` | `documenta la exportación de consultas en pdf` | Especificaciones, recorrido, memoria y registro actualizados |
 
 Repositorio: https://github.com/GASTON-YAPURA/iest-tfi_sergio_decoraciones
 

@@ -15,15 +15,15 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Identidad de marca (logo, paleta, tipografías) | Hecha: `IDENTIDAD-MARCA.md` |
 | Especificaciones (`01` a `10` y `AGENTS.md`) | Hechas |
 | `Legends.md`, `Memory.md` y `Commits.md` | Hechos |
-| Código del sitio | Etapa 8 completa; Etapa 9 completa: panel privado `/admin` con ingreso, consultas (buscar, filtrar, paginar, archivar, borrar, CSV y respuesta editable) y trabajos (alta, edición, fotos, visibilidad y borrado) |
+| Código del sitio | Etapa 8 completa; Etapa 9 completa: panel privado `/admin` con ingreso, consultas (buscar, filtrar, paginar, archivar, borrar, PDF y respuesta editable) y trabajos (alta, edición, fotos, visibilidad y borrado) |
 | SEO y calidad (Etapa 8) | Hechos: `lib/sitio.js`, `robots.txt`, `sitemap.xml`, metadatos por página, contraste, lista de seguridad y pruebas |
 | Fotos de trabajos en la base (Etapa 9) | Hechas: tabla `trabajo_fotos`, `/api/trabajos/[id]/foto`, importación con `npm run db:fotos`, galería y visor con varias fotos |
-| Panel completo de consultas y trabajos (Etapa 9) | Hecho: consultas (buscar, filtrar, paginar, archivar, restaurar, borrar y exportar CSV) y trabajos (CRUD, varias fotos con texto alternativo y orden, compresión en el navegador, ocultar/mostrar y borrar con confirmación) |
+| Panel completo de consultas y trabajos (Etapa 9) | Hecho: consultas (buscar, filtrar, paginar, archivar, restaurar, borrar y exportar PDF) y trabajos (CRUD, varias fotos con texto alternativo y orden, compresión en el navegador, ocultar/mostrar y borrar con confirmación) |
 | Declaración de IA | Hecha: `docs/DECLARACION-IA.md` y `multimedia/FICHAS-IA.md` (fotos con prompts de ChatGPT e imágenes de Gemini) |
 | Publicación en Vercel | Pendiente: variables de entorno, contraseña definitiva y deploy con HTTPS |
 | Informe escrito del TP | Pendiente |
 
-**Próximo paso:** cambiar la contraseña temporal del panel y publicar en Vercel con las variables de entorno.
+**Próximo paso:** publicar en Vercel con las variables de entorno.
 
 ## Decisiones tomadas
 
@@ -41,7 +41,8 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Fotos de trabajos | Se guardan como `BYTEA` en la tabla `trabajo_fotos` y se sirven por `/api/trabajos/[id]/foto?foto=`; los originales quedan en `multimedia/trabajos/` como respaldo | No hace falta un servicio externo ni una carpeta pública; entran en el deploy de Vercel |
 | Varias fotos por trabajo | La primera (el `orden` más bajo) es la portada de la tarjeta; el visor muestra el resto con flechas y contador | Un trabajo suele tener más de una foto y se aprovecha el mismo formulario |
 | Consultas archivadas | Se archivan sin borrar y se pueden restaurar; el borrado definitivo solo se permite desde las archivadas, con confirmación | Evita perder consultas por un clic y mantiene limpia la lista principal |
-| Búsqueda y filtros del panel | Se resuelven en la base con parámetros y se reflejan en la dirección (`buscar`, `estado`, `pagina`); el CSV usa los mismos filtros | El panel funciona sin JavaScript y el enlace se puede compartir o recargar sin perder el estado |
+| Búsqueda y filtros del panel | Se resuelven en la base con parámetros y se reflejan en la dirección (`buscar`, `estado`, `pagina`); el PDF usa los mismos filtros | El panel funciona sin JavaScript y el enlace se puede compartir o recargar sin perder el estado |
+| Exportación de consultas | PDF armado en el servidor con `pdf-lib`, sin guardar archivos: tabla A4 con cabecera de marca, acentos, paginado y nombre con la fecha | Se lee e imprime mejor que el CSV desde el celular y no depende de Excel |
 | Carga de fotos desde el panel | El navegador achica a 1600 px y comprime a JPG por debajo de 1,5 MB; el servidor vuelve a leer el tipo real, el peso y las medidas | Evita subir archivos enormes o disfrazados y no depende de la extensión |
 | Límites de las fotos | Hasta 12 por trabajo y al menos una siempre; el texto alternativo va de 5 a 200 caracteres | Mantiene liviana la base y obliga a describir cada foto |
 | Orden de los trabajos | Los más nuevos aparecen primero; no hay orden manual | El orden se explica solo y evita una pantalla extra de administración |
@@ -66,7 +67,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 - **Datos reales:** reemplazar el teléfono de muestra, cargar los trabajos reales de Sergio con sus fotos y reemplazar las imágenes de muestra. Al reemplazar las fotos, actualizar `multimedia/FICHAS-IA.md` y quitar la leyenda de `/trabajos`.
 - **Prueba en el celular:** si cambia la red, actualizar la IP en `ORIGENES_DESARROLLO` dentro de `.env.local` y reiniciar `npm run dev`.
 - **Variables en Vercel:** cargar `DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH`, `SESION_SECRETA` y `SITIO_URL` al publicar (Etapa 8).
-- **Contraseña del panel:** cambiar la clave temporal antes de publicar y actualizar `ADMIN_CLAVE_HASH`.
+- **Contraseña del panel:** ya se cambió la clave temporal; al publicar hay que cargar el hash definitivo en `ADMIN_CLAVE_HASH` de Vercel.
 - **Publicación:** desplegar en Vercel con HTTPS y después probar en celular, tablet y computadora, medir PageSpeed y confirmar que `/admin` no aparece en Google.
 
 ## Reglas que no se rompen
@@ -82,8 +83,9 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 02/11/2026 | Etapa 9: la exportación de consultas pasó de CSV a PDF (`pdf-lib` en el servidor, tabla A4 con cabecera de marca, acentos, paginado y nombre con fecha); 99 pruebas y build correctos |
 | 02/11/2026 | Etapa 9: panel de trabajos completo (`/admin/trabajos`, API de alta/edición/borrado, fotos con texto alternativo y orden, compresión en el navegador, ocultar/mostrar y borrar con confirmación); 99 pruebas y build correctos |
-| 02/11/2026 | Etapa 9: consultas completas en el panel (búsqueda, filtros, paginado de a 10, resumen, archivar/restaurar, borrado definitivo, respuesta editable por WhatsApp y CSV con los filtros) |
+| 02/11/2026 | Etapa 9: consultas completas en el panel (búsqueda, filtros, paginado de a 10, resumen, archivar/restaurar, borrado definitivo, respuesta editable por WhatsApp y PDF con los filtros) |
 | 01/11/2026 | Etapa 9: las fotos de los trabajos pasaron a la base (`trabajo_fotos`), se importaron con `npm run db:fotos`, se sirven por `/api/trabajos/[id]/foto`, el visor muestra varias fotos con flechas y contador y `public/img/trabajos/` se vació; fichas de IA actualizadas (Gemini + ChatGPT) |
 | 31/10/2026 | Declaración de IA: `docs/DECLARACION-IA.md`, `multimedia/FICHAS-IA.md`, nota en `docs/00 - IDENTIDAD-MARCA.md` y leyenda "Fotos de muestra generadas con IA" en `/trabajos` |
 | 31/10/2026 | Etapa 8: SEO completo (`lib/sitio.js`, `robots.js`, `sitemap.js`, canónicas y Open Graph por página), revisión de seguridad, contraste y `test/seo.test.js` (63 pruebas) |

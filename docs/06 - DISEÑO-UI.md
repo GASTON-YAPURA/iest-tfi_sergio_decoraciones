@@ -54,7 +54,7 @@ El enlace `/admin` no aparece en el menú ni en el pie de página. Sergio entra 
 - **Ingreso:** tarjeta centrada sobre fondo blanco, con el monograma SD arriba, los campos de usuario y contraseña y el botón principal "Ingresar". Si los datos no son correctos se muestra el mensaje "Usuario o contraseña incorrectos".
 - **Encabezado del panel:** título "Consultas recibidas", una bajada corta y el botón secundario "Salir" a la derecha. En celular se apila.
 - **Resumen:** tres tarjetas chicas con las consultas **pendientes**, las **atendidas** y el **total**. Los números van en Cinzel; las pendientes se destacan en Ocre Profundo.
-- **Barra de herramientas:** buscador por nombre o teléfono, filtros tipo pastilla (Todas, Pendientes, Atendidas, Archivadas) y botón "Exportar CSV". En celular el buscador ocupa el ancho completo.
+- **Barra de herramientas:** buscador por nombre o teléfono, filtros tipo pastilla (Todas, Pendientes, Atendidas, Archivadas) y botón "Exportar PDF". En celular el buscador ocupa el ancho completo.
 - **Listado:** en computadora, una tabla con fecha, nombre, teléfono, mensaje, estado y acciones; en celular, una tarjeta por consulta. Se ven de a 10, con "Anterior" y "Siguiente".
 - **Estado:** las consultas pendientes llevan una etiqueta en Ocre Profundo; las atendidas en Gris Grafito; las archivadas en gris claro.
 - **Acciones de cada consulta:** "Responder" abre un cuadro con el mensaje ya escrito (se puede editar) y después WhatsApp; "Marcar como atendida"; "Archivar". Las archivadas muestran "Restaurar" y "Borrar".

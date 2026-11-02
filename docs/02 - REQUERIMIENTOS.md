@@ -20,7 +20,7 @@
 | RF14 | Ver las consultas de a 10 por página | Baja |
 | RF15 | Escribir el mensaje antes de responder por WhatsApp | Media |
 | RF16 | Archivar, restaurar y borrar consultas | Media |
-| RF17 | Exportar las consultas a un archivo CSV | Baja |
+| RF17 | Exportar las consultas a un archivo PDF | Baja |
 | RF18 | Ver cuántas consultas quedan pendientes | Baja |
 | RF19 | Administrar los trabajos desde el panel: agregar, editar, ocultar y borrar | Alta |
 | RF20 | Cargar varias fotos por trabajo, guardadas en la base de datos | Alta |
@@ -69,7 +69,7 @@
 - El listado se ve de a 10 consultas por página
 - Antes de responder por WhatsApp se puede escribir el mensaje
 - Las consultas se pueden archivar, restaurar y borrar; las archivadas no se mezclan con las pendientes
-- Se pueden descargar las consultas en un CSV
+- Se pueden descargar las consultas en un PDF
 - Arriba se ve cuántas consultas quedan pendientes
 - El botón Salir cierra la sesión
 - El enlace al panel no aparece en el menú del sitio

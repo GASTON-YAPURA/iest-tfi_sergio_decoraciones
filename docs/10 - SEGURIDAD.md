@@ -100,8 +100,8 @@ Las fotos se guardan en la base y se suben solo desde el panel con sesión inici
 
 ## Exportación de consultas
 
-- El CSV solo se genera con sesión iniciada y con los mismos filtros que la persona ve en pantalla.
-- Se descarga con `Content-Disposition: attachment` y las celdas se escapan para que Excel no interprete fórmulas.
+- El PDF solo se genera con sesión iniciada y con los mismos filtros que la persona ve en pantalla.
+- Se descarga con `Content-Disposition: attachment`; el texto se limpia y se escribe con una fuente estándar, sin contenido externo.
 - El archivo no queda guardado en el servidor: se arma en el momento y se envía.
 
 ## Otras reglas

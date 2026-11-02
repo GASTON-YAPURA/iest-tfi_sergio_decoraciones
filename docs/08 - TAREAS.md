@@ -105,7 +105,7 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 - [x] Mostrar las consultas de a 10, con anterior y siguiente (RF14)
 - [x] Escribir el mensaje antes de responder por WhatsApp (RF15)
 - [x] Archivar, restaurar y borrar consultas con confirmación (RF16)
-- [x] Exportar las consultas filtradas a CSV (RF17)
+- [x] Exportar las consultas filtradas a PDF (RF17)
 - [x] Mostrar el resumen de pendientes, atendidas y total (RF18)
 - [x] Revisar el orden visual del panel con la paleta de marca
 
