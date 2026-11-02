@@ -1053,6 +1053,7 @@ button.tarjeta-foto:focus-visible,
 }
 
 .campo input,
+.campo select,
 .campo textarea {
   background: var(--color-fondo);
   border: 1px solid var(--color-secundario);
@@ -1070,6 +1071,7 @@ button.tarjeta-foto:focus-visible,
 }
 
 .campo input:focus,
+.campo select:focus,
 .campo textarea:focus {
   border-color: var(--color-acento);
   outline: 2px solid var(--color-acento);
@@ -1134,6 +1136,7 @@ button.tarjeta-foto:focus-visible,
 }
 
 .campo input:focus-visible,
+.campo select:focus-visible,
 .campo textarea:focus-visible,
 .formulario-consulta .boton-principal:focus-visible,
 .formulario-exito .boton-secundario:focus-visible {
@@ -1553,6 +1556,277 @@ a.admin-dato:hover {
   cursor: pointer;
 }
 
+.admin-encabezado-acciones {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.admin-navegacion {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.admin-navegacion-enlace {
+  border: 1px solid var(--color-secundario);
+  border-radius: 999px;
+  color: var(--color-secundario);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.45rem 0.9rem;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.admin-navegacion-enlace:hover {
+  border-color: var(--color-acento);
+  color: var(--color-acento);
+}
+
+.admin-navegacion-enlace[aria-current="page"] {
+  background: var(--color-acento);
+  border-color: var(--color-acento);
+  color: var(--color-fondo);
+}
+
+.panel-trabajos-barra {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.panel-trabajos-barra .admin-contador {
+  margin: 0;
+}
+
+.trabajos-lista {
+  display: grid;
+  gap: 1rem;
+}
+
+.trabajo-fila {
+  align-items: center;
+  background: var(--color-fondo);
+  border: 1px solid var(--color-secundario);
+  border-radius: var(--radio-borde);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  padding: 1rem;
+}
+
+.trabajo-miniatura {
+  align-items: center;
+  aspect-ratio: 4 / 3;
+  background: var(--color-acento-suave);
+  border-radius: var(--radio-borde);
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.trabajo-miniatura img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.trabajo-sin-foto {
+  color: var(--color-secundario);
+  font-size: 0.75rem;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.trabajo-servicio {
+  color: var(--color-acento);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.trabajo-datos h2 {
+  font-size: 1.1rem;
+  line-height: 1.25;
+  margin: 0.15rem 0 0.3rem;
+}
+
+.trabajo-meta {
+  color: var(--color-secundario);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.estado-trabajo {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.estado-visible {
+  color: var(--color-acento);
+}
+
+.estado-oculto {
+  color: var(--color-secundario);
+}
+
+.trabajo-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  grid-column: 1 / -1;
+}
+
+.formulario-trabajo {
+  background: var(--color-fondo);
+  border: 1px solid var(--color-secundario);
+  border-radius: var(--radio-borde);
+  max-width: 60rem;
+  padding: 1.25rem;
+}
+
+.formulario-trabajo h2 {
+  font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+  line-height: 1.2;
+  margin: 0 0 1.25rem;
+}
+
+.formulario-trabajo-grid {
+  display: grid;
+  gap: 0 1rem;
+  grid-template-columns: 1fr;
+}
+
+.campo-check {
+  align-items: center;
+  color: var(--color-principal);
+  display: flex;
+  font-size: 0.95rem;
+  font-weight: 700;
+  gap: 0.6rem;
+  margin: 0 0 1.25rem;
+}
+
+.campo-check input {
+  accent-color: var(--color-acento);
+  height: 1.1rem;
+  width: 1.1rem;
+}
+
+.campo-fotos {
+  border: 1px solid var(--color-secundario);
+  border-radius: var(--radio-borde);
+  margin: 0 0 1.25rem;
+  padding: 1rem;
+}
+
+.campo-fotos legend {
+  color: var(--color-principal);
+  font-family: var(--fuente-titulos);
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 0 0.4rem;
+}
+
+.campo-fotos .campo-ayuda {
+  margin-top: 0;
+}
+
+.boton-archivo {
+  cursor: pointer;
+  display: inline-flex;
+}
+
+.fotos-editor {
+  display: grid;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.foto-editor {
+  align-items: start;
+  border-top: 1px solid var(--color-acento-suave);
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  padding-top: 1rem;
+}
+
+.foto-editor:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.foto-editor-vista {
+  aspect-ratio: 4 / 3;
+  background: var(--color-acento-suave);
+  border-radius: var(--radio-borde);
+  overflow: hidden;
+  position: relative;
+}
+
+.foto-editor-vista img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.foto-portada {
+  background: var(--color-acento);
+  color: var(--color-fondo);
+  font-size: 0.65rem;
+  font-weight: 700;
+  left: 0.35rem;
+  letter-spacing: 0.08em;
+  padding: 0.15rem 0.4rem;
+  position: absolute;
+  text-transform: uppercase;
+  top: 0.35rem;
+}
+
+.foto-editor-campo {
+  margin-bottom: 0;
+}
+
+.foto-editor-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  grid-column: 1 / -1;
+}
+
+.formulario-trabajo-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.formulario-trabajo-acciones .boton-principal,
+.formulario-trabajo-acciones .boton-secundario {
+  cursor: pointer;
+}
+
+.formulario-trabajo-acciones .boton-principal:disabled,
+.formulario-trabajo-acciones .boton-secundario:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
 @media (max-width: 699px) {
   .tabla-consultas-envoltura {
     overflow: visible;
@@ -1645,6 +1919,33 @@ a.admin-dato:hover {
   .admin-tarjeta {
     padding: 2.5rem;
   }
+
+  .trabajo-fila {
+    grid-template-columns: 7.5rem minmax(0, 1fr) auto;
+  }
+
+  .trabajo-acciones {
+    grid-column: auto;
+    justify-content: flex-end;
+    max-width: 20rem;
+  }
+
+  .formulario-trabajo {
+    padding: 1.75rem;
+  }
+
+  .formulario-trabajo-grid {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  .foto-editor {
+    grid-template-columns: 7.5rem minmax(0, 1fr) auto;
+  }
+
+  .foto-editor-acciones {
+    flex-direction: column;
+    grid-column: auto;
+  }
 }
 
 @media (min-width: 600px) {
@@ -1658,6 +1959,11 @@ a.admin-dato:hover {
 .consulta-acciones .boton-principal:focus-visible,
 .consulta-acciones .boton-secundario:focus-visible,
 .consulta-acciones .boton-peligro:focus-visible,
+.trabajo-acciones .boton-secundario:focus-visible,
+.trabajo-acciones .boton-peligro:focus-visible,
+.formulario-trabajo-acciones .boton-principal:focus-visible,
+.formulario-trabajo-acciones .boton-secundario:focus-visible,
+.admin-navegacion-enlace:focus-visible,
 .admin-encabezado .boton-secundario:focus-visible,
 .formulario-ingreso .boton-principal:focus-visible {
   outline: 2px solid var(--color-acento);

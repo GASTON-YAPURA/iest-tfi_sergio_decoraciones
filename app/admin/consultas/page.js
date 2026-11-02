@@ -1,4 +1,5 @@
 import Link from "next/link";
+import NavegacionPanel from "../../../components/NavegacionPanel";
 import TablaConsultas from "../../../components/TablaConsultas";
 import {
   contarConsultas,
@@ -121,11 +122,14 @@ export default async function PaginaConsultas({ searchParams }) {
               </p>
             </div>
 
-            <form action="/api/admin/salir" method="post">
-              <button type="submit" className="boton-secundario">
-                Salir
-              </button>
-            </form>
+            <div className="admin-encabezado-acciones">
+              <NavegacionPanel actual="consultas" />
+              <form action="/api/admin/salir" method="post">
+                <button type="submit" className="boton-secundario">
+                  Salir
+                </button>
+              </form>
+            </div>
           </div>
 
           {errorBase ? (
