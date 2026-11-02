@@ -10,6 +10,7 @@
 | Base de datos | PostgreSQL (Neon) | Guarda las consultas del formulario (RF07) y los trabajos de la galería; Neon tiene plan gratuito |
 | Acceso a la base | `@neondatabase/serverless` | Driver oficial de Neon: permite consultas con `sql` y parámetros, y funciona en Vercel |
 | Acceso al panel | Cookie de sesión + bcryptjs | La contraseña de Sergio se guarda cifrada (hash) y la sesión se protege con una cookie segura; no hace falta una base de usuarios porque hay un solo acceso |
+| Exportación de PDF | `pdf-lib` | Arma el PDF de consultas en el servidor con JavaScript puro: mide el texto, pagina la tabla y conserva acentos; funciona en Vercel sin archivos externos |
 | Pruebas | `node:test` | Viene incluido en Node.js: no agrega dependencias y permite probar validaciones, sesión y enlaces antes de cada commit |
 | Repositorio | Git + GitHub | Historial de cambios del proyecto y respaldo del código |
 | Publicación | Vercel | Publica el sitio en cada `git push` y entrega HTTPS (RNF05) |

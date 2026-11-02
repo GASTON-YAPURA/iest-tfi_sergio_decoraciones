@@ -17,7 +17,12 @@ import {
   normalizarEstado,
   normalizarPagina,
 } from "../lib/filtros-consultas.js";
-import { escaparCelda, generarCsv, nombreArchivoCsv } from "../lib/csv.js";
+import {
+  estadoConsulta,
+  generarPdf,
+  nombreArchivoPdf,
+  sanitizarTextoPdf,
+} from "../lib/pdf.js";
 import {
   MAXIMO_INTENTOS,
   ingresoBloqueado,
@@ -221,7 +226,7 @@ test("la pagina de consultas exige sesion antes de leer la base", () => {
   assert.match(pagina, /formatearFechaConsulta/);
   assert.match(pagina, /searchParams/);
   assert.match(pagina, /contarConsultas/);
-  assert.match(pagina, /Exportar CSV/);
+  assert.match(pagina, /Exportar PDF/);
   assert.equal((pagina.match(/<h1>/g) ?? []).length, 1);
 });
 
@@ -232,7 +237,7 @@ test("la pagina busca, filtra y pagina las consultas", () => {
   assert.match(pagina, /ESTADOS\.map/);
   assert.match(pagina, /estado: "pendientes"/);
   assert.match(pagina, /estado: "atendidas"/);
-  assert.match(pagina, /armarUrlCsv/);
+  assert.match(pagina, /armarUrlPdf/);
   assert.match(pagina, /admin-paginado/);
   assert.match(pagina, /datos\.pagina - 1/);
   assert.match(pagina, /datos\.pagina \+ 1/);
@@ -293,16 +298,14 @@ test("el cuadro de respuesta deja editar el mensaje antes de WhatsApp", () => {
   assert.match(respuesta, /Escape/);
 });
 
-test("el csv escapa comas, comillas y formulas", () => {
-  assert.equal(escaparCelda("María Pérez"), "María Pérez");
-  assert.equal(escaparCelda("Hola, ¿cómo estás?"), '"Hola, ¿cómo estás?"');
-  assert.equal(escaparCelda('Dijo "hola"'), '"Dijo ""hola"""');
-  assert.equal(escaparCelda("=1+1"), "'=1+1");
-  assert.equal(escaparCelda("+54 9 3837"), "'+54 9 3837");
-  assert.equal(escaparCelda(null), "");
+test("el pdf limpia los caracteres que la fuente no soporta", () => {
+  assert.equal(sanitizarTextoPdf("María Pérez"), "María Pérez");
+  assert.equal(sanitizarTextoPdf("  Hola \n mundo  "), "Hola mundo");
+  assert.equal(sanitizarTextoPdf("“Hola” – 😀"), '"Hola" - ?');
+  assert.equal(sanitizarTextoPdf(null), "");
 });
 
-test("el csv arma las cinco columnas y el estado de cada consulta", () => {
+test("el pdf arma las cinco columnas y el estado de cada consulta", async () => {
   const consultas = [
     {
       creada_en: "2026-10-28T15:30:00Z",
@@ -321,26 +324,28 @@ test("el csv arma las cinco columnas y el estado de cada consulta", () => {
       archivada: true,
     },
   ];
-  const csv = generarCsv(consultas, formatearFechaConsulta);
-  const filas = csv.split("\r\n");
+  const pdf = await generarPdf(consultas, formatearFechaConsulta);
+  const texto = Buffer.from(pdf).toString("latin1");
 
-  assert.equal(filas[0], "Fecha,Nombre,Teléfono,Mensaje,Estado");
-  assert.match(filas[1], /Pendiente/);
-  assert.match(filas[2], /Archivada/);
-  assert.equal(filas.length, 3);
-  assert.match(nombreArchivoCsv(new Date(2026, 10, 1)), /consultas-2026-11-01\.csv/);
+  assert.equal(estadoConsulta(consultas[0]), "Pendiente");
+  assert.equal(estadoConsulta(consultas[1]), "Archivada");
+  assert.ok(pdf instanceof Uint8Array);
+  assert.match(texto.slice(0, 5), /^%PDF-/);
+  assert.match(texto, /%%EOF/);
+  assert.ok(pdf.length > 1000);
+  assert.equal(nombreArchivoPdf(new Date(2026, 10, 1)), "consultas-2026-11-01.pdf");
 });
 
-test("la descarga del csv exige sesion y respeta los filtros", () => {
-  const ruta = leerArchivo("app/api/admin/consultas/csv/route.js");
+test("la descarga del pdf exige sesion y respeta los filtros", () => {
+  const ruta = leerArchivo("app/api/admin/consultas/pdf/route.js");
 
   assert.match(ruta, /leerSesion\(\)/);
   assert.match(ruta, /status: 401/);
-  assert.match(ruta, /listarConsultasParaCsv/);
+  assert.match(ruta, /listarConsultasParaPdf/);
   assert.match(ruta, /searchParams/);
   assert.match(ruta, /Content-Disposition/);
   assert.match(ruta, /attachment/);
-  assert.match(ruta, /text\/csv/);
+  assert.match(ruta, /application\/pdf/);
 });
 
 test("los estilos del panel usan las variables de la marca", () => {

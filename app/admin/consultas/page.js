@@ -40,7 +40,7 @@ function armarUrl({ busqueda, estado, pagina }) {
   return texto ? `/admin/consultas?${texto}` : "/admin/consultas";
 }
 
-function armarUrlCsv(busqueda, estado) {
+function armarUrlPdf(busqueda, estado) {
   const parametros = new URLSearchParams();
 
   if (busqueda) {
@@ -53,7 +53,7 @@ function armarUrlCsv(busqueda, estado) {
 
   const texto = parametros.toString();
 
-  return `/api/admin/consultas/csv${texto ? `?${texto}` : ""}`;
+  return `/api/admin/consultas/pdf${texto ? `?${texto}` : ""}`;
 }
 
 function mensajeVacio(busqueda, estado) {
@@ -228,10 +228,10 @@ export default async function PaginaConsultas({ searchParams }) {
 
                 <a
                   className="boton-secundario boton-chico admin-exportar"
-                  href={armarUrlCsv(busqueda, estado)}
+                  href={armarUrlPdf(busqueda, estado)}
                   download
                 >
-                  Exportar CSV
+                  Exportar PDF
                 </a>
               </div>
 
