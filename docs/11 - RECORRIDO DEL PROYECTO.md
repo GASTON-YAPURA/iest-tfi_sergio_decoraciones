@@ -14,7 +14,7 @@ Este documento cuenta **cómo se construyó** el sitio de Sergio Decoraciones: q
 |---|---|
 | Cliente | Sergio Decoraciones, emprendimiento de decoración y terminaciones en Tinogasta, Catamarca |
 | Problema | Sergio consigue clientes solo por WhatsApp y llamadas; no tiene sitio ni redes |
-| Solución | Una vidriera web con los trabajos y los servicios, botones de contacto y un panel privado de consultas |
+| Solución | Una vidriera web con los trabajos y los servicios, botones de contacto y un panel privado de consultas y trabajos |
 | Stack | Next.js 16 (App Router) + React 19, PostgreSQL en Neon, GitHub y Vercel |
 | Estilos | CSS propio con variables de marca (sin Tailwind ni Bootstrap) |
 | Idioma | Todo el sitio en español; el código también, sin tildes ni ñ |
@@ -30,16 +30,21 @@ Este documento cuenta **cómo se construyó** el sitio de Sergio Decoraciones: q
 | `/nosotros` | Quién es Sergio y cómo trabaja | Estática |
 | `/contacto` | WhatsApp, llamada y formulario de consulta | Estática |
 | `/admin` | Ingreso con usuario y contraseña | Dinámica, fuera del menú |
-| `/admin/consultas` | Listado privado de consultas | Dinámica, protegida |
+| `/admin/consultas` | Listado privado de consultas, con búsqueda, filtros, archivo y CSV | Dinámica, protegida |
+| `/admin/trabajos` | Listado y formulario privado de trabajos con sus fotos | Dinámica, protegida |
 
 ### Las APIs
 
 | Ruta | Método | Para qué |
 |---|---|---|
 | `/api/trabajos` | GET | Devuelve los trabajos visibles |
+| `/api/trabajos/[id]/foto` | GET | Entrega una foto guardada en la base (oculta si el trabajo no se ve) |
 | `/api/consultas` | POST | Valida y guarda una consulta del formulario |
 | `/api/admin/ingresar` | POST | Verifica credenciales y crea la sesión |
-| `/api/admin/consultas` | GET / PATCH | Lista las consultas y marca una como atendida |
+| `/api/admin/consultas` | GET / PATCH / DELETE | Lista, marca como atendida, archiva, restaura o borra una consulta |
+| `/api/admin/consultas/csv` | GET | Descarga las consultas filtradas en CSV |
+| `/api/admin/trabajos` | GET / POST / PATCH / DELETE | Lista, crea, edita, oculta o borra un trabajo |
+| `/api/admin/trabajos/[id]/fotos` | POST / PATCH / DELETE | Sube, ordena o quita las fotos de un trabajo |
 | `/api/admin/salir` | POST | Borra la cookie de sesión |
 
 ---
@@ -54,7 +59,7 @@ El proyecto no se hizo "de una sola vez". Se siguió un ciclo de trabajo escrito
 4. **Probar**: ejecutar `npm test` y `npm run build`.
 5. **Registrar**: marcar la tarea con `[x]` en `08 - TAREAS.md`, anotar el commit y actualizar `memory.md`.
 
-Las ocho etapas están en `08 - TAREAS.md`. Cada una tiene sus tareas con casillas y los requerimientos que cubre (RF = funcional, RNF = no funcional, definidos en `02 - REQUERIMIENTOS.md`).
+Las nueve etapas están en `08 - TAREAS.md`. Cada una tiene sus tareas con casillas y los requerimientos que cubre (RF = funcional, RNF = no funcional, definidos en `02 - REQUERIMIENTOS.md`).
 
 ### Línea de tiempo real (commits)
 
@@ -71,6 +76,10 @@ Las ocho etapas están en `08 - TAREAS.md`. Cada una tiene sus tareas con casill
 | 28/10/2026 | `520fab7 protege el panel de consultas con sesion` | 7 |
 | 28/10/2026 | `8877162 arregla el menu hamburguesa en el celular` | 8 (en curso) |
 | 31/10/2026 | `82f9365 completa la etapa de calidad y publicación` | 8 (en curso) |
+| 01/11/2026 | `88a7def documenta el panel de administracion de trabajos` | 9 |
+| 01/11/2026 | `7f87f35 guarda las fotos de los trabajos en la base` | 9 |
+| 02/11/2026 | `73a962d agrega busqueda filtros y archivo de consultas` | 9 |
+| 02/11/2026 | `feaa793 agrega el panel de trabajos con fotos` | 9 |
 
 ---
 
@@ -414,6 +423,57 @@ Los pendientes de datos están anotados también en `memory.md`.
 
 ---
 
+## 10.1 Etapa 9: Panel de administración completo
+
+**Objetivo:** que Sergio pueda ver y responder sus consultas y cargar sus trabajos con fotos desde el celular, sin tocar la base ni el código.
+**Requerimientos:** RF12 a RF20 y RNF07.
+
+### Las fotos dejaron de estar en `public/`
+
+Antes cada trabajo tenía una sola foto en `public/img/trabajos/` y una columna `foto`. Para que Sergio pudiera cargar varias fotos desde el panel se creó la tabla `trabajo_fotos` y las imágenes pasaron a guardarse como `BYTEA` en PostgreSQL.
+
+1. **Esquema:** `trabajo_fotos` guarda el trabajo, los bytes, el tipo real, el ancho, el alto, el texto alternativo y el orden. `trabajos` perdió las columnas `foto` y `texto_alt`; `consultas` ganó `archivada`.
+2. **Importación:** `scripts/importar-fotos.mjs` (comando `npm run db:fotos`) leyó las seis fotos que estaban en `public/img/trabajos/`, las guardó en la base y después se vació esa carpeta. Los originales quedaron en `multimedia/trabajos/` como respaldo.
+3. **Entrega:** `/api/trabajos/[id]/foto?foto=` lee la foto de la base y responde con su `Content-Type` y caché. Si el trabajo está oculto y no hay sesión, devuelve 404.
+4. **Galería y visor:** la portada de cada tarjeta es la foto con el `orden` más bajo. El visor recorre todas las fotos de un trabajo con flechas, contador y `Escape`.
+
+### Panel de consultas
+
+El listado pasó de mostrar todo a permitir trabajar con muchas consultas:
+
+- Búsqueda por nombre o teléfono y filtros por pendientes, atendidas y archivadas. La búsqueda viaja como parámetro SQL (`ILIKE $n`), nunca pegada dentro de la consulta.
+- Paginado de a 10 con anterior y siguiente, y un resumen de pendientes, atendidas y total.
+- Archivar y restaurar sin borrar. El borrado definitivo solo se habilita desde las archivadas y pide confirmación.
+- Respuesta por WhatsApp con un mensaje editable antes de abrir la aplicación.
+- Exportación a CSV con los mismos filtros de la pantalla. Las celdas se escapan para que Excel no interprete fórmulas y el archivo lleva la fecha en el nombre.
+
+La búsqueda, el filtro y la página viajan en la dirección (`?buscar=…&estado=…&pagina=…`), así el panel funciona sin JavaScript y el enlace se puede recargar sin perder el estado.
+
+### Panel de trabajos
+
+La pantalla `/admin/trabajos` tiene un listado con miniatura, servicio, cantidad de fotos y estado (visible u oculto), y un formulario para crear o editar.
+
+1. **Alta y edición:** el formulario valida título (3 a 120 caracteres), servicio (uno de los seis) y descripción (5 a 600). La ruta `POST/PATCH /api/admin/trabajos` vuelve a validar lo mismo en el servidor.
+2. **Varias fotos:** se pueden elegir varias imágenes a la vez. Cada una tiene su texto alternativo (5 a 200 caracteres), se puede subir o bajar de orden y quitar, salvo que sea la última. La primera es la portada. El máximo es 12 fotos por trabajo.
+3. **Compresión en el navegador:** `lib/comprimir-imagen.js` abre la imagen, la achica a 1600 px por lado sin deformarla, la pasa a JPG y baja la calidad si supera 1,5 MB. El servidor no confía en eso: `lib/imagen.js` lee los primeros bytes para comprobar el tipo real, mide el ancho y el alto y vuelve a controlar el peso.
+4. **Subida ordenada:** primero se guarda el trabajo, después se sube cada foto con `FormData`, luego se guardan los textos y el orden con un `PATCH`, y al final se borran las fotos que se quitaron. Si algo falla a mitad de camino, las fotos ya subidas no se vuelven a mandar al reintentar.
+5. **Ocultar sin borrar:** el botón Ocultar cambia `visible` y el trabajo desaparece de la galería y del inicio, pero sigue en el panel y sus fotos siguen visibles para Sergio con la sesión iniciada.
+6. **Borrar con confirmación:** el borrado definitivo avisa cuántas fotos se pierden y no se puede deshacer. La base borra las fotos en cascada.
+
+### Pruebas y comprobaciones
+
+- `npm test` pasó de 78 a **99 pruebas**. `test/panel-trabajos.test.js` cubre las validaciones puras, los límites de las fotos, el cálculo de medidas, la compresión sugerida y las rutas y componentes del panel.
+- `npm run build` compila y lista las rutas nuevas: `/admin/trabajos`, `/api/admin/trabajos` y `/api/admin/trabajos/[id]/fotos`.
+- Con el servidor de desarrollo se probó de punta a punta: ingreso, listado, alta de un trabajo oculto, subida de dos fotos reales, reordenamiento, cambio de texto alternativo, publicación, borrado de una foto, rechazo de la última foto (409) y borrado final del trabajo.
+- También se comprobó que sin sesión `/admin/trabajos` redirige a `/admin` y las rutas del panel responden 401; que una foto de un trabajo oculto responde 404 sin sesión; y que las páginas públicas siguen mostrando los seis trabajos con sus fotos.
+- En un navegador headless, a 1366 px y a 390 px, se verificó que el panel no desborda, que la navegación marca la sección activa, que el color de acento sale de la variable de marca y que el formulario muestra la portada y los textos alternativos guardados.
+
+### Pendiente de esta etapa
+
+Cambiar la contraseña temporal y publicar en Vercel con las variables de entorno (`DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH`, `SESION_SECRETA` y `SITIO_URL`).
+
+---
+
 ## 11. El arreglo del menú del celular (caso de estudio)
 
 Vale la pena contarlo completo porque fue un problema que **no era de CSS**.
@@ -484,11 +544,12 @@ Con un navegador real (Chrome sin ventana) emulando un celular de 390×844:
 | Comando | Para qué |
 |---|---|
 | `npm run dev` | Servidor de desarrollo en `http://localhost:3000` |
-| `npm test` | Las 63 pruebas automáticas |
+| `npm test` | Las 99 pruebas automáticas |
 | `npm run build` | Build de producción (falla si algo está roto) |
 | `npm start` | Sirve el build de producción |
 | `npm run db:esquema` | Crea las tablas |
 | `npm run db:datos` | Carga los trabajos de muestra |
+| `npm run db:fotos` | Importa a la base las fotos de `multimedia/trabajos/` |
 
 ### Abrir el sitio sin escribir comandos
 
@@ -511,7 +572,8 @@ Los dos archivos están en `.gitignore`: funcionan en la computadora donde se cr
 | `test/estructura.test.js` | Encabezado, menú, pie, botón flotante y metadatos |
 | `test/galeria.test.js` | El filtro por servicio y el visor de fotos |
 | `test/consultas.test.js` | Validación, límite de envíos y respuestas de la API |
-| `test/panel.test.js` | Sesión firmada, vencimiento, credenciales, límite de intentos, rutas protegidas y tabla |
+| `test/panel.test.js` | Sesión firmada, vencimiento, credenciales, límite de intentos, rutas protegidas, búsqueda, archivo y CSV de consultas |
+| `test/panel-trabajos.test.js` | Validaciones de trabajos y fotos, límites de imagen, rutas del panel, compresión en el navegador y componentes de trabajos |
 | `test/menu.test.js` | Estado del botón, cierres del menú, bloqueo del scroll y origen de desarrollo |
 | `test/seo.test.js` | Dirección base, canónicas, Open Graph, `robots.txt` y `sitemap.xml` |
 
@@ -546,12 +608,17 @@ app/
   admin/
     layout.js               noindex para todo el panel
     page.js                 ingreso
-    consultas/page.js       listado protegido
+    consultas/page.js       listado protegido de consultas
+    trabajos/page.js        listado y formulario protegido de trabajos
   api/
     trabajos/route.js       GET trabajos
+    trabajos/[id]/foto/route.js entrega una foto de la base
     consultas/route.js      POST consulta
     admin/ingresar/route.js POST ingreso
-    admin/consultas/route.js GET y PATCH consultas (protegido)
+    admin/consultas/route.js GET, PATCH y DELETE consultas (protegido)
+    admin/consultas/csv/route.js descarga CSV (protegido)
+    admin/trabajos/route.js GET, POST, PATCH y DELETE trabajos (protegido)
+    admin/trabajos/[id]/fotos/route.js POST, PATCH y DELETE fotos (protegido)
     admin/salir/route.js    POST salir
 
 components/
@@ -562,15 +629,27 @@ components/
   VisorFoto.js              ventana de foto grande y accesible
   FormularioConsulta.js     formulario con validación
   FormularioIngreso.js      ingreso del panel
-  TablaConsultas.js         tabla y marcar atendida
+  NavegacionPanel.js        enlaces entre consultas y trabajos
+  TablaConsultas.js         tabla, archivo y borrado de consultas
+  RespuestaWhatsApp.js      mensaje editable antes de WhatsApp
+  PanelTrabajos.js          listado, visibilidad y borrado de trabajos
+  FormularioTrabajo.js      alta y edición de un trabajo con sus fotos
   BotonWhatsApp.js          enlace wa.me
   BotonLlamar.js            enlace tel:
 
 lib/
   db.js                     única conexión a Neon
-  trabajos.js               consultas de trabajos
+  trabajos.js               consultas de trabajos y sus fotos
   consultas.js              guardar y listar consultas
+  filtros-consultas.js      normaliza búsqueda, estado y página
+  csv.js                    armado y escape del CSV
   validacion.js             reglas del formulario (cliente y servidor)
+  validacion-trabajos.js    reglas del trabajo y de sus fotos
+  limites-imagen.js         tipos, peso y medidas máximas
+  imagen.js                 tipo real, medidas y validación en el servidor
+  comprimir-imagen.js       compresión en el navegador
+  texto-alt.js              largo del texto alternativo
+  fotos.js                  dirección pública de una foto
   limite.js                 límites de envíos e intentos
   contacto.js               números y enlaces de contacto
   servicios.js              catálogo de servicios
@@ -583,6 +662,10 @@ db/
   esquema.sql               tablas
   datos.sql                 trabajos de muestra
   ejecutar-sql.js           ejecutor de los .sql
+
+scripts/
+  importar-fotos.mjs        importa las fotos a la base
+  cambiar-clave.mjs         genera el hash de una clave nueva
 
 test/                       pruebas con node:test
 docs/                       especificaciones del proyecto
@@ -618,7 +701,8 @@ docs/                       especificaciones del proyecto
 | Sin TypeScript | El proyecto se definió en JavaScript; se compensa con pruebas |
 | Sin Prisma ni ORM | SQL directo y parametrizado, más simple de leer y auditar |
 | Trabajos en la base, servicios en código | Los servicios son un catálogo fijo; los trabajos cambian y tienen fotos |
-| Sin panel para cargar trabajos | Fuera de alcance: Sergio los carga en la base |
+| Panel para cargar trabajos | Sergio carga y corrige sus trabajos con sus fotos sin tocar la base ni el código |
+| Fotos dentro de la base | No hace falta un servicio externo ni una carpeta pública; se entregan por una ruta con control de visibilidad |
 | Sin precios publicados | Se consultan por WhatsApp o llamada |
 | Sin cuentas de clientes ni pagos | No forman parte del objetivo del sitio |
 | `/admin` fuera del menú y con `noindex` | Solo Sergio debe llegar ahí |
@@ -631,7 +715,7 @@ docs/                       especificaciones del proyecto
 
 Si hay que explicarlo en un minuto:
 
-> Es un sitio en Next.js para un emprendimiento de decoración. Muestra los trabajos terminados que están cargados en PostgreSQL (Neon), permite filtrarlos por servicio y verlos en grande, presenta los seis servicios y lleva al cliente a consultar por WhatsApp, por llamada o con un formulario que guarda la consulta en la base. Tiene un panel privado, protegido con contraseña hasheada y una sesión firmada de 8 horas, donde Sergio ve las consultas y las marca como atendidas. Todo se construyó en ocho etapas, cada una con sus pruebas automáticas, y se publica en Vercel.
+> Es un sitio en Next.js para un emprendimiento de decoración. Muestra los trabajos terminados que están cargados en PostgreSQL (Neon), permite filtrarlos por servicio y verlos en grande, presenta los seis servicios y lleva al cliente a consultar por WhatsApp, por llamada o con un formulario que guarda la consulta en la base. Tiene un panel privado, protegido con contraseña hasheada y una sesión firmada de 8 horas, donde Sergio ve las consultas (las busca, filtra, archiva, responde por WhatsApp y exporta a CSV) y carga sus trabajos con varias fotos, texto alternativo, orden, visibilidad y compresión en el navegador. Todo se construyó en nueve etapas, cada una con sus pruebas automáticas, y se publica en Vercel.
 
 Y si preguntan por las decisiones técnicas:
 

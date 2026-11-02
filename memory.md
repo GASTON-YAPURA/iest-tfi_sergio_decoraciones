@@ -15,15 +15,15 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Identidad de marca (logo, paleta, tipografías) | Hecha: `IDENTIDAD-MARCA.md` |
 | Especificaciones (`01` a `10` y `AGENTS.md`) | Hechas |
 | `Legends.md`, `Memory.md` y `Commits.md` | Hechos |
-| Código del sitio | Etapa 7 completa: panel privado `/admin`, ingreso con sesión firmada, listado protegido `/admin/consultas`, marcar consultas como atendidas y salir |
-| SEO y calidad (Etapa 8) | Hechos: `lib/sitio.js`, `robots.txt`, `sitemap.xml`, metadatos por página, contraste, lista de seguridad y pruebas (72) |
+| Código del sitio | Etapa 8 completa; Etapa 9 completa: panel privado `/admin` con ingreso, consultas (buscar, filtrar, paginar, archivar, borrar, CSV y respuesta editable) y trabajos (alta, edición, fotos, visibilidad y borrado) |
+| SEO y calidad (Etapa 8) | Hechos: `lib/sitio.js`, `robots.txt`, `sitemap.xml`, metadatos por página, contraste, lista de seguridad y pruebas |
 | Fotos de trabajos en la base (Etapa 9) | Hechas: tabla `trabajo_fotos`, `/api/trabajos/[id]/foto`, importación con `npm run db:fotos`, galería y visor con varias fotos |
-| Panel completo de consultas y trabajos (Etapa 9) | En curso: consultas completas (buscar, filtrar, paginar, archivar, restaurar, borrar y exportar CSV); falta el CRUD de trabajos |
+| Panel completo de consultas y trabajos (Etapa 9) | Hecho: consultas (buscar, filtrar, paginar, archivar, restaurar, borrar y exportar CSV) y trabajos (CRUD, varias fotos con texto alternativo y orden, compresión en el navegador, ocultar/mostrar y borrar con confirmación) |
 | Declaración de IA | Hecha: `docs/DECLARACION-IA.md` y `multimedia/FICHAS-IA.md` (fotos con prompts de ChatGPT e imágenes de Gemini) |
 | Publicación en Vercel | Pendiente: variables de entorno, contraseña definitiva y deploy con HTTPS |
 | Informe escrito del TP | Pendiente |
 
-**Próximo paso:** terminar el panel de consultas (buscador, filtros, paginado, archivar, CSV y mensaje editable) y después el panel de trabajos con carga de fotos.
+**Próximo paso:** cambiar la contraseña temporal del panel y publicar en Vercel con las variables de entorno.
 
 ## Decisiones tomadas
 
@@ -41,6 +41,10 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Fotos de trabajos | Se guardan como `BYTEA` en la tabla `trabajo_fotos` y se sirven por `/api/trabajos/[id]/foto?foto=`; los originales quedan en `multimedia/trabajos/` como respaldo | No hace falta un servicio externo ni una carpeta pública; entran en el deploy de Vercel |
 | Varias fotos por trabajo | La primera (el `orden` más bajo) es la portada de la tarjeta; el visor muestra el resto con flechas y contador | Un trabajo suele tener más de una foto y se aprovecha el mismo formulario |
 | Consultas archivadas | Se archivan sin borrar y se pueden restaurar; el borrado definitivo solo se permite desde las archivadas, con confirmación | Evita perder consultas por un clic y mantiene limpia la lista principal |
+| Búsqueda y filtros del panel | Se resuelven en la base con parámetros y se reflejan en la dirección (`buscar`, `estado`, `pagina`); el CSV usa los mismos filtros | El panel funciona sin JavaScript y el enlace se puede compartir o recargar sin perder el estado |
+| Carga de fotos desde el panel | El navegador achica a 1600 px y comprime a JPG por debajo de 1,5 MB; el servidor vuelve a leer el tipo real, el peso y las medidas | Evita subir archivos enormes o disfrazados y no depende de la extensión |
+| Límites de las fotos | Hasta 12 por trabajo y al menos una siempre; el texto alternativo va de 5 a 200 caracteres | Mantiene liviana la base y obliga a describir cada foto |
+| Orden de los trabajos | Los más nuevos aparecen primero; no hay orden manual | El orden se explica solo y evita una pantalla extra de administración |
 | Nombres | La galería se llama "Trabajos" en el menú (TRABAJOS), en la dirección (`/trabajos`), en el código y en la base de datos | Un solo nombre en todo el proyecto, sin confusiones |
 | Idioma del código | Español, sin tildes ni ñ | Definido en `07-CONVENCIONES.md` |
 | Tipografías | Cinzel Bold para títulos, Lato Regular para textos | Cinzel es la tipografía del logo |
@@ -78,6 +82,8 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 02/11/2026 | Etapa 9: panel de trabajos completo (`/admin/trabajos`, API de alta/edición/borrado, fotos con texto alternativo y orden, compresión en el navegador, ocultar/mostrar y borrar con confirmación); 99 pruebas y build correctos |
+| 02/11/2026 | Etapa 9: consultas completas en el panel (búsqueda, filtros, paginado de a 10, resumen, archivar/restaurar, borrado definitivo, respuesta editable por WhatsApp y CSV con los filtros) |
 | 01/11/2026 | Etapa 9: las fotos de los trabajos pasaron a la base (`trabajo_fotos`), se importaron con `npm run db:fotos`, se sirven por `/api/trabajos/[id]/foto`, el visor muestra varias fotos con flechas y contador y `public/img/trabajos/` se vació; fichas de IA actualizadas (Gemini + ChatGPT) |
 | 31/10/2026 | Declaración de IA: `docs/DECLARACION-IA.md`, `multimedia/FICHAS-IA.md`, nota en `docs/00 - IDENTIDAD-MARCA.md` y leyenda "Fotos de muestra generadas con IA" en `/trabajos` |
 | 31/10/2026 | Etapa 8: SEO completo (`lib/sitio.js`, `robots.js`, `sitemap.js`, canónicas y Open Graph por página), revisión de seguridad, contraste y `test/seo.test.js` (63 pruebas) |

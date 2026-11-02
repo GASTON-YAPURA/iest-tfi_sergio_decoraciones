@@ -107,20 +107,20 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 - [x] Archivar, restaurar y borrar consultas con confirmación (RF16)
 - [x] Exportar las consultas filtradas a CSV (RF17)
 - [x] Mostrar el resumen de pendientes, atendidas y total (RF18)
-- [ ] Revisar el orden visual del panel con la paleta de marca
+- [x] Revisar el orden visual del panel con la paleta de marca
 
 ### Trabajos
 
-- [ ] Crear la página `/admin/trabajos` protegida por sesión (RF19)
-- [ ] Crear la ruta `app/api/admin/trabajos/route.js` para alta, edición y borrado (RF19)
-- [ ] Crear la ruta `app/api/admin/trabajos/[id]/fotos/route.js` para las fotos (RF20)
+- [x] Crear la página `/admin/trabajos` protegida por sesión (RF19)
+- [x] Crear la ruta `app/api/admin/trabajos/route.js` para alta, edición y borrado (RF19)
+- [x] Crear la ruta `app/api/admin/trabajos/[id]/fotos/route.js` para las fotos (RF20)
 - [x] Crear la ruta `app/api/trabajos/[id]/foto/route.js` que entrega la foto desde la base
-- [ ] Permitir varias fotos por trabajo, con texto alternativo y orden (RF20)
-- [ ] Comprimir la foto en el navegador antes de subirla y validarla en el servidor
-- [ ] Ocultar y volver a mostrar un trabajo sin borrarlo (RF19)
-- [ ] Pedir confirmación antes de borrar un trabajo y sus fotos (RF19)
+- [x] Permitir varias fotos por trabajo, con texto alternativo y orden (RF20)
+- [x] Comprimir la foto en el navegador antes de subirla y validarla en el servidor
+- [x] Ocultar y volver a mostrar un trabajo sin borrarlo (RF19)
+- [x] Pedir confirmación antes de borrar un trabajo y sus fotos (RF19)
 - [x] Hacer que la galería y el inicio lean las fotos desde la base
 - [x] Mostrar todas las fotos de un trabajo en el visor, con flechas y contador
-- [ ] Agregar pruebas de permisos, validaciones y del panel de trabajos
+- [x] Agregar pruebas de permisos, validaciones y del panel de trabajos
 - [x] Reemplazar las fotos de muestra por las definitivas y actualizar las fichas de IA
-- [ ] Actualizar `memory.md`, `Commits.md` y `11 - RECORRIDO DEL PROYECTO.md`
+- [x] Actualizar `memory.md`, `Commits.md` y `11 - RECORRIDO DEL PROYECTO.md`

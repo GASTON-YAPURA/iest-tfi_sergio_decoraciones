@@ -67,6 +67,8 @@ Se anotan los commits importantes. Para ver el historial completo se usa `git lo
 | 31/10/2026 | 8. Calidad y publicación | `main` | `completa la etapa de calidad y publicación` | SEO, seguridad, declaración de IA y actualización de las especificaciones del proyecto |
 | 01/11/2026 | 9. Panel de administración | `main` | `documenta el panel de administracion de trabajos` | RF12 a RF20, tablas `trabajo_fotos` y `archivada`, pantallas del panel, seguridad y tareas de la etapa 9 |
 | 01/11/2026 | 9. Panel de administración | `main` | `guarda las fotos de los trabajos en la base` | Tabla `trabajo_fotos`, importación con `npm run db:fotos`, ruta de fotos, visor con varias fotos, fotos definitivas y fichas de IA |
+| 02/11/2026 | 9. Panel de administración | `main` | `agrega busqueda filtros y archivo de consultas` | Buscador, filtros, paginado, resumen, archivar/restaurar, borrado definitivo, respuesta editable y CSV |
+| 02/11/2026 | 9. Panel de administración | `main` | `feaa793 agrega el panel de trabajos con fotos` | Página y API de trabajos, fotos en la base, compresión en el navegador, texto alternativo, orden, visibilidad y borrado con confirmación |
 
 Repositorio: https://github.com/GASTON-YAPURA/iest-tfi_sergio_decoraciones
 

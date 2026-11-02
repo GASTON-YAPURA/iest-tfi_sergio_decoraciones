@@ -90,9 +90,10 @@ Reglas:
 Las fotos se guardan en la base y se suben solo desde el panel con sesión iniciada.
 
 - El formulario acepta únicamente imágenes JPG, PNG o WebP.
-- Antes de subir, el navegador achica la foto (máximo 1600 px de ancho y 1 MB) para que la base no crezca de más.
+- Antes de subir, el navegador achica y comprime la foto (máximo 1600 px por lado y 1,5 MB) con un canvas, bajando la calidad si hace falta, para que la base no crezca de más.
 - El servidor vuelve a comprobar el tipo real del archivo (no solo la extensión), el peso máximo y las medidas, y rechaza cualquier otro archivo.
 - El texto alternativo es obligatorio y tiene un máximo de 200 caracteres.
+- Cada trabajo admite hasta 12 fotos y siempre conserva al menos una; el servidor lo comprueba antes de aceptar la subida o el borrado.
 - Las fotos se entregan con `Content-Type` correcto y caché; nunca se muestra el contenido binario en la página.
 - Para borrar un trabajo o una foto se exige sesión y confirmación en el panel.
 - `public/img/trabajos/` ya no se usa: las fotos no forman parte del código ni del repositorio público.
