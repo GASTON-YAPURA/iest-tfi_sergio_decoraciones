@@ -25,6 +25,7 @@
 | RF19 | Administrar los trabajos desde el panel: agregar, editar, ocultar y borrar | Alta |
 | RF20 | Cargar varias fotos por trabajo, guardadas en la base de datos | Alta |
 | RF21 | Agregar desde el panel servicios personalizados reutilizables para clasificar trabajos | Media |
+| RF22 | Mostrar cada servicio personalizado en la página Servicios con su nombre, detalle y descripción | Media |
 
 ## Requerimientos no funcionales
 
@@ -92,5 +93,8 @@
 - Si la base falla, el panel muestra un mensaje claro y no pierde lo que estaba cargado
 - Al agregar un trabajo se puede elegir un servicio existente o crear uno nuevo
 - El servicio nuevo se guarda para reutilizarlo en trabajos futuros y aparece como etiqueta y filtro en la galería pública
-- Los servicios personalizados no modifican el catálogo fijo de la página `/servicios`
+- Al crear un servicio personalizado se ingresan nombre, detalle y descripción
+- El servicio personalizado aparece como ficha en `/servicios` y sus cambios se ven inmediatamente
+- Las seis fichas fijas actuales de `/servicios` se conservan sin cambios
 - El nombre del servicio se valida y no se permiten duplicados sin distinguir mayúsculas y minúsculas
+- El nombre, detalle y descripción se validan en el servidor

@@ -1,6 +1,6 @@
 # 05-DATOS: qué información guarda Sergio Decoraciones
 
-La base de datos es PostgreSQL (Neon) y tiene cuatro tablas: `trabajos` (la galería), `trabajo_fotos` (las fotos de cada trabajo), `servicios_adicionales` (categorías creadas desde el panel) y `consultas` (lo que envía el formulario). Los seis servicios principales siguen definidos en `lib/servicios.js`; los adicionales se guardan en la base y se usan en la galería, no en la página fija `/servicios`. No guarda precios ni datos de pago. El usuario y la contraseña de Sergio para el panel no están en la base: van en variables de entorno (ver 03-TECNOLOGIAS.md y 10-SEGURIDAD.md).
+La base de datos es PostgreSQL (Neon) y tiene cuatro tablas: `trabajos` (la galería), `trabajo_fotos` (las fotos de cada trabajo), `servicios_adicionales` (categorías creadas desde el panel) y `consultas` (lo que envía el formulario). Los seis servicios principales siguen definidos en `lib/servicios.js`; los adicionales se guardan en la base y se muestran como filtros en Trabajos y como fichas descriptivas en `/servicios`. No guarda precios ni datos de pago. El usuario y la contraseña de Sergio para el panel no están en la base: van en variables de entorno (ver 03-TECNOLOGIAS.md y 10-SEGURIDAD.md).
 
 ## Tabla `trabajos`
 
@@ -28,12 +28,14 @@ La base de datos es PostgreSQL (Neon) y tiene cuatro tablas: `trabajos` (la gale
 
 ## Tabla `servicios_adicionales`
 
-Guarda servicios que Sergio crea al cargar un trabajo. Se reutilizan en el formulario y en los filtros/etiquetas de la galería. No se eliminan al borrar un trabajo ni aparecen en el catálogo fijo de `/servicios`.
+Guarda servicios que Sergio crea al cargar un trabajo. Se reutilizan en el formulario, en los filtros/etiquetas de la galería y como fichas de `/servicios`. No se eliminan al borrar un trabajo.
 
 | Campo | Tipo | Descripción |
 |---|---|---|
 | `id` | `SERIAL` (clave primaria) | Número único del servicio adicional |
 | `nombre` | `VARCHAR(80)`, obligatorio | Nombre visible, único sin distinguir mayúsculas y minúsculas |
+| `detalle` | `VARCHAR(120)`, opcional para filas creadas antes de esta etapa | Texto breve que acompaña el nombre en `/servicios` |
+| `descripcion` | `TEXT`, opcional para filas creadas antes de esta etapa | Descripción del servicio en `/servicios` |
 
 ## Tabla `trabajo_fotos`
 
@@ -88,12 +90,19 @@ CREATE TABLE IF NOT EXISTS trabajo_fotos (
 );
 
 CREATE TABLE IF NOT EXISTS servicios_adicionales (
-  id     SERIAL PRIMARY KEY,
-  nombre VARCHAR(80) NOT NULL
+  id          SERIAL PRIMARY KEY,
+  nombre      VARCHAR(80) NOT NULL,
+  detalle     VARCHAR(120),
+  descripcion TEXT
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS servicios_adicionales_nombre_idx
   ON servicios_adicionales (LOWER(nombre));
+
+ALTER TABLE servicios_adicionales
+  ADD COLUMN IF NOT EXISTS detalle VARCHAR(120);
+ALTER TABLE servicios_adicionales
+  ADD COLUMN IF NOT EXISTS descripcion TEXT;
 
 CREATE TABLE IF NOT EXISTS consultas (
   id        SERIAL PRIMARY KEY,

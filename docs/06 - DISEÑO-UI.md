@@ -7,7 +7,7 @@ El diseño sigue el mockup de la página de inicio: encabezado blanco con el log
 | Ruta | Pantalla | Contenido | Requerimientos |
 |---|---|---|---|
 | `/` | Inicio | Portada con título y botón "Ver trabajos", trabajos destacados y resumen de servicios | RF01, RF04, RF05 |
-| `/servicios` | Servicios | Los seis servicios de Sergio con su detalle | RF04 |
+| `/servicios` | Servicios | Los seis servicios de Sergio con su detalle y las fichas personalizadas que se creen desde el panel | RF04, RF22 |
 | `/trabajos` | Trabajos | Galería de trabajos terminados, filtro por servicio y foto en grande | RF01, RF02, RF03 |
 | `/nosotros` | Nosotros | Quién es Sergio y cómo trabaja | RF08 |
 | `/contacto` | Contacto | Botón de WhatsApp, botón de llamada y formulario de consulta | RF05, RF06, RF07 |
@@ -63,11 +63,17 @@ El enlace `/admin` no aparece para visitantes sin sesión ni en el pie de págin
 ### Panel de trabajos (`/admin/trabajos`)
 
 - **Listado:** una fila por trabajo con miniatura de la primera foto, título, servicio, cantidad de fotos y estado (visible u oculto). Botones "Editar", "Ocultar/Mostrar" y "Borrar".
-- **Formulario:** campos de título, servicio (lista de los seis servicios principales y los adicionales ya creados), descripción y visible. Al agregar un trabajo se puede elegir «Agregar un nuevo servicio», escribir su nombre y guardarlo para reutilizarlo. Los servicios adicionales aparecen como etiquetas y filtros de la galería, pero no se agregan a la página fija `/servicios`. Las fotos se agregan con un selector que acepta varias a la vez; cada una muestra su vista previa, su texto alternativo y botones para subir, bajar o quitar.
+- **Formulario:** campos de título, servicio (lista de los seis servicios principales y los adicionales ya creados), descripción y visible. Al agregar un trabajo se puede elegir «Agregar un nuevo servicio» e ingresar nombre, detalle breve y descripción; se guarda para reutilizarlo, aparece como etiqueta/filtro de Trabajos y como ficha en Servicios. Las fotos se agregan con un selector que acepta varias a la vez; cada una muestra su vista previa, su texto alternativo y botones para subir, bajar o quitar.
 - **Foto principal:** es la primera de la lista. Se avisa con una etiqueta "Portada".
 - **Borrar:** pide confirmación y avisa que también se borran las fotos.
 - **Vuelta al panel:** enlace "Consultas" para cambiar de sección sin escribir la dirección.
 - Todo se guarda en la base de datos: no se sube ni se edita ningún archivo del código.
+
+### Página de servicios (`/servicios`)
+
+- Se conservan las seis fichas actuales sin cambios.
+- Después de ellas se muestran las fichas adicionales guardadas, con nombre, detalle y descripción.
+- Los servicios adicionales antiguos que no tengan detalle o descripción muestran solo los datos disponibles; no se inventa contenido.
 
 ## Pantalla de trabajos
 

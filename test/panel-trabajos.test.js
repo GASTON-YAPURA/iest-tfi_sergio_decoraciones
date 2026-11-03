@@ -14,6 +14,7 @@ import {
   MAXIMO_FOTOS,
   revisarNombreServicioAdicional,
   revisarFotosParaActualizar,
+  revisarServicioAdicional,
   revisarTrabajo,
 } from "../lib/validacion-trabajos.js";
 
@@ -100,6 +101,55 @@ test("valida nombres de servicios adicionales y evita duplicados", () => {
   assert.match(
     revisarTrabajo({ ...TRABAJO_VALIDO, servicio: "extra-2147483648" }).error,
     /servicio disponible/
+  );
+});
+
+test("valida y normaliza nombre, detalle y descripcion del servicio", () => {
+  assert.deepEqual(
+    revisarServicioAdicional({
+      nombre: "  Colocación de pisos ",
+      detalle: "  Terminación interior ",
+      descripcion: "  Colocamos pisos con una terminación prolija. ",
+    }),
+    {
+      datos: {
+        nombre: "Colocación de pisos",
+        detalle: "Terminación interior",
+        descripcion: "Colocamos pisos con una terminación prolija.",
+      },
+    }
+  );
+  assert.match(
+    revisarServicioAdicional({
+      nombre: "Pisos",
+      detalle: " ".repeat(1),
+      descripcion: "Descripción válida",
+    }).error,
+    /detalle breve/
+  );
+  assert.match(
+    revisarServicioAdicional({
+      nombre: "Pisos",
+      detalle: "d".repeat(121),
+      descripcion: "Descripción válida",
+    }).error,
+    /120 caracteres/
+  );
+  assert.match(
+    revisarServicioAdicional({
+      nombre: "Pisos",
+      detalle: "Detalle",
+      descripcion: "cort",
+    }).error,
+    /al menos 5 caracteres/
+  );
+  assert.match(
+    revisarServicioAdicional({
+      nombre: "Pisos",
+      detalle: "Detalle",
+      descripcion: "d".repeat(601),
+    }).error,
+    /600 caracteres/
   );
 });
 
@@ -241,7 +291,7 @@ test("la api de servicios adicionales exige sesion para listar y crear", () => {
   assert.equal((ruta.match(/leerSesion\(\)/g) ?? []).length, 2);
   assert.match(ruta, /listarServiciosAdicionales/);
   assert.match(ruta, /crearServicioAdicional/);
-  assert.match(ruta, /revisarNombreServicioAdicional/);
+  assert.match(ruta, /revisarServicioAdicional/);
   assert.match(ruta, /status: 401/);
   assert.match(ruta, /status: 409/);
   assert.match(ruta, /Cache-Control/);
@@ -253,10 +303,18 @@ test("el formulario permite crear y reutilizar un servicio adicional", () => {
 
   assert.match(formulario, /Agregar un nuevo servicio/);
   assert.match(formulario, /trabajo-servicio-nuevo/);
+  assert.match(formulario, /trabajo-servicio-detalle/);
+  assert.match(formulario, /trabajo-servicio-descripcion/);
   assert.match(formulario, /fetch\("\/api\/admin\/servicios"/);
   assert.match(formulario, /serviciosAdicionalesIniciales/);
   assert.match(panel, /serviciosAdicionalesIniciales/);
   assert.match(panel, /servicio_nombre/);
+});
+
+test("la API invalida la ficha pública al crear un servicio", () => {
+  const ruta = leerArchivo("app/api/admin/servicios/route.js");
+
+  assert.match(ruta, /revalidatePath\("\/servicios"\)/);
 });
 
 test("las mutaciones del panel revalidan las paginas publicas de trabajos", () => {
@@ -318,6 +376,15 @@ test("el listado del panel incluye los ocultos y el publico no", () => {
   assert.match(trabajos, /DELETE FROM trabajos WHERE id = \$1/);
   assert.match(trabajos, /DELETE FROM trabajo_fotos/);
   assert.match(trabajos, /COUNT\(\*\) FROM trabajo_fotos WHERE trabajo_id = \$2\) > 1/);
+});
+
+test("las mutaciones retornan solo columnas de trabajos y no alias del join", () => {
+  const trabajos = leerArchivo("lib/trabajos.js");
+
+  assert.match(trabajos, /const CAMPOS_MUTACION = "id, titulo, servicio, descripcion, visible"/);
+  assert.match(trabajos, /INSERT INTO trabajos[\s\S]*RETURNING \$\{CAMPOS_MUTACION\}/);
+  assert.match(trabajos, /UPDATE trabajos[\s\S]*RETURNING \$\{CAMPOS_MUTACION\}/);
+  assert.doesNotMatch(trabajos, /RETURNING \$\{CAMPOS_PANEL\}/);
 });
 
 test("las consultas de la base viajan siempre con parametros", () => {

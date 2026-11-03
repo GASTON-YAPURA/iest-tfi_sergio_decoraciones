@@ -1,10 +1,11 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import {
   crearServicioAdicional,
   listarServiciosAdicionales,
 } from "../../../../lib/servicios-adicionales";
 import { leerSesion } from "../../../../lib/sesion";
-import { revisarNombreServicioAdicional } from "../../../../lib/validacion-trabajos";
+import { revisarServicioAdicional } from "../../../../lib/validacion-trabajos";
 
 export const dynamic = "force-dynamic";
 
@@ -50,20 +51,20 @@ export async function POST(request) {
     return sinSesion();
   }
 
-  const revision = revisarNombreServicioAdicional(
-    (await leerCuerpo(request))?.nombre
-  );
+  const revision = revisarServicioAdicional(await leerCuerpo(request));
 
   if (revision.error) {
     return NextResponse.json({ error: revision.error }, { status: 400 });
   }
 
   try {
-    const servicio = await crearServicioAdicional(revision.nombre);
+    const servicio = await crearServicioAdicional(revision.datos);
 
     if (!servicio) {
       throw new Error("La base no devolvió el servicio recién creado.");
     }
+
+    revalidatePath("/servicios");
 
     return NextResponse.json({ servicio }, { status: 201 });
   } catch (error) {

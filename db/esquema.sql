@@ -23,12 +23,19 @@ CREATE INDEX IF NOT EXISTS trabajo_fotos_trabajo_idx
   ON trabajo_fotos (trabajo_id, orden);
 
 CREATE TABLE IF NOT EXISTS servicios_adicionales (
-  id     SERIAL PRIMARY KEY,
-  nombre VARCHAR(80) NOT NULL
+  id          SERIAL PRIMARY KEY,
+  nombre      VARCHAR(80) NOT NULL,
+  detalle     VARCHAR(120),
+  descripcion TEXT
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS servicios_adicionales_nombre_idx
   ON servicios_adicionales (LOWER(nombre));
+
+ALTER TABLE servicios_adicionales
+  ADD COLUMN IF NOT EXISTS detalle VARCHAR(120);
+ALTER TABLE servicios_adicionales
+  ADD COLUMN IF NOT EXISTS descripcion TEXT;
 
 CREATE TABLE IF NOT EXISTS consultas (
   id        SERIAL PRIMARY KEY,

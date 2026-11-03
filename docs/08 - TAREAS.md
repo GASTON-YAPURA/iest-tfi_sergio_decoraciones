@@ -141,3 +141,16 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 - [x] Agregar pruebas para validación, permisos, duplicados, formulario y filtros
 - [x] Ejecutar `npm test` y `npm run build`
 - [x] Actualizar `memory.md` y `11 - RECORRIDO DEL PROYECTO.md`
+
+## Etapa 11: Fichas de servicios adicionales
+
+> Al crear un servicio desde el alta de un trabajo, Sergio completa nombre, detalle y descripción. La ficha nueva se reutiliza en Trabajos y se muestra también en `/servicios`, conservando las seis fichas originales.
+
+- [x] Actualizar requisitos, datos, arquitectura, diseño y seguridad
+- [x] Ampliar el esquema idempotente para guardar detalle y descripción, conservando servicios existentes
+- [x] Validar y guardar nombre, detalle y descripción desde la API protegida
+- [x] Agregar los campos al formulario de alta de servicio
+- [x] Mostrar las fichas adicionales en `/servicios` y reflejar el alta sin esperar la caché
+- [x] Agregar pruebas para campos, persistencia, permisos y ficha pública
+- [x] Ejecutar `npm test` y `npm run build`
+- [x] Actualizar `memory.md` y `11 - RECORRIDO DEL PROYECTO.md`

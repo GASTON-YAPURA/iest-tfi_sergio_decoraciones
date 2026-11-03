@@ -7,7 +7,7 @@ import { SERVICIOS } from "../lib/servicios";
 import { revisarTextoAlt } from "../lib/texto-alt";
 import {
   MAXIMO_FOTOS,
-  revisarNombreServicioAdicional,
+  revisarServicioAdicional,
   revisarTrabajo,
 } from "../lib/validacion-trabajos";
 
@@ -48,6 +48,8 @@ export default function FormularioTrabajo({
   const [titulo, setTitulo] = useState(trabajo?.titulo ?? "");
   const [servicio, setServicio] = useState(trabajo?.servicio ?? "");
   const [nombreServicioNuevo, setNombreServicioNuevo] = useState("");
+  const [detalleServicioNuevo, setDetalleServicioNuevo] = useState("");
+  const [descripcionServicioNueva, setDescripcionServicioNueva] = useState("");
   const [serviciosAdicionales, setServiciosAdicionales] = useState(
     serviciosAdicionalesIniciales
   );
@@ -164,8 +166,12 @@ export default function FormularioTrabajo({
 
     const revisionNombreServicio =
       servicio === "nuevo"
-        ? revisarNombreServicioAdicional(
-            nombreServicioNuevo,
+        ? revisarServicioAdicional(
+            {
+              nombre: nombreServicioNuevo,
+              detalle: detalleServicioNuevo,
+              descripcion: descripcionServicioNueva,
+            },
             serviciosAdicionales.map((opcion) => opcion.nombre)
           )
         : null;
@@ -211,7 +217,7 @@ export default function FormularioTrabajo({
         const respuesta = await fetch("/api/admin/servicios", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ nombre: revisionNombreServicio.nombre }),
+          body: JSON.stringify(revisionNombreServicio.datos),
         });
         const resultado = await leerRespuesta(respuesta);
 
@@ -408,6 +414,30 @@ export default function FormularioTrabajo({
               }
               maxLength={80}
               autoComplete="off"
+              required
+            />
+            <label htmlFor="trabajo-servicio-detalle">Detalle breve</label>
+            <input
+              id="trabajo-servicio-detalle"
+              type="text"
+              value={detalleServicioNuevo}
+              onChange={(evento) =>
+                setDetalleServicioNuevo(evento.target.value)
+              }
+              maxLength={120}
+              required
+            />
+            <label htmlFor="trabajo-servicio-descripcion">
+              Descripción del servicio
+            </label>
+            <textarea
+              id="trabajo-servicio-descripcion"
+              value={descripcionServicioNueva}
+              onChange={(evento) =>
+                setDescripcionServicioNueva(evento.target.value)
+              }
+              rows={4}
+              maxLength={600}
               required
             />
           </div>

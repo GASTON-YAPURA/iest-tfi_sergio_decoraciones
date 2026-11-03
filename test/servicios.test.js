@@ -49,5 +49,10 @@ test("la pagina de servicios tiene su titulo, descripcion y un solo h1", () => {
     /Durlock, pintura, enduido, empapelado, alfombra, machimbre y/
   );
   assert.match(pagina, /SERVICIOS\.map/);
+  assert.match(pagina, /listarServiciosAdicionales/);
+  assert.match(pagina, /serviciosAdicionales\.map/);
+  assert.match(pagina, /export const dynamic = "force-dynamic"/);
+  assert.match(pagina, /servicio\.detalle/);
+  assert.match(pagina, /servicio\.descripcion/);
   assert.equal((pagina.match(/<h1>/g) ?? []).length, 1);
 });

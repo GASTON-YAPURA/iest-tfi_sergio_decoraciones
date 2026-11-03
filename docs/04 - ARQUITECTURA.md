@@ -97,6 +97,7 @@ sergio-decoraciones/
 | Parte | Función |
 |---|---|
 | `app/` | Páginas del sitio: cada carpeta con `page.js` es una dirección (`/trabajos`, `/servicios`, `/nosotros`, `/contacto`) |
+| `app/servicios/page.js` | Muestra las seis fichas fijas y consulta las fichas personalizadas en la base |
 | `app/layout.js` | Estructura común de todas las páginas: encabezado con el logo, pie y botones de contacto |
 | `app/robots.js` | Genera `robots.txt`: deja leer el sitio público y bloquea `/admin` y `/api/` |
 | `app/sitemap.js` | Genera `sitemap.xml` con las páginas públicas para Google |

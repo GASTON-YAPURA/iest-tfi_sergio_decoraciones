@@ -479,13 +479,13 @@ Cambiar la contraseña temporal y publicar en Vercel con las variables de entorn
 
 ## 10.2 Etapa 10: Servicios adicionales para trabajos
 
-**Objetivo:** crear y reutilizar desde el panel categorías adicionales de trabajos, sin modificar las seis fichas fijas de `/servicios`.
+**Objetivo:** crear y reutilizar desde el panel categorías adicionales de trabajos, conservando las seis fichas fijas de `/servicios`.
 
 1. **Persistencia:** `servicios_adicionales` guarda nombres de hasta 80 caracteres con unicidad sin distinguir mayúsculas. Cada servicio obtiene un identificador `extra-<id>` almacenado en el campo `trabajos.servicio`.
 2. **Acceso protegido:** `GET/POST /api/admin/servicios` exige sesión; el alta valida el nombre y devuelve un conflicto cuando ya existe un servicio con ese nombre.
 3. **Formulario:** al dar de alta un trabajo, Sergio puede elegir un servicio principal o guardado, o seleccionar «Agregar un nuevo servicio». El nuevo nombre se guarda antes del trabajo y queda disponible al volver a abrir el formulario.
 4. **Etiquetas y filtros:** los listados del panel y la galería obtienen el nombre adicional desde la base. Los filtros públicos agregan categorías adicionales solo cuando hay al menos un trabajo visible en esa categoría.
-5. **Página Servicios intacta:** `app/servicios/page.js` sigue leyendo exclusivamente `SERVICIOS` en `lib/servicios.js`; por eso las seis fichas descriptivas y su contenido no cambian.
+5. **Página Servicios en la Etapa 10:** inicialmente, `app/servicios/page.js` seguía leyendo exclusivamente `SERVICIOS`; la Etapa 11 amplía este comportamiento y agrega fichas personalizadas sin alterar las seis originales.
 6. **Validación y errores:** el trabajo solo puede guardar un identificador adicional que exista; los nombres vacíos, demasiado largos y duplicados (incluidos los nombres de servicios fijos) se rechazan.
 
 ### Pruebas y comprobaciones
@@ -493,6 +493,25 @@ Cambiar la contraseña temporal y publicar en Vercel con las variables de entorn
 - `test/panel-trabajos.test.js`, `test/galeria.test.js`, `test/servicios.test.js` y `test/base-datos.test.js` cubren validación, permisos, persistencia del esquema, etiquetas y filtros.
 - Se creó la tabla y el índice único en la base configurada, sin alterar las tablas existentes.
 - `npm test` pasó **106 pruebas** y `npm run build` terminó correctamente; el build incluye `/api/admin/servicios`.
+- Al integrar las etiquetas personalizadas, las mutaciones de trabajos intentaban devolver columnas del `JOIN` en una cláusula `RETURNING`, que PostgreSQL no permite. El `INSERT` y el `UPDATE` ahora devuelven únicamente columnas de `trabajos`; una prueba evita que vuelva a ocurrir.
+
+---
+
+## 10.3 Etapa 11: Fichas de servicios adicionales
+
+**Objetivo:** mostrar en `/servicios` las categorías personalizadas creadas al cargar un trabajo, con contenido escrito por Sergio.
+
+1. **Datos:** `servicios_adicionales` suma `detalle` (hasta 120 caracteres) y `descripcion` (5 a 600 caracteres). Las columnas son opcionales para no inventar texto ni invalidar servicios agregados antes de esta etapa.
+2. **Formulario:** al elegir «Agregar un nuevo servicio», el formulario pide nombre, detalle breve y descripción. Los tres valores se recortan y validan en cliente y servidor.
+3. **Persistencia:** el alta protegida guarda los tres campos con SQL parametrizado y mantiene la unicidad del nombre. La ruta revalida `/servicios` tras el alta.
+4. **Página pública:** `/servicios` consulta los servicios adicionales del servidor en cada solicitud y los muestra después de las seis fichas fijas. Los datos faltantes de registros anteriores no se inventan ni se muestran.
+5. **Migración:** `db/esquema.sql` crea las columnas en instalaciones nuevas y las agrega de forma idempotente en la base existente.
+
+### Pruebas y comprobaciones
+
+- `test/panel-trabajos.test.js`, `test/base-datos.test.js` y `test/servicios.test.js` cubren validación, persistencia, permisos, revalidación y presentación.
+- Se agregaron de forma idempotente las columnas `detalle` y `descripcion` a la base existente; una consulta confirmó que las columnas están disponibles.
+- `npm test` pasó **109 pruebas** y `npm run build` terminó correctamente; `/servicios` se genera en cada solicitud y no queda limitada al catálogo fijo.
 
 ---
 

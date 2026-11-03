@@ -1,6 +1,7 @@
 import BotonLlamar from "../../components/BotonLlamar";
 import BotonWhatsApp from "../../components/BotonWhatsApp";
 import { SERVICIOS } from "../../lib/servicios";
+import { listarServiciosAdicionales } from "../../lib/servicios-adicionales";
 import { IMAGEN_COMPARTIDA } from "../../lib/sitio";
 
 export const metadata = {
@@ -19,7 +20,11 @@ export const metadata = {
   },
 };
 
-export default function PaginaServicios() {
+export const dynamic = "force-dynamic";
+
+export default async function PaginaServicios() {
+  const serviciosAdicionales = await listarServiciosAdicionales();
+
   return (
     <>
       <section className="portada portada-interior">
@@ -52,6 +57,21 @@ export default function PaginaServicios() {
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
+                </div>
+              </li>
+            ))}
+            {serviciosAdicionales.map((servicio, indice) => (
+              <li className="servicio-bloque" key={servicio.id}>
+                <span className="servicio-numero">
+                  {String(SERVICIOS.length + indice + 1).padStart(2, "0")}
+                </span>
+
+                <div className="servicio-contenido">
+                  <h2>{servicio.nombre}</h2>
+                  {servicio.detalle ? (
+                    <p className="servicio-detalle">{servicio.detalle}</p>
+                  ) : null}
+                  {servicio.descripcion ? <p>{servicio.descripcion}</p> : null}
                 </div>
               </li>
             ))}

@@ -30,7 +30,7 @@ Cómo se espera que se use:
 | Colocación de machimbre | Trabajo de terminación |
 | Colocación de molduras | Trabajo de terminación |
 
-Los seis servicios de esta tabla son el catálogo fijo de la página **Servicios**. Desde el panel se pueden crear servicios adicionales para clasificar trabajos; estos se reutilizan y aparecen como filtros y etiquetas en la galería, sin agregarse a la página **Servicios**.
+Los seis servicios de esta tabla son el catálogo fijo de la página **Servicios**. Desde el panel se pueden crear servicios adicionales reutilizables para clasificar trabajos; se muestran como filtros y etiquetas en **Trabajos**, y como fichas con nombre, detalle y descripción en **Servicios**.
 
 ## Qué ofrece el sitio
 

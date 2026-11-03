@@ -16,6 +16,10 @@ test("el esquema define las tablas de trabajos, fotos, servicios y consultas", (
   assert.match(esquema, /CREATE TABLE IF NOT EXISTS trabajos/);
   assert.match(esquema, /CREATE TABLE IF NOT EXISTS trabajo_fotos/);
   assert.match(esquema, /CREATE TABLE IF NOT EXISTS servicios_adicionales/);
+  assert.match(esquema, /detalle\s+VARCHAR\(120\)/);
+  assert.match(esquema, /descripcion\s+TEXT/);
+  assert.match(esquema, /ADD COLUMN IF NOT EXISTS detalle/);
+  assert.match(esquema, /ADD COLUMN IF NOT EXISTS descripcion/);
   assert.match(
     esquema,
     /CREATE UNIQUE INDEX IF NOT EXISTS servicios_adicionales_nombre_idx/
@@ -67,9 +71,13 @@ test("la consulta de trabajos destacados usa parametros", () => {
 test("los servicios adicionales guardan y consultan datos con parametros", () => {
   const servicios = leerArchivo("lib/servicios-adicionales.js");
 
-  assert.match(servicios, /INSERT INTO servicios_adicionales \(nombre\)/);
-  assert.match(servicios, /VALUES \(\$1\)/);
-  assert.match(servicios, /\[nombre\]/);
+  assert.match(
+    servicios,
+    /INSERT INTO servicios_adicionales \(nombre, detalle, descripcion\)/
+  );
+  assert.match(servicios, /VALUES \(\$1, \$2, \$3\)/);
+  assert.match(servicios, /\[datos\.nombre, datos\.detalle, datos\.descripcion\]/);
+  assert.match(servicios, /SELECT id, nombre, detalle, descripcion/);
   assert.match(servicios, /WHERE id = \$1/);
   assert.match(servicios, /\[id\]/);
 });
