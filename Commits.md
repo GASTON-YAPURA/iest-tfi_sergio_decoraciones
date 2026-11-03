@@ -72,6 +72,7 @@ Se anotan los commits importantes. Para ver el historial completo se usa `git lo
 | 02/11/2026 | 9. Panel de administración | `main` | `ba51588 documenta el panel de trabajos` | Documentación y memoria del panel de trabajos |
 | 02/11/2026 | 9. Panel de administración | `main` | `cambia la exportación de consultas a pdf` | La descarga de consultas pasó de CSV a PDF con `pdf-lib`: tabla A4, cabecera de marca, acentos, paginado y filtros |
 | 02/11/2026 | 9. Panel de administración | `main` | `documenta la exportación de consultas en pdf` | Especificaciones, recorrido, memoria y registro actualizados |
+| 03/11/2026 | 9. Panel de administración | `feature/mostrar-clave` | `agrega opcion para mostrar la contrasena en el ingreso` | Control accesible para mostrar u ocultar la contraseña en el formulario de ingreso |
 
 Repositorio: https://github.com/GASTON-YAPURA/iest-tfi_sergio_decoraciones
 

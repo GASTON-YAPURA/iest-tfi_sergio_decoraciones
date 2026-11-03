@@ -109,6 +109,10 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 - [x] Mostrar el resumen de pendientes, atendidas y total (RF18)
 - [x] Revisar el orden visual del panel con la paleta de marca
 
+### Acceso
+
+- [x] Permitir mostrar u ocultar la contraseña en el ingreso al panel (RF09)
+
 ### Trabajos
 
 - [x] Crear la página `/admin/trabajos` protegida por sesión (RF19)

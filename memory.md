@@ -19,6 +19,7 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | SEO y calidad (Etapa 8) | Hechos: `lib/sitio.js`, `robots.txt`, `sitemap.xml`, metadatos por página, contraste, lista de seguridad y pruebas |
 | Fotos de trabajos en la base (Etapa 9) | Hechas: tabla `trabajo_fotos`, `/api/trabajos/[id]/foto`, importación con `npm run db:fotos`, galería y visor con varias fotos |
 | Panel completo de consultas y trabajos (Etapa 9) | Hecho: consultas (buscar, filtrar, paginar, archivar, restaurar, borrar y exportar PDF) y trabajos (CRUD, varias fotos con texto alternativo y orden, compresión en el navegador, ocultar/mostrar y borrar con confirmación) |
+| Ingreso del panel | Hecho: el formulario permite mostrar u ocultar la contraseña con un botón accesible |
 | Declaración de IA | Hecha: `docs/DECLARACION-IA.md` y `multimedia/FICHAS-IA.md` (fotos con prompts de ChatGPT e imágenes de Gemini) |
 | Publicación en Vercel | Pendiente: variables de entorno, contraseña definitiva y deploy con HTTPS |
 | Informe escrito del TP | Pendiente |
@@ -83,6 +84,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 03/11/2026 | Etapa 9: el ingreso al panel permite mostrar u ocultar la contraseña con un control accesible; 100 pruebas y build correctos |
 | 02/11/2026 | Etapa 9: la exportación de consultas pasó de CSV a PDF (`pdf-lib` en el servidor, tabla A4 con cabecera de marca, acentos, paginado y nombre con fecha); 99 pruebas y build correctos |
 | 02/11/2026 | Etapa 9: panel de trabajos completo (`/admin/trabajos`, API de alta/edición/borrado, fotos con texto alternativo y orden, compresión en el navegador, ocultar/mostrar y borrar con confirmación); 99 pruebas y build correctos |
 | 02/11/2026 | Etapa 9: consultas completas en el panel (búsqueda, filtros, paginado de a 10, resumen, archivar/restaurar, borrado definitivo, respuesta editable por WhatsApp y PDF con los filtros) |
