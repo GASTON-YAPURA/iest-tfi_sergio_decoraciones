@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidarTrabajosPublicos } from "../../../../../../lib/revalidar-trabajos";
 import {
   detectarTipo,
   medirImagen,
@@ -135,6 +136,7 @@ export async function POST(request, { params }) {
       alto: medidas.alto,
       textoAlt: String(textoAlt).trim(),
     });
+    revalidarTrabajosPublicos();
 
     return NextResponse.json({ foto }, { status: 201 });
   } catch (error) {
@@ -174,6 +176,8 @@ export async function PATCH(request, { params }) {
         { status: 404 }
       );
     }
+
+    revalidarTrabajosPublicos();
 
     return NextResponse.json({ fotos });
   } catch (error) {
@@ -232,6 +236,8 @@ export async function DELETE(request, { params }) {
         { status: 404 }
       );
     }
+
+    revalidarTrabajosPublicos();
 
     return NextResponse.json({ borrada: true });
   } catch (error) {

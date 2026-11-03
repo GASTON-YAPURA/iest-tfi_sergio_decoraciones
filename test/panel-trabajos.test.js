@@ -206,6 +206,17 @@ test("la api de trabajos exige sesion en las cuatro acciones", () => {
   assert.match(ruta, /status: 404/);
 });
 
+test("las mutaciones del panel revalidan las paginas publicas de trabajos", () => {
+  const revalidacion = leerArchivo("lib/revalidar-trabajos.js");
+  const trabajos = leerArchivo("app/api/admin/trabajos/route.js");
+  const fotos = leerArchivo("app/api/admin/trabajos/[id]/fotos/route.js");
+
+  assert.match(revalidacion, /revalidatePath\("\/"\)/);
+  assert.match(revalidacion, /revalidatePath\("\/trabajos"\)/);
+  assert.equal((trabajos.match(/revalidarTrabajosPublicos\(\)/g) ?? []).length, 3);
+  assert.equal((fotos.match(/revalidarTrabajosPublicos\(\)/g) ?? []).length, 3);
+});
+
 test("la api de fotos exige sesion y valida el peso y el maximo", () => {
   const ruta = leerArchivo("app/api/admin/trabajos/[id]/fotos/route.js");
 

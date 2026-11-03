@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidarTrabajosPublicos } from "../../../../lib/revalidar-trabajos";
 import { leerSesion } from "../../../../lib/sesion";
 import {
   actualizarTrabajo,
@@ -66,6 +67,7 @@ export async function POST(request) {
 
   try {
     const trabajo = await crearTrabajo(revision.datos);
+    revalidarTrabajosPublicos();
 
     return NextResponse.json({ trabajo }, { status: 201 });
   } catch (error) {
@@ -107,6 +109,8 @@ export async function PATCH(request) {
       );
     }
 
+    revalidarTrabajosPublicos();
+
     return NextResponse.json({ trabajo });
   } catch (error) {
     console.error("No se pudo actualizar el trabajo", error);
@@ -140,6 +144,8 @@ export async function DELETE(request) {
         { status: 404 }
       );
     }
+
+    revalidarTrabajosPublicos();
 
     return NextResponse.json({ borrado: true });
   } catch (error) {

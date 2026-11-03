@@ -459,10 +459,11 @@ La pantalla `/admin/trabajos` tiene un listado con miniatura, servicio, cantidad
 4. **Subida ordenada:** primero se guarda el trabajo, después se sube cada foto con `FormData`, luego se guardan los textos y el orden con un `PATCH`, y al final se borran las fotos que se quitaron. Si algo falla a mitad de camino, las fotos ya subidas no se vuelven a mandar al reintentar.
 5. **Ocultar sin borrar:** el botón Ocultar cambia `visible` y el trabajo desaparece de la galería y del inicio, pero sigue en el panel y sus fotos siguen visibles para Sergio con la sesión iniciada.
 6. **Borrar con confirmación:** el borrado definitivo avisa cuántas fotos se pierden y no se puede deshacer. La base borra las fotos en cascada.
+7. **Actualización inmediata del sitio:** como el inicio y la galería se regeneran cada hora, las rutas del panel invalidan `/` y `/trabajos` después de guardar un trabajo o modificar sus fotos. Así, la siguiente visita muestra los cambios sin esperar al vencimiento de la caché.
 
 ### Pruebas y comprobaciones
 
-- `npm test` pasó de 78 a **99 pruebas**. `test/panel-trabajos.test.js` cubre las validaciones puras, los límites de las fotos, el cálculo de medidas, la compresión sugerida y las rutas y componentes del panel.
+- `npm test` pasó de 78 a **101 pruebas**. `test/panel-trabajos.test.js` cubre las validaciones puras, los límites de las fotos, el cálculo de medidas, la compresión sugerida, la revalidación de las páginas públicas y las rutas y componentes del panel.
 - `npm run build` compila y lista las rutas nuevas: `/admin/trabajos`, `/api/admin/trabajos` y `/api/admin/trabajos/[id]/fotos`.
 - Con el servidor de desarrollo se probó de punta a punta: ingreso, listado, alta de un trabajo oculto, subida de dos fotos reales, reordenamiento, cambio de texto alternativo, publicación, borrado de una foto, rechazo de la última foto (409) y borrado final del trabajo.
 - También se comprobó que sin sesión `/admin/trabajos` redirige a `/admin` y las rutas del panel responden 401; que una foto de un trabajo oculto responde 404 sin sesión; y que las páginas públicas siguen mostrando los seis trabajos con sus fotos.
