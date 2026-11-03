@@ -10,6 +10,16 @@ export default function GaleriaTrabajos({ trabajos }) {
   const [servicioActivo, setServicioActivo] = useState("todos");
   const [trabajoAbierto, setTrabajoAbierto] = useState(null);
   const cerrarVisor = useCallback(() => setTrabajoAbierto(null), []);
+  const serviciosAdicionales = [
+    ...new Map(
+      trabajos
+        .filter((trabajo) => trabajo.servicio_nombre)
+        .map((trabajo) => [
+          trabajo.servicio,
+          { id: trabajo.servicio, nombre: trabajo.servicio_nombre },
+        ])
+    ).values(),
+  ];
 
   const trabajosVisibles = filtrarTrabajosPorServicio(
     trabajos,
@@ -18,7 +28,11 @@ export default function GaleriaTrabajos({ trabajos }) {
 
   return (
     <>
-      <FiltroServicios activo={servicioActivo} onCambiar={setServicioActivo} />
+      <FiltroServicios
+        activo={servicioActivo}
+        onCambiar={setServicioActivo}
+        serviciosAdicionales={serviciosAdicionales}
+      />
 
       <p className="galeria-conteo" aria-live="polite">
         {trabajosVisibles.length === 1

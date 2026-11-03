@@ -7,6 +7,7 @@ import { SERVICIOS } from "../lib/servicios";
 import { revisarTextoAlt } from "../lib/texto-alt";
 import {
   MAXIMO_FOTOS,
+  revisarNombreServicioAdicional,
   revisarTrabajo,
 } from "../lib/validacion-trabajos";
 
@@ -39,11 +40,17 @@ async function leerRespuesta(respuesta) {
 
 export default function FormularioTrabajo({
   trabajo,
+  serviciosAdicionalesIniciales = [],
+  onServicioCreado,
   onGuardado,
   onCancelar,
 }) {
   const [titulo, setTitulo] = useState(trabajo?.titulo ?? "");
   const [servicio, setServicio] = useState(trabajo?.servicio ?? "");
+  const [nombreServicioNuevo, setNombreServicioNuevo] = useState("");
+  const [serviciosAdicionales, setServiciosAdicionales] = useState(
+    serviciosAdicionalesIniciales
+  );
   const [descripcion, setDescripcion] = useState(trabajo?.descripcion ?? "");
   const [visible, setVisible] = useState(trabajo?.visible ?? true);
   const [fotos, setFotos] = useState(() =>
@@ -155,9 +162,22 @@ export default function FormularioTrabajo({
     evento.preventDefault();
     setError("");
 
+    const revisionNombreServicio =
+      servicio === "nuevo"
+        ? revisarNombreServicioAdicional(
+            nombreServicioNuevo,
+            serviciosAdicionales.map((opcion) => opcion.nombre)
+          )
+        : null;
+
+    if (revisionNombreServicio?.error) {
+      setError(revisionNombreServicio.error);
+      return;
+    }
+
     const revision = revisarTrabajo({
       titulo,
-      servicio,
+      servicio: servicio === "nuevo" ? SERVICIOS[0].id : servicio,
       descripcion,
       visible,
     });
@@ -185,13 +205,37 @@ export default function FormularioTrabajo({
     const subidas = new Map();
 
     try {
+      let servicioElegido = revision.datos.servicio;
+
+      if (servicio === "nuevo") {
+        const respuesta = await fetch("/api/admin/servicios", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nombre: revisionNombreServicio.nombre }),
+        });
+        const resultado = await leerRespuesta(respuesta);
+
+        if (!respuesta.ok) {
+          throw new Error(resultado.error ?? "No pudimos guardar el servicio.");
+        }
+
+        servicioElegido = resultado.servicio.id;
+        setServicio(servicioElegido);
+        setServiciosAdicionales((actuales) => [
+          ...actuales,
+          resultado.servicio,
+        ]);
+        onServicioCreado?.(resultado.servicio);
+      }
+
+      const datosTrabajo = { ...revision.datos, servicio: servicioElegido };
       let trabajoId = trabajo?.id ?? trabajoIdCreado;
 
       if (!trabajoId) {
         const respuesta = await fetch("/api/admin/trabajos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(revision.datos),
+          body: JSON.stringify(datosTrabajo),
         });
         const resultado = await leerRespuesta(respuesta);
 
@@ -205,7 +249,7 @@ export default function FormularioTrabajo({
         const respuesta = await fetch("/api/admin/trabajos", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: trabajoId, ...revision.datos }),
+          body: JSON.stringify({ id: trabajoId, ...datosTrabajo }),
         });
         const resultado = await leerRespuesta(respuesta);
 
@@ -346,8 +390,28 @@ export default function FormularioTrabajo({
                 {opcion.nombre}
               </option>
             ))}
+            {!trabajo ? (
+              <option value="nuevo">Agregar un nuevo servicio...</option>
+            ) : null}
           </select>
         </div>
+
+        {!trabajo && servicio === "nuevo" ? (
+          <div className="campo">
+            <label htmlFor="trabajo-servicio-nuevo">Nombre del servicio</label>
+            <input
+              id="trabajo-servicio-nuevo"
+              type="text"
+              value={nombreServicioNuevo}
+              onChange={(evento) =>
+                setNombreServicioNuevo(evento.target.value)
+              }
+              maxLength={80}
+              autoComplete="off"
+              required
+            />
+          </div>
+        ) : null}
       </div>
 
       <div className="campo">

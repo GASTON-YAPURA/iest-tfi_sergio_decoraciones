@@ -33,6 +33,10 @@ test("cada servicio tiene nombre, detalle, descripcion y tareas", () => {
 test("obtenerNombreServicio devuelve el nombre visible", () => {
   assert.equal(obtenerNombreServicio("durlock"), "Durlock");
   assert.equal(obtenerNombreServicio("interiores"), "Trabajos de interiores");
+  assert.equal(
+    obtenerNombreServicio("extra-5", "Colocación de pisos"),
+    "Colocación de pisos"
+  );
   assert.equal(obtenerNombreServicio("otro"), "otro");
 });
 

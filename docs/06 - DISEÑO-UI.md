@@ -63,7 +63,7 @@ El enlace `/admin` no aparece para visitantes sin sesión ni en el pie de págin
 ### Panel de trabajos (`/admin/trabajos`)
 
 - **Listado:** una fila por trabajo con miniatura de la primera foto, título, servicio, cantidad de fotos y estado (visible u oculto). Botones "Editar", "Ocultar/Mostrar" y "Borrar".
-- **Formulario:** campos de título, servicio (lista de los seis), descripción y visible. Las fotos se agregan con un selector que acepta varias a la vez; cada una muestra su vista previa, su texto alternativo y botones para subir, bajar o quitar.
+- **Formulario:** campos de título, servicio (lista de los seis servicios principales y los adicionales ya creados), descripción y visible. Al agregar un trabajo se puede elegir «Agregar un nuevo servicio», escribir su nombre y guardarlo para reutilizarlo. Los servicios adicionales aparecen como etiquetas y filtros de la galería, pero no se agregan a la página fija `/servicios`. Las fotos se agregan con un selector que acepta varias a la vez; cada una muestra su vista previa, su texto alternativo y botones para subir, bajar o quitar.
 - **Foto principal:** es la primera de la lista. Se avisa con una etiqueta "Portada".
 - **Borrar:** pide confirmación y avisa que también se borran las fotos.
 - **Vuelta al panel:** enlace "Consultas" para cambiar de sección sin escribir la dirección.

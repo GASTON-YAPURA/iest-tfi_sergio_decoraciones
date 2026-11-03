@@ -18,9 +18,15 @@ function textoFotos(cantidad) {
   return cantidad === 1 ? "1 foto" : `${cantidad} fotos`;
 }
 
-export default function PanelTrabajos({ trabajosIniciales }) {
+export default function PanelTrabajos({
+  trabajosIniciales,
+  serviciosAdicionalesIniciales = [],
+}) {
   const router = useRouter();
   const [trabajos, setTrabajos] = useState(trabajosIniciales);
+  const [serviciosAdicionales, setServiciosAdicionales] = useState(
+    serviciosAdicionalesIniciales
+  );
   const [modo, setModo] = useState("lista");
   const [editando, setEditando] = useState(null);
   const [procesando, setProcesando] = useState(null);
@@ -170,6 +176,10 @@ export default function PanelTrabajos({ trabajosIniciales }) {
       <FormularioTrabajo
         key={editando?.id ?? "nuevo"}
         trabajo={editando}
+        serviciosAdicionalesIniciales={serviciosAdicionales}
+        onServicioCreado={(servicio) =>
+          setServiciosAdicionales((actuales) => [...actuales, servicio])
+        }
         onGuardado={terminar}
         onCancelar={cancelar}
       />
@@ -229,7 +239,10 @@ export default function PanelTrabajos({ trabajosIniciales }) {
 
                 <div className="trabajo-datos">
                   <p className="trabajo-servicio">
-                    {obtenerNombreServicio(trabajo.servicio)}
+                    {obtenerNombreServicio(
+                      trabajo.servicio,
+                      trabajo.servicio_nombre
+                    )}
                   </p>
                   <h2>{trabajo.titulo}</h2>
                   <p className="trabajo-meta">

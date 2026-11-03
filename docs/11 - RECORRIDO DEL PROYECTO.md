@@ -42,6 +42,7 @@ Este documento cuenta **cómo se construyó** el sitio de Sergio Decoraciones: q
 | `/api/consultas` | POST | Valida y guarda una consulta del formulario |
 | `/api/admin/ingresar` | POST | Verifica credenciales y crea la sesión |
 | `/api/admin/sesion` | GET | Informa al menú si hay una sesión válida, sin devolver datos privados |
+| `/api/admin/servicios` | GET / POST | Lista y crea servicios adicionales para los trabajos, con sesión |
 | `/api/admin/consultas` | GET / PATCH / DELETE | Lista, marca como atendida, archiva, restaura o borra una consulta |
 | `/api/admin/consultas/pdf` | GET | Descarga las consultas filtradas en PDF |
 | `/api/admin/trabajos` | GET / POST / PATCH / DELETE | Lista, crea, edita, oculta o borra un trabajo |
@@ -60,7 +61,7 @@ El proyecto no se hizo "de una sola vez". Se siguió un ciclo de trabajo escrito
 4. **Probar**: ejecutar `npm test` y `npm run build`.
 5. **Registrar**: marcar la tarea con `[x]` en `08 - TAREAS.md`, anotar el commit y actualizar `memory.md`.
 
-Las nueve etapas están en `08 - TAREAS.md`. Cada una tiene sus tareas con casillas y los requerimientos que cubre (RF = funcional, RNF = no funcional, definidos en `02 - REQUERIMIENTOS.md`).
+Las diez etapas están en `08 - TAREAS.md`. Cada una tiene sus tareas con casillas y los requerimientos que cubre (RF = funcional, RNF = no funcional, definidos en `02 - REQUERIMIENTOS.md`).
 
 ### Línea de tiempo real (commits)
 
@@ -454,7 +455,7 @@ La búsqueda, el filtro y la página viajan en la dirección (`?buscar=…&estad
 
 La pantalla `/admin/trabajos` tiene un listado con miniatura, servicio, cantidad de fotos y estado (visible u oculto), y un formulario para crear o editar.
 
-1. **Alta y edición:** el formulario valida título (3 a 120 caracteres), servicio (uno de los seis) y descripción (5 a 600). La ruta `POST/PATCH /api/admin/trabajos` vuelve a validar lo mismo en el servidor.
+1. **Alta y edición:** el formulario valida título (3 a 120 caracteres), servicio (uno de los seis principales o uno adicional guardado) y descripción (5 a 600). La ruta `POST/PATCH /api/admin/trabajos` vuelve a validar lo mismo en el servidor.
 2. **Varias fotos:** se pueden elegir varias imágenes a la vez. Cada una tiene su texto alternativo (5 a 200 caracteres), se puede subir o bajar de orden y quitar, salvo que sea la última. La primera es la portada. El máximo es 12 fotos por trabajo.
 3. **Compresión en el navegador:** `lib/comprimir-imagen.js` abre la imagen, la achica a 1600 px por lado sin deformarla, la pasa a JPG y baja la calidad si supera 1,5 MB. El servidor no confía en eso: `lib/imagen.js` lee los primeros bytes para comprobar el tipo real, mide el ancho y el alto y vuelve a controlar el peso.
 4. **Subida ordenada:** primero se guarda el trabajo, después se sube cada foto con `FormData`, luego se guardan los textos y el orden con un `PATCH`, y al final se borran las fotos que se quitaron. Si algo falla a mitad de camino, las fotos ya subidas no se vuelven a mandar al reintentar.
@@ -473,6 +474,25 @@ La pantalla `/admin/trabajos` tiene un listado con miniatura, servicio, cantidad
 ### Pendiente de esta etapa
 
 Cambiar la contraseña temporal y publicar en Vercel con las variables de entorno (`DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH`, `SESION_SECRETA` y `SITIO_URL`).
+
+---
+
+## 10.2 Etapa 10: Servicios adicionales para trabajos
+
+**Objetivo:** crear y reutilizar desde el panel categorías adicionales de trabajos, sin modificar las seis fichas fijas de `/servicios`.
+
+1. **Persistencia:** `servicios_adicionales` guarda nombres de hasta 80 caracteres con unicidad sin distinguir mayúsculas. Cada servicio obtiene un identificador `extra-<id>` almacenado en el campo `trabajos.servicio`.
+2. **Acceso protegido:** `GET/POST /api/admin/servicios` exige sesión; el alta valida el nombre y devuelve un conflicto cuando ya existe un servicio con ese nombre.
+3. **Formulario:** al dar de alta un trabajo, Sergio puede elegir un servicio principal o guardado, o seleccionar «Agregar un nuevo servicio». El nuevo nombre se guarda antes del trabajo y queda disponible al volver a abrir el formulario.
+4. **Etiquetas y filtros:** los listados del panel y la galería obtienen el nombre adicional desde la base. Los filtros públicos agregan categorías adicionales solo cuando hay al menos un trabajo visible en esa categoría.
+5. **Página Servicios intacta:** `app/servicios/page.js` sigue leyendo exclusivamente `SERVICIOS` en `lib/servicios.js`; por eso las seis fichas descriptivas y su contenido no cambian.
+6. **Validación y errores:** el trabajo solo puede guardar un identificador adicional que exista; los nombres vacíos, demasiado largos y duplicados (incluidos los nombres de servicios fijos) se rechazan.
+
+### Pruebas y comprobaciones
+
+- `test/panel-trabajos.test.js`, `test/galeria.test.js`, `test/servicios.test.js` y `test/base-datos.test.js` cubren validación, permisos, persistencia del esquema, etiquetas y filtros.
+- Se creó la tabla y el índice único en la base configurada, sin alterar las tablas existentes.
+- `npm test` pasó **106 pruebas** y `npm run build` terminó correctamente; el build incluye `/api/admin/servicios`.
 
 ---
 
@@ -569,7 +589,7 @@ Los dos archivos están en `.gitignore`: funcionan en la computadora donde se cr
 | Archivo | Qué verifica |
 |---|---|
 | `test/base-datos.test.js` | Que el esquema y las consultas usen parámetros y la conexión sea única |
-| `test/servicios.test.js` | Los seis servicios, sus identificadores y la página de servicios |
+| `test/servicios.test.js` | Los seis servicios fijos, sus identificadores y la página de servicios |
 | `test/contacto.test.js` | Los enlaces de WhatsApp y llamada, y que los números salgan de `lib/contacto.js` |
 | `test/estructura.test.js` | Encabezado, menú, pie, botón flotante y metadatos |
 | `test/galeria.test.js` | El filtro por servicio y el visor de fotos |
@@ -618,6 +638,7 @@ app/
     consultas/route.js      POST consulta
     admin/sesion/route.js   informa si la sesión sigue activa, sin datos privados
     admin/ingresar/route.js POST ingreso
+    admin/servicios/route.js GET y POST servicios adicionales (protegido)
     admin/consultas/route.js GET, PATCH y DELETE consultas (protegido)
     admin/consultas/pdf/route.js descarga PDF (protegido)
     admin/trabajos/route.js GET, POST, PATCH y DELETE trabajos (protegido)
@@ -656,6 +677,7 @@ lib/
   limite.js                 límites de envíos e intentos
   contacto.js               números y enlaces de contacto
   servicios.js              catálogo de servicios
+  servicios-adicionales.js  persistencia de servicios adicionales para trabajos
   acceso.js                 firma de sesión y verificación de clave
   sesion.js                 cookie de sesión
   sitio.js                  dirección pública e imagen para compartir
@@ -703,7 +725,7 @@ docs/                       especificaciones del proyecto
 | Sin Tailwind ni Bootstrap | Un solo archivo de estilos con variables de marca; menos dependencias |
 | Sin TypeScript | El proyecto se definió en JavaScript; se compensa con pruebas |
 | Sin Prisma ni ORM | SQL directo y parametrizado, más simple de leer y auditar |
-| Trabajos en la base, servicios en código | Los servicios son un catálogo fijo; los trabajos cambian y tienen fotos |
+| Servicios fijos y adicionales | Las seis fichas descriptivas viven en código; las categorías adicionales se guardan en la base y solo se usan para trabajos |
 | Panel para cargar trabajos | Sergio carga y corrige sus trabajos con sus fotos sin tocar la base ni el código |
 | Fotos dentro de la base | No hace falta un servicio externo ni una carpeta pública; se entregan por una ruta con control de visibilidad |
 | Sin precios publicados | Se consultan por WhatsApp o llamada |
@@ -718,7 +740,7 @@ docs/                       especificaciones del proyecto
 
 Si hay que explicarlo en un minuto:
 
-> Es un sitio en Next.js para un emprendimiento de decoración. Muestra los trabajos terminados que están cargados en PostgreSQL (Neon), permite filtrarlos por servicio y verlos en grande, presenta los seis servicios y lleva al cliente a consultar por WhatsApp, por llamada o con un formulario que guarda la consulta en la base. Tiene un panel privado, protegido con contraseña hasheada y una sesión firmada de 8 horas, donde Sergio ve las consultas (las busca, filtra, archiva, responde por WhatsApp y exporta a PDF) y carga sus trabajos con varias fotos, texto alternativo, orden, visibilidad y compresión en el navegador. Todo se construyó en nueve etapas, cada una con sus pruebas automáticas, y se publica en Vercel.
+> Es un sitio en Next.js para un emprendimiento de decoración. Muestra los trabajos terminados que están cargados en PostgreSQL (Neon), permite filtrarlos por servicio y verlos en grande, presenta los seis servicios fijos y permite guardar categorías adicionales para los trabajos. Lleva al cliente a consultar por WhatsApp, por llamada o con un formulario que guarda la consulta en la base. Tiene un panel privado, protegido con contraseña hasheada y una sesión firmada de 8 horas, donde Sergio ve las consultas (las busca, filtra, archiva, responde por WhatsApp y exporta a PDF) y carga sus trabajos con varias fotos, texto alternativo, orden, visibilidad y compresión en el navegador. Todo se construyó en diez etapas, cada una con sus pruebas automáticas, y se publica en Vercel.
 
 Y si preguntan por las decisiones técnicas:
 

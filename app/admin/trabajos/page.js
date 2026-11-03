@@ -1,6 +1,7 @@
 import NavegacionPanel from "../../../components/NavegacionPanel";
 import PanelTrabajos from "../../../components/PanelTrabajos";
 import { exigirSesion } from "../../../lib/sesion";
+import { listarServiciosAdicionales } from "../../../lib/servicios-adicionales";
 import { listarTrabajosPanel } from "../../../lib/trabajos";
 
 export const dynamic = "force-dynamic";
@@ -13,10 +14,14 @@ export default async function PaginaTrabajosPanel() {
   await exigirSesion();
 
   let trabajos = [];
+  let serviciosAdicionales = [];
   let errorBase = false;
 
   try {
-    trabajos = await listarTrabajosPanel();
+    [trabajos, serviciosAdicionales] = await Promise.all([
+      listarTrabajosPanel(),
+      listarServiciosAdicionales(),
+    ]);
   } catch (error) {
     errorBase = true;
     console.error("No se pudieron cargar los trabajos del panel", error);
@@ -50,7 +55,10 @@ export default async function PaginaTrabajosPanel() {
             No pudimos cargar los trabajos. Recargá la página y probá de nuevo.
           </p>
         ) : (
-          <PanelTrabajos trabajosIniciales={trabajos} />
+          <PanelTrabajos
+            trabajosIniciales={trabajos}
+            serviciosAdicionalesIniciales={serviciosAdicionales}
+          />
         )}
       </div>
     </section>

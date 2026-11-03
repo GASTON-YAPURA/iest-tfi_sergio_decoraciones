@@ -37,6 +37,7 @@ test("el filtro usa los seis servicios y la opcion Todos", () => {
 
   assert.match(filtro, /id: "todos"/);
   assert.match(filtro, /SERVICIOS\.map/);
+  assert.match(filtro, /serviciosAdicionales\.map/);
   assert.match(filtro, /aria-pressed/);
 });
 
@@ -46,6 +47,8 @@ test("la galeria filtra por servicio y abre el visor", () => {
   assert.match(galeria, /filtrarTrabajosPorServicio/);
   assert.match(galeria, /TarjetaTrabajo/);
   assert.match(galeria, /VisorFoto/);
+  assert.match(galeria, /servicio_nombre/);
+  assert.match(galeria, /serviciosAdicionales=\{serviciosAdicionales\}/);
 });
 
 test("el filtro deja solo los trabajos del servicio elegido", () => {
@@ -53,6 +56,7 @@ test("el filtro deja solo los trabajos del servicio elegido", () => {
     { id: 1, servicio: "pintura" },
     { id: 2, servicio: "durlock" },
     { id: 3, servicio: "pintura" },
+    { id: 4, servicio: "extra-12", servicio_nombre: "Colocación de pisos" },
   ];
 
   assert.deepEqual(filtrarTrabajosPorServicio(trabajos, "todos"), trabajos);
@@ -61,6 +65,10 @@ test("el filtro deja solo los trabajos del servicio elegido", () => {
     [1, 3]
   );
   assert.deepEqual(filtrarTrabajosPorServicio(trabajos, "molduras"), []);
+  assert.deepEqual(
+    filtrarTrabajosPorServicio(trabajos, "extra-12").map((trabajo) => trabajo.id),
+    [4]
+  );
 });
 
 test("el visor es un dialogo accesible con la foto", () => {
@@ -91,6 +99,7 @@ test("la tarjeta usa la primera foto guardada en la base", () => {
   assert.match(tarjeta, /urlFoto\(trabajo\.id, portada\.id\)/);
   assert.match(tarjeta, /alt=\{portada\.texto_alt\}/);
   assert.match(tarjeta, /tarjeta-sin-foto/);
+  assert.match(tarjeta, /trabajo\.servicio_nombre/);
 });
 
 test("la foto se pide a la ruta que la lee de la base", () => {

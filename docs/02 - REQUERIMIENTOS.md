@@ -24,6 +24,7 @@
 | RF18 | Ver cuántas consultas quedan pendientes | Baja |
 | RF19 | Administrar los trabajos desde el panel: agregar, editar, ocultar y borrar | Alta |
 | RF20 | Cargar varias fotos por trabajo, guardadas en la base de datos | Alta |
+| RF21 | Agregar desde el panel servicios personalizados reutilizables para clasificar trabajos | Media |
 
 ## Requerimientos no funcionales
 
@@ -89,3 +90,7 @@
 - Los cambios se ven en el sitio sin tocar código: las fotos salen de la base de datos
 - Al guardar, agregar u ocultar un trabajo, los cambios aparecen de inmediato en el inicio y en la galería pública
 - Si la base falla, el panel muestra un mensaje claro y no pierde lo que estaba cargado
+- Al agregar un trabajo se puede elegir un servicio existente o crear uno nuevo
+- El servicio nuevo se guarda para reutilizarlo en trabajos futuros y aparece como etiqueta y filtro en la galería pública
+- Los servicios personalizados no modifican el catálogo fijo de la página `/servicios`
+- El nombre del servicio se valida y no se permiten duplicados sin distinguir mayúsculas y minúsculas

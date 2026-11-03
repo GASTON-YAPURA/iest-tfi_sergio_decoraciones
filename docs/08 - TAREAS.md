@@ -128,3 +128,16 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 - [x] Agregar pruebas de permisos, validaciones y del panel de trabajos
 - [x] Reemplazar las fotos de muestra por las definitivas y actualizar las fichas de IA
 - [x] Actualizar `memory.md`, `Commits.md` y `11 - RECORRIDO DEL PROYECTO.md`
+
+## Etapa 10: Servicios adicionales para trabajos
+
+> Los servicios adicionales se pueden crear desde el formulario de un trabajo. Se guardan para reutilizarlos y aparecen como etiqueta/filtro en Trabajos; la página `/servicios` conserva sus seis servicios definidos.
+
+- [x] Actualizar la especificación de servicios adicionales en `01`, `02`, `04`, `05`, `06` y `10`
+- [x] Crear la tabla idempotente para servicios adicionales y su validación única sin distinguir mayúsculas
+- [x] Crear la API protegida para listar y agregar servicios adicionales
+- [x] Permitir agregar un servicio desde el formulario de alta de trabajo y reutilizarlo después
+- [x] Mostrar los nombres y filtros de los servicios adicionales en el panel y la galería pública
+- [x] Agregar pruebas para validación, permisos, duplicados, formulario y filtros
+- [x] Ejecutar `npm test` y `npm run build`
+- [x] Actualizar `memory.md` y `11 - RECORRIDO DEL PROYECTO.md`

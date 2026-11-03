@@ -138,7 +138,7 @@ export default function VisorFoto({ trabajo, onCerrar }) {
 
         <div className="visor-datos">
           <p className="tarjeta-servicio">
-            {obtenerNombreServicio(trabajo.servicio)}
+            {obtenerNombreServicio(trabajo.servicio, trabajo.servicio_nombre)}
           </p>
           <h2 id="visor-titulo">{trabajo.titulo}</h2>
           {trabajo.descripcion ? <p>{trabajo.descripcion}</p> : null}

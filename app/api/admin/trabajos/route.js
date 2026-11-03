@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { revalidarTrabajosPublicos } from "../../../../lib/revalidar-trabajos";
 import { leerSesion } from "../../../../lib/sesion";
+import { existeServicioAdicional } from "../../../../lib/servicios-adicionales";
 import {
   actualizarTrabajo,
   borrarTrabajo,
@@ -21,6 +22,13 @@ function sinSesion() {
 function idInvalido() {
   return NextResponse.json(
     { error: "El número de trabajo no es válido." },
+    { status: 400 }
+  );
+}
+
+function servicioInvalido() {
+  return NextResponse.json(
+    { error: "El servicio elegido ya no está disponible. Elegí otro." },
     { status: 400 }
   );
 }
@@ -66,6 +74,13 @@ export async function POST(request) {
   }
 
   try {
+    if (
+      revision.datos.servicio.startsWith("extra-") &&
+      !(await existeServicioAdicional(revision.datos.servicio))
+    ) {
+      return servicioInvalido();
+    }
+
     const trabajo = await crearTrabajo(revision.datos);
     revalidarTrabajosPublicos();
 
@@ -100,6 +115,13 @@ export async function PATCH(request) {
   }
 
   try {
+    if (
+      revision.datos.servicio.startsWith("extra-") &&
+      !(await existeServicioAdicional(revision.datos.servicio))
+    ) {
+      return servicioInvalido();
+    }
+
     const trabajo = await actualizarTrabajo(id, revision.datos);
 
     if (!trabajo) {

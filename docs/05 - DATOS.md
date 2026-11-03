@@ -1,6 +1,6 @@
 # 05-DATOS: qué información guarda Sergio Decoraciones
 
-La base de datos es PostgreSQL (Neon) y tiene tres tablas: `trabajos` (la galería), `trabajo_fotos` (las fotos de cada trabajo) y `consultas` (lo que envía el formulario). No guarda precios ni datos de pago. El usuario y la contraseña de Sergio para el panel no están en la base: van en variables de entorno (ver 03-TECNOLOGIAS.md y 10-SEGURIDAD.md).
+La base de datos es PostgreSQL (Neon) y tiene cuatro tablas: `trabajos` (la galería), `trabajo_fotos` (las fotos de cada trabajo), `servicios_adicionales` (categorías creadas desde el panel) y `consultas` (lo que envía el formulario). Los seis servicios principales siguen definidos en `lib/servicios.js`; los adicionales se guardan en la base y se usan en la galería, no en la página fija `/servicios`. No guarda precios ni datos de pago. El usuario y la contraseña de Sergio para el panel no están en la base: van en variables de entorno (ver 03-TECNOLOGIAS.md y 10-SEGURIDAD.md).
 
 ## Tabla `trabajos`
 
@@ -22,6 +22,18 @@ La base de datos es PostgreSQL (Neon) y tiene tres tablas: `trabajos` (la galer�
 | `enduido` | Enduido, interior y exterior |
 | `machimbre` | Colocación de machimbre |
 | `molduras` | Colocación de molduras |
+| `extra-<id>` | Servicio adicional guardado en `servicios_adicionales`; `<id>` es el identificador generado por la base |
+
+`servicio` conserva hasta 20 caracteres. Los identificadores adicionales tienen el prefijo `extra-` y un número generado; el nombre visible se obtiene de `servicios_adicionales`.
+
+## Tabla `servicios_adicionales`
+
+Guarda servicios que Sergio crea al cargar un trabajo. Se reutilizan en el formulario y en los filtros/etiquetas de la galería. No se eliminan al borrar un trabajo ni aparecen en el catálogo fijo de `/servicios`.
+
+| Campo | Tipo | Descripción |
+|---|---|---|
+| `id` | `SERIAL` (clave primaria) | Número único del servicio adicional |
+| `nombre` | `VARCHAR(80)`, obligatorio | Nombre visible, único sin distinguir mayúsculas y minúsculas |
 
 ## Tabla `trabajo_fotos`
 
@@ -74,6 +86,14 @@ CREATE TABLE IF NOT EXISTS trabajo_fotos (
   texto_alt  VARCHAR(200) NOT NULL,
   orden      INTEGER NOT NULL DEFAULT 1
 );
+
+CREATE TABLE IF NOT EXISTS servicios_adicionales (
+  id     SERIAL PRIMARY KEY,
+  nombre VARCHAR(80) NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS servicios_adicionales_nombre_idx
+  ON servicios_adicionales (LOWER(nombre));
 
 CREATE TABLE IF NOT EXISTS consultas (
   id        SERIAL PRIMARY KEY,

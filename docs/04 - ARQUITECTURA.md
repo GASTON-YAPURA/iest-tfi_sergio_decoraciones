@@ -30,6 +30,7 @@ sergio-decoraciones/
 │       └── admin/
 │           ├── sesion/route.js    ← informa si la sesión sigue activa, sin devolver datos privados
 │           ├── ingresar/route.js  ← valida usuario y contraseña
+│           ├── servicios/route.js ← lista y agrega servicios reutilizables para trabajos
 │           ├── consultas/route.js ← lista, busca, archiva y borra consultas
 │           ├── consultas/pdf/route.js ← descarga las consultas en PDF
 │           ├── trabajos/route.js  ← alta, edición y borrado de trabajos
@@ -53,6 +54,7 @@ sergio-decoraciones/
 │   ├── db.js                      ← única conexión a la base
 │   ├── trabajos.js                ← consultas y cambios de trabajos y fotos
 │   ├── servicios.js               ← datos de los seis servicios
+│   ├── servicios-adicionales.js   ← consulta y alta de servicios personalizados
 │   ├── consultas.js               ← guarda, lista, archiva y borra consultas
 │   ├── validacion.js              ← valida nombre, teléfono y mensaje
 │   ├── imagen.js                  ← valida el tipo, el peso y las medidas de una foto
@@ -100,6 +102,7 @@ sergio-decoraciones/
 | `app/sitemap.js` | Genera `sitemap.xml` con las páginas públicas para Google |
 | `app/api/` | Rutas del servidor que leen y escriben en la base de datos |
 | `app/api/admin/sesion/route.js` | Informa al menú si hay una sesión válida, sin exponer datos del usuario |
+| `app/api/admin/servicios/route.js` | Lista y crea servicios adicionales, siempre con sesión |
 | `components/` | Piezas de pantalla reutilizables |
 | `components/MenuPrincipal.js` | Menú de navegación con la página activa, acceso al panel solo con sesión y botón de tres rayas en celular |
 | `components/GaleriaTrabajos.js` | Galería de trabajos con el filtro por servicio y el visor de foto |
@@ -108,10 +111,11 @@ sergio-decoraciones/
 | `components/RespuestaWhatsApp.js` | Cuadro para escribir el mensaje antes de abrir WhatsApp |
 | `components/FormularioTrabajo.js` | Alta y edición de un trabajo con sus fotos, con vista previa |
 | `lib/db.js` | Único lugar donde se conecta con la base de datos |
-| `lib/trabajos.js` | Consultas y cambios de los trabajos (destacados, galería y panel) |
+| `lib/trabajos.js` | Consultas y cambios de trabajos y servicios adicionales |
 | `lib/imagen.js` | Valida tipo, peso y medidas de una foto antes de guardarla |
 | `lib/pdf.js` | Arma el archivo PDF con las consultas filtradas |
-| `lib/servicios.js` | Datos de los seis servicios y sus nombres para las etiquetas |
+| `lib/servicios.js` | Datos de los seis servicios fijos y sus nombres para las etiquetas |
+| `lib/servicios-adicionales.js` | Lectura, alta y validación de existencia de servicios personalizados |
 | `lib/consultas.js` | Guarda, lista, busca, archiva y borra consultas con SQL parametrizado |
 | `lib/validacion.js` | Valida nombre, teléfono y mensaje antes de guardar |
 | `lib/limite.js` | Limita las consultas por minuto y los intentos fallidos de ingreso |

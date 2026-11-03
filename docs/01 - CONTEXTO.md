@@ -30,6 +30,8 @@ Cómo se espera que se use:
 | Colocación de machimbre | Trabajo de terminación |
 | Colocación de molduras | Trabajo de terminación |
 
+Los seis servicios de esta tabla son el catálogo fijo de la página **Servicios**. Desde el panel se pueden crear servicios adicionales para clasificar trabajos; estos se reutilizan y aparecen como filtros y etiquetas en la galería, sin agregarse a la página **Servicios**.
+
 ## Qué ofrece el sitio
 
 | Sección | Para qué sirve |
@@ -38,7 +40,7 @@ Cómo se espera que se use:
 | Servicios | Explicar qué trabajos realiza Sergio |
 | Nosotros | Contar quién es Sergio y cómo trabaja |
 | Contacto | Consultar por WhatsApp o llamar |
-| Panel privado | Que Sergio vea las consultas que le hicieron, entrando con su contraseña desde un enlace |
+| Panel privado | Que Sergio vea las consultas y administre los trabajos y sus categorías, entrando con su contraseña desde un enlace |
 
 ## No incluye (por ahora)
 
@@ -47,4 +49,3 @@ Cómo se espera que se use:
 - Tienda o venta de productos
 - Precios publicados: se consultan por WhatsApp o llamada (marcador `$ 0` si hiciera falta)
 - Redes sociales integradas
-- Panel para cargar trabajos: los trabajos se cargan directamente en la base de datos (el panel solo muestra las consultas)

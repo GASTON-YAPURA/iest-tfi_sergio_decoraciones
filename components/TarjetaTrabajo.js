@@ -36,7 +36,7 @@ export default function TarjetaTrabajo({ trabajo, onAbrir, prioridad = false }) 
 
       <div className="tarjeta-cuerpo">
         <p className="tarjeta-servicio">
-          {obtenerNombreServicio(trabajo.servicio)}
+          {obtenerNombreServicio(trabajo.servicio, trabajo.servicio_nombre)}
         </p>
         <h3>{trabajo.titulo}</h3>
         {trabajo.descripcion ? (

@@ -12,6 +12,7 @@ import {
 } from "../lib/limites-imagen.js";
 import {
   MAXIMO_FOTOS,
+  revisarNombreServicioAdicional,
   revisarFotosParaActualizar,
   revisarTrabajo,
 } from "../lib/validacion-trabajos.js";
@@ -62,7 +63,7 @@ test("rechaza trabajos con titulo, servicio o descripcion invalidos", () => {
   );
   assert.match(
     revisarTrabajo({ ...TRABAJO_VALIDO, servicio: "plomeria" }).error,
-    /seis servicios/
+    /servicio disponible/
   );
   assert.match(
     revisarTrabajo({ ...TRABAJO_VALIDO, descripcion: "poco" }).error,
@@ -77,6 +78,29 @@ test("rechaza trabajos con titulo, servicio o descripcion invalidos", () => {
     /visibilidad/
   );
   assert.match(revisarTrabajo(null).error, /al menos 3 caracteres/);
+});
+
+test("valida nombres de servicios adicionales y evita duplicados", () => {
+  assert.deepEqual(revisarNombreServicioAdicional("  Colocación de pisos  ", []), {
+    nombre: "Colocación de pisos",
+  });
+  assert.match(revisarNombreServicioAdicional(" ").error, /Escribí/);
+  assert.match(revisarNombreServicioAdicional("a".repeat(81)).error, /80 caracteres/);
+  assert.match(revisarNombreServicioAdicional("DURLOCK").error, /Ya existe/);
+  assert.match(
+    revisarNombreServicioAdicional("Pintura interior", ["pintura INTERIOR"])
+      .error,
+    /Ya existe/
+  );
+  assert.equal(revisarTrabajo({ ...TRABAJO_VALIDO, servicio: "extra-12" }).error, undefined);
+  assert.match(
+    revisarTrabajo({ ...TRABAJO_VALIDO, servicio: "extra-0" }).error,
+    /servicio disponible/
+  );
+  assert.match(
+    revisarTrabajo({ ...TRABAJO_VALIDO, servicio: "extra-2147483648" }).error,
+    /servicio disponible/
+  );
 });
 
 test("ordena y valida la lista de fotos editadas", () => {
@@ -201,9 +225,38 @@ test("la api de trabajos exige sesion en las cuatro acciones", () => {
   assert.match(ruta, /crearTrabajo/);
   assert.match(ruta, /actualizarTrabajo/);
   assert.match(ruta, /borrarTrabajo/);
+  assert.match(ruta, /existeServicioAdicional/);
+  assert.equal((ruta.match(/existeServicioAdicional\(/g) ?? []).length, 2);
+  assert.match(ruta, /startsWith\("extra-"\)/);
   assert.match(ruta, /Number\.isInteger/);
   assert.match(ruta, /status: 201/);
   assert.match(ruta, /status: 404/);
+});
+
+test("la api de servicios adicionales exige sesion para listar y crear", () => {
+  const ruta = leerArchivo("app/api/admin/servicios/route.js");
+
+  assert.match(ruta, /export async function GET/);
+  assert.match(ruta, /export async function POST/);
+  assert.equal((ruta.match(/leerSesion\(\)/g) ?? []).length, 2);
+  assert.match(ruta, /listarServiciosAdicionales/);
+  assert.match(ruta, /crearServicioAdicional/);
+  assert.match(ruta, /revisarNombreServicioAdicional/);
+  assert.match(ruta, /status: 401/);
+  assert.match(ruta, /status: 409/);
+  assert.match(ruta, /Cache-Control/);
+});
+
+test("el formulario permite crear y reutilizar un servicio adicional", () => {
+  const formulario = leerArchivo("components/FormularioTrabajo.js");
+  const panel = leerArchivo("components/PanelTrabajos.js");
+
+  assert.match(formulario, /Agregar un nuevo servicio/);
+  assert.match(formulario, /trabajo-servicio-nuevo/);
+  assert.match(formulario, /fetch\("\/api\/admin\/servicios"/);
+  assert.match(formulario, /serviciosAdicionalesIniciales/);
+  assert.match(panel, /serviciosAdicionalesIniciales/);
+  assert.match(panel, /servicio_nombre/);
 });
 
 test("las mutaciones del panel revalidan las paginas publicas de trabajos", () => {
@@ -255,9 +308,10 @@ test("el listado del panel incluye los ocultos y el publico no", () => {
 
   assert.match(
     trabajos,
-    /SELECT \$\{CAMPOS_PANEL\} FROM trabajos ORDER BY id DESC/
+    /SELECT \$\{CAMPOS_PANEL\}[\s\S]*FROM \$\{TABLA_TRABAJOS\}[\s\S]*ORDER BY t\.id DESC/
   );
-  assert.match(trabajos, /WHERE visible = TRUE ORDER BY id DESC/);
+  assert.match(trabajos, /WHERE t\.visible = TRUE[\s\S]*ORDER BY t\.id DESC/);
+  assert.match(trabajos, /LEFT JOIN servicios_adicionales/);
   assert.match(trabajos, /FROM trabajo_fotos/);
   assert.match(trabajos, /ORDER BY orden, id/);
   assert.match(trabajos, /COALESCE\(MAX\(orden\), 0\) \+ 1/);
