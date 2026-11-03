@@ -24,9 +24,6 @@ export default function PanelTrabajos({
 }) {
   const router = useRouter();
   const [trabajos, setTrabajos] = useState(trabajosIniciales);
-  const [serviciosAdicionales, setServiciosAdicionales] = useState(
-    serviciosAdicionalesIniciales
-  );
   const [modo, setModo] = useState("lista");
   const [editando, setEditando] = useState(null);
   const [procesando, setProcesando] = useState(null);
@@ -176,10 +173,7 @@ export default function PanelTrabajos({
       <FormularioTrabajo
         key={editando?.id ?? "nuevo"}
         trabajo={editando}
-        serviciosAdicionalesIniciales={serviciosAdicionales}
-        onServicioCreado={(servicio) =>
-          setServiciosAdicionales((actuales) => [...actuales, servicio])
-        }
+        serviciosAdicionalesIniciales={serviciosAdicionalesIniciales}
         onGuardado={terminar}
         onCancelar={cancelar}
       />

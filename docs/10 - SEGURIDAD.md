@@ -46,7 +46,7 @@ El panel permite a Sergio ver las consultas desde un enlace (`/admin`). Como esa
 - Se permiten como máximo 5 intentos fallidos cada 15 minutos desde la misma conexión.
 - El error de ingreso es siempre el mismo ("Usuario o contraseña incorrectos"), sin decir cuál de los dos falló.
 - Cada página y cada ruta de `admin/` verifica la sesión en el servidor antes de mostrar o devolver datos.
-- La lista y el alta de servicios adicionales se protegen con sesión en `/api/admin/servicios`. El nombre, el detalle y la descripción se validan en el servidor; se limitan a 80, 120 y 600 caracteres respectivamente, y se impiden nombres duplicados sin distinguir mayúsculas y minúsculas.
+- La lista y el alta de servicios adicionales se protegen con sesión en `/api/admin/servicios`, desde la sección privada `/admin/servicios`. El nombre, el detalle y la descripción se validan en el servidor; se limitan a 80, 120 y 600 caracteres respectivamente, y se impiden nombres duplicados sin distinguir mayúsculas y minúsculas.
 - El menú público consulta una ruta que solo informa si la sesión es válida; no devuelve el usuario ni datos del panel. Sin sesión, el enlace «Panel admin» no se muestra.
 - Para marcar una consulta como atendida, el `id` se valida como número y se usa como parámetro SQL.
 - El botón "Salir" borra la cookie de sesión.

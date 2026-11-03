@@ -40,7 +40,7 @@ Los seis servicios de esta tabla son el catálogo fijo de la página **Servicios
 | Servicios | Explicar qué trabajos realiza Sergio |
 | Nosotros | Contar quién es Sergio y cómo trabaja |
 | Contacto | Consultar por WhatsApp o llamar |
-| Panel privado | Que Sergio vea las consultas y administre los trabajos y sus categorías, entrando con su contraseña desde un enlace |
+| Panel privado | Que Sergio vea las consultas y administre trabajos y servicios desde secciones separadas, entrando con su contraseña desde un enlace |
 
 ## No incluye (por ahora)
 

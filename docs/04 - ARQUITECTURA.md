@@ -22,7 +22,8 @@ sergio-decoraciones/
 │   │   ├── layout.js              ← noindex y navegación del panel privado
 │   │   ├── page.js                ← ingreso de Sergio
 │   │   ├── consultas/page.js      ← listado de consultas (privado)
-│   │   └── trabajos/page.js       ← alta, edición y borrado de trabajos (privado)
+│   │   ├── trabajos/page.js       ← alta, edición y borrado de trabajos (privado)
+│   │   └── servicios/page.js      ← alta y listado de servicios (privado)
 │   └── api/
 │       ├── trabajos/route.js      ← devuelve los trabajos publicados
 │       ├── trabajos/[id]/foto/route.js ← entrega una foto guardada en la base
@@ -49,7 +50,8 @@ sergio-decoraciones/
 │   ├── TablaConsultas.js          ← listado, filtros y acciones de las consultas
 │   ├── RespuestaWhatsApp.js       ← cuadro para editar el mensaje antes de enviarlo
 │   ├── ListaTrabajos.js           ← listado de trabajos del panel
-│   └── FormularioTrabajo.js       ← alta y edición de un trabajo con sus fotos
+│   ├── FormularioTrabajo.js       ← alta y edición de un trabajo con sus fotos
+│   └── PanelServicios.js          ← alta separada y listado de servicios
 ├── lib/
 │   ├── db.js                      ← única conexión a la base
 │   ├── trabajos.js                ← consultas y cambios de trabajos y fotos
@@ -104,6 +106,7 @@ sergio-decoraciones/
 | `app/api/` | Rutas del servidor que leen y escriben en la base de datos |
 | `app/api/admin/sesion/route.js` | Informa al menú si hay una sesión válida, sin exponer datos del usuario |
 | `app/api/admin/servicios/route.js` | Lista y crea servicios adicionales, siempre con sesión |
+| `app/admin/servicios/page.js` | Sección privada para crear y consultar servicios |
 | `components/` | Piezas de pantalla reutilizables |
 | `components/MenuPrincipal.js` | Menú de navegación con la página activa, acceso al panel solo con sesión y botón de tres rayas en celular |
 | `components/GaleriaTrabajos.js` | Galería de trabajos con el filtro por servicio y el visor de foto |
@@ -111,6 +114,7 @@ sergio-decoraciones/
 | `components/TablaConsultas.js` | Listado de consultas con buscador, filtros, paginado y acciones |
 | `components/RespuestaWhatsApp.js` | Cuadro para escribir el mensaje antes de abrir WhatsApp |
 | `components/FormularioTrabajo.js` | Alta y edición de un trabajo con sus fotos, con vista previa |
+| `components/PanelServicios.js` | Formulario y listado de servicios; no crea trabajos |
 | `lib/db.js` | Único lugar donde se conecta con la base de datos |
 | `lib/trabajos.js` | Consultas y cambios de trabajos y servicios adicionales |
 | `lib/imagen.js` | Valida tipo, peso y medidas de una foto antes de guardarla |

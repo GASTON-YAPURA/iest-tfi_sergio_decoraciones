@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-// Cambia entre las dos secciones del panel sin escribir la direccion.
+// Cambia entre las secciones del panel sin escribir la direccion.
 export default function NavegacionPanel({ actual }) {
   return (
     <nav className="admin-navegacion" aria-label="Secciones del panel">
@@ -17,6 +17,13 @@ export default function NavegacionPanel({ actual }) {
         aria-current={actual === "trabajos" ? "page" : undefined}
       >
         Trabajos
+      </Link>
+      <Link
+        className="admin-navegacion-enlace"
+        href="/admin/servicios"
+        aria-current={actual === "servicios" ? "page" : undefined}
+      >
+        Servicios
       </Link>
     </nav>
   );

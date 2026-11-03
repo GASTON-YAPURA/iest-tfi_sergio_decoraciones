@@ -7,7 +7,6 @@ import { SERVICIOS } from "../lib/servicios";
 import { revisarTextoAlt } from "../lib/texto-alt";
 import {
   MAXIMO_FOTOS,
-  revisarServicioAdicional,
   revisarTrabajo,
 } from "../lib/validacion-trabajos";
 
@@ -41,18 +40,11 @@ async function leerRespuesta(respuesta) {
 export default function FormularioTrabajo({
   trabajo,
   serviciosAdicionalesIniciales = [],
-  onServicioCreado,
   onGuardado,
   onCancelar,
 }) {
   const [titulo, setTitulo] = useState(trabajo?.titulo ?? "");
   const [servicio, setServicio] = useState(trabajo?.servicio ?? "");
-  const [nombreServicioNuevo, setNombreServicioNuevo] = useState("");
-  const [detalleServicioNuevo, setDetalleServicioNuevo] = useState("");
-  const [descripcionServicioNueva, setDescripcionServicioNueva] = useState("");
-  const [serviciosAdicionales, setServiciosAdicionales] = useState(
-    serviciosAdicionalesIniciales
-  );
   const [descripcion, setDescripcion] = useState(trabajo?.descripcion ?? "");
   const [visible, setVisible] = useState(trabajo?.visible ?? true);
   const [fotos, setFotos] = useState(() =>
@@ -164,26 +156,9 @@ export default function FormularioTrabajo({
     evento.preventDefault();
     setError("");
 
-    const revisionNombreServicio =
-      servicio === "nuevo"
-        ? revisarServicioAdicional(
-            {
-              nombre: nombreServicioNuevo,
-              detalle: detalleServicioNuevo,
-              descripcion: descripcionServicioNueva,
-            },
-            serviciosAdicionales.map((opcion) => opcion.nombre)
-          )
-        : null;
-
-    if (revisionNombreServicio?.error) {
-      setError(revisionNombreServicio.error);
-      return;
-    }
-
     const revision = revisarTrabajo({
       titulo,
-      servicio: servicio === "nuevo" ? SERVICIOS[0].id : servicio,
+      servicio,
       descripcion,
       visible,
     });
@@ -211,30 +186,7 @@ export default function FormularioTrabajo({
     const subidas = new Map();
 
     try {
-      let servicioElegido = revision.datos.servicio;
-
-      if (servicio === "nuevo") {
-        const respuesta = await fetch("/api/admin/servicios", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(revisionNombreServicio.datos),
-        });
-        const resultado = await leerRespuesta(respuesta);
-
-        if (!respuesta.ok) {
-          throw new Error(resultado.error ?? "No pudimos guardar el servicio.");
-        }
-
-        servicioElegido = resultado.servicio.id;
-        setServicio(servicioElegido);
-        setServiciosAdicionales((actuales) => [
-          ...actuales,
-          resultado.servicio,
-        ]);
-        onServicioCreado?.(resultado.servicio);
-      }
-
-      const datosTrabajo = { ...revision.datos, servicio: servicioElegido };
+      const datosTrabajo = revision.datos;
       let trabajoId = trabajo?.id ?? trabajoIdCreado;
 
       if (!trabajoId) {
@@ -396,52 +348,13 @@ export default function FormularioTrabajo({
                 {opcion.nombre}
               </option>
             ))}
-            {!trabajo ? (
-              <option value="nuevo">Agregar un nuevo servicio...</option>
-            ) : null}
+            {serviciosAdicionalesIniciales.map((opcion) => (
+              <option key={opcion.id} value={opcion.id}>
+                {opcion.nombre}
+              </option>
+            ))}
           </select>
         </div>
-
-        {!trabajo && servicio === "nuevo" ? (
-          <div className="campo">
-            <label htmlFor="trabajo-servicio-nuevo">Nombre del servicio</label>
-            <input
-              id="trabajo-servicio-nuevo"
-              type="text"
-              value={nombreServicioNuevo}
-              onChange={(evento) =>
-                setNombreServicioNuevo(evento.target.value)
-              }
-              maxLength={80}
-              autoComplete="off"
-              required
-            />
-            <label htmlFor="trabajo-servicio-detalle">Detalle breve</label>
-            <input
-              id="trabajo-servicio-detalle"
-              type="text"
-              value={detalleServicioNuevo}
-              onChange={(evento) =>
-                setDetalleServicioNuevo(evento.target.value)
-              }
-              maxLength={120}
-              required
-            />
-            <label htmlFor="trabajo-servicio-descripcion">
-              Descripción del servicio
-            </label>
-            <textarea
-              id="trabajo-servicio-descripcion"
-              value={descripcionServicioNueva}
-              onChange={(evento) =>
-                setDescripcionServicioNueva(evento.target.value)
-              }
-              rows={4}
-              maxLength={600}
-              required
-            />
-          </div>
-        ) : null}
       </div>
 
       <div className="campo">

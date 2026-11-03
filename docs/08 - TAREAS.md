@@ -144,7 +144,7 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 
 ## Etapa 11: Fichas de servicios adicionales
 
-> Al crear un servicio desde el alta de un trabajo, Sergio completa nombre, detalle y descripción. La ficha nueva se reutiliza en Trabajos y se muestra también en `/servicios`, conservando las seis fichas originales.
+> Al crear un servicio desde el panel, Sergio completa nombre, detalle y descripción. La ficha nueva se reutiliza como categoría en Trabajos y se muestra también en `/servicios`, conservando las seis fichas originales.
 
 - [x] Actualizar requisitos, datos, arquitectura, diseño y seguridad
 - [x] Ampliar el esquema idempotente para guardar detalle y descripción, conservando servicios existentes
@@ -152,5 +152,18 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 - [x] Agregar los campos al formulario de alta de servicio
 - [x] Mostrar las fichas adicionales en `/servicios` y reflejar el alta sin esperar la caché
 - [x] Agregar pruebas para campos, persistencia, permisos y ficha pública
+- [x] Ejecutar `npm test` y `npm run build`
+- [x] Actualizar `memory.md` y `11 - RECORRIDO DEL PROYECTO.md`
+
+## Etapa 12: Secciones separadas del panel
+
+> El panel organiza Consultas, Trabajos y Servicios en tres secciones. Los trabajos se crean desde Trabajos eligiendo un servicio existente; los servicios se crean por separado desde Servicios y no generan trabajos.
+
+- [x] Actualizar requisitos, contexto, datos, arquitectura, diseño, seguridad y recorrido
+- [x] Agregar Servicios a la navegación privada con estado activo y página protegida
+- [x] Mover el formulario de alta de servicios a su propia sección y listar las fichas existentes
+- [x] Quitar la creación de servicios del formulario de trabajos y mantener la selección de categorías existentes
+- [x] Verificar que altas de trabajo y servicio afecten solo sus respectivas páginas de contenido
+- [x] Agregar pruebas para navegación, permisos y separación de altas
 - [x] Ejecutar `npm test` y `npm run build`
 - [x] Actualizar `memory.md` y `11 - RECORRIDO DEL PROYECTO.md`

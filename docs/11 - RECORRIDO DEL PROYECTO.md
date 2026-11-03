@@ -32,6 +32,7 @@ Este documento cuenta **cómo se construyó** el sitio de Sergio Decoraciones: q
 | `/admin` | Ingreso con usuario y contraseña | Dinámica; el menú solo lo muestra con sesión activa |
 | `/admin/consultas` | Listado privado de consultas, con búsqueda, filtros, archivo y PDF | Dinámica, protegida |
 | `/admin/trabajos` | Listado y formulario privado de trabajos con sus fotos | Dinámica, protegida |
+| `/admin/servicios` | Listado y alta privada de servicios | Dinámica, protegida |
 
 ### Las APIs
 
@@ -42,7 +43,7 @@ Este documento cuenta **cómo se construyó** el sitio de Sergio Decoraciones: q
 | `/api/consultas` | POST | Valida y guarda una consulta del formulario |
 | `/api/admin/ingresar` | POST | Verifica credenciales y crea la sesión |
 | `/api/admin/sesion` | GET | Informa al menú si hay una sesión válida, sin devolver datos privados |
-| `/api/admin/servicios` | GET / POST | Lista y crea servicios adicionales para los trabajos, con sesión |
+| `/api/admin/servicios` | GET / POST | Lista y crea servicios adicionales, con sesión |
 | `/api/admin/consultas` | GET / PATCH / DELETE | Lista, marca como atendida, archiva, restaura o borra una consulta |
 | `/api/admin/consultas/pdf` | GET | Descarga las consultas filtradas en PDF |
 | `/api/admin/trabajos` | GET / POST / PATCH / DELETE | Lista, crea, edita, oculta o borra un trabajo |
@@ -483,7 +484,7 @@ Cambiar la contraseña temporal y publicar en Vercel con las variables de entorn
 
 1. **Persistencia:** `servicios_adicionales` guarda nombres de hasta 80 caracteres con unicidad sin distinguir mayúsculas. Cada servicio obtiene un identificador `extra-<id>` almacenado en el campo `trabajos.servicio`.
 2. **Acceso protegido:** `GET/POST /api/admin/servicios` exige sesión; el alta valida el nombre y devuelve un conflicto cuando ya existe un servicio con ese nombre.
-3. **Formulario:** al dar de alta un trabajo, Sergio puede elegir un servicio principal o guardado, o seleccionar «Agregar un nuevo servicio». El nuevo nombre se guarda antes del trabajo y queda disponible al volver a abrir el formulario.
+3. **Formulario original:** al dar de alta un trabajo, Sergio podía elegir un servicio principal o guardado, o crear uno desde ese mismo formulario. En la Etapa 12 se separó el alta en la sección Servicios.
 4. **Etiquetas y filtros:** los listados del panel y la galería obtienen el nombre adicional desde la base. Los filtros públicos agregan categorías adicionales solo cuando hay al menos un trabajo visible en esa categoría.
 5. **Página Servicios en la Etapa 10:** inicialmente, `app/servicios/page.js` seguía leyendo exclusivamente `SERVICIOS`; la Etapa 11 amplía este comportamiento y agrega fichas personalizadas sin alterar las seis originales.
 6. **Validación y errores:** el trabajo solo puede guardar un identificador adicional que exista; los nombres vacíos, demasiado largos y duplicados (incluidos los nombres de servicios fijos) se rechazan.
@@ -499,10 +500,10 @@ Cambiar la contraseña temporal y publicar en Vercel con las variables de entorn
 
 ## 10.3 Etapa 11: Fichas de servicios adicionales
 
-**Objetivo:** mostrar en `/servicios` las categorías personalizadas creadas al cargar un trabajo, con contenido escrito por Sergio.
+**Objetivo:** mostrar en `/servicios` las categorías personalizadas creadas en el panel, con contenido escrito por Sergio.
 
 1. **Datos:** `servicios_adicionales` suma `detalle` (hasta 120 caracteres) y `descripcion` (5 a 600 caracteres). Las columnas son opcionales para no inventar texto ni invalidar servicios agregados antes de esta etapa.
-2. **Formulario:** al elegir «Agregar un nuevo servicio», el formulario pide nombre, detalle breve y descripción. Los tres valores se recortan y validan en cliente y servidor.
+2. **Formulario:** en `/admin/servicios` se completan nombre, detalle breve y descripción. Los tres valores se recortan y validan en cliente y servidor.
 3. **Persistencia:** el alta protegida guarda los tres campos con SQL parametrizado y mantiene la unicidad del nombre. La ruta revalida `/servicios` tras el alta.
 4. **Página pública:** `/servicios` consulta los servicios adicionales del servidor en cada solicitud y los muestra después de las seis fichas fijas. Los datos faltantes de registros anteriores no se inventan ni se muestran.
 5. **Migración:** `db/esquema.sql` crea las columnas en instalaciones nuevas y las agrega de forma idempotente en la base existente.
@@ -512,6 +513,22 @@ Cambiar la contraseña temporal y publicar en Vercel con las variables de entorn
 - `test/panel-trabajos.test.js`, `test/base-datos.test.js` y `test/servicios.test.js` cubren validación, persistencia, permisos, revalidación y presentación.
 - Se agregaron de forma idempotente las columnas `detalle` y `descripcion` a la base existente; una consulta confirmó que las columnas están disponibles.
 - `npm test` pasó **109 pruebas** y `npm run build` terminó correctamente; `/servicios` se genera en cada solicitud y no queda limitada al catálogo fijo.
+
+---
+
+## 10.4 Etapa 12: Secciones separadas del panel
+
+**Objetivo:** ordenar el panel en Consultas, Trabajos y Servicios, separando las acciones de alta y conservando la relación de categoría entre trabajos y servicios.
+
+1. **Navegación:** `NavegacionPanel` presenta las tres secciones y marca la actual.
+2. **Trabajos:** el formulario crea trabajos con sus fotos y elige una categoría existente; ya no crea servicios.
+3. **Servicios:** `/admin/servicios`, protegido con `exigirSesion`, lista las fichas y agrega servicios con nombre, detalle y descripción mediante `/api/admin/servicios`. Esta acción no crea trabajos.
+4. **Contenido público:** las altas de trabajos actualizan Inicio/Trabajos; las altas de servicios actualizan Servicios. Los servicios siguen disponibles para clasificar trabajos.
+
+### Pruebas y comprobaciones
+
+- `test/panel-trabajos.test.js` cubre navegación, separación del formulario, acceso protegido y revalidación de la página pública de Servicios.
+- `npm test` pasó **111 pruebas** y `npm run build` terminó correctamente; el build incluye `/admin/servicios`.
 
 ---
 
@@ -651,6 +668,7 @@ app/
     page.js                 ingreso
     consultas/page.js       listado protegido de consultas
     trabajos/page.js        listado y formulario protegido de trabajos
+    servicios/page.js       alta y listado protegido de servicios
   api/
     trabajos/route.js       GET trabajos
     trabajos/[id]/foto/route.js entrega una foto de la base
@@ -672,11 +690,12 @@ components/
   VisorFoto.js              ventana de foto grande y accesible
   FormularioConsulta.js     formulario con validación
   FormularioIngreso.js      ingreso del panel
-  NavegacionPanel.js        enlaces entre consultas y trabajos
+  NavegacionPanel.js        enlaces entre consultas, trabajos y servicios
   TablaConsultas.js         tabla, archivo y borrado de consultas
   RespuestaWhatsApp.js      mensaje editable antes de WhatsApp
   PanelTrabajos.js          listado, visibilidad y borrado de trabajos
   FormularioTrabajo.js      alta y edición de un trabajo con sus fotos
+  PanelServicios.js         alta separada y listado de servicios
   BotonWhatsApp.js          enlace wa.me
   BotonLlamar.js            enlace tel:
 

@@ -13,6 +13,8 @@ El diseño sigue el mockup de la página de inicio: encabezado blanco con el log
 | `/contacto` | Contacto | Botón de WhatsApp, botón de llamada y formulario de consulta | RF05, RF06, RF07 |
 | `/admin` | Ingreso (privado) | Usuario y contraseña de Sergio | RF09 |
 | `/admin/consultas` | Consultas (privado) | Listado de las consultas recibidas | RF10, RF11 |
+| `/admin/trabajos` | Trabajos (privado) | Alta, edición y administración de trabajos | RF19, RF20, RF23 |
+| `/admin/servicios` | Servicios (privado) | Listado de servicios y alta de fichas descriptivas | RF21, RF22, RF23 |
 
 ## Estructura común (`app/layout.js`)
 
@@ -63,7 +65,13 @@ El enlace `/admin` no aparece para visitantes sin sesión ni en el pie de págin
 ### Panel de trabajos (`/admin/trabajos`)
 
 - **Listado:** una fila por trabajo con miniatura de la primera foto, título, servicio, cantidad de fotos y estado (visible u oculto). Botones "Editar", "Ocultar/Mostrar" y "Borrar".
-- **Formulario:** campos de título, servicio (lista de los seis servicios principales y los adicionales ya creados), descripción y visible. Al agregar un trabajo se puede elegir «Agregar un nuevo servicio» e ingresar nombre, detalle breve y descripción; se guarda para reutilizarlo, aparece como etiqueta/filtro de Trabajos y como ficha en Servicios. Las fotos se agregan con un selector que acepta varias a la vez; cada una muestra su vista previa, su texto alternativo y botones para subir, bajar o quitar.
+- **Formulario:** campos de título, servicio (lista de los seis servicios principales y los personalizados ya creados), descripción y visible. El formulario no crea servicios. Las fotos se agregan con un selector que acepta varias a la vez; cada una muestra su vista previa, su texto alternativo y botones para subir, bajar o quitar.
+
+### Panel de servicios (`/admin/servicios`)
+
+- Sección separada para consultar servicios y agregar una ficha personalizada con nombre, detalle breve y descripción.
+- Crear un servicio no crea un trabajo. Los servicios personalizados quedan disponibles como categorías opcionales en el formulario de trabajos.
+- La navegación del panel presenta Consultas, Trabajos y Servicios, con la sección actual marcada.
 - **Foto principal:** es la primera de la lista. Se avisa con una etiqueta "Portada".
 - **Borrar:** pide confirmación y avisa que también se borran las fotos.
 - **Vuelta al panel:** enlace "Consultas" para cambiar de sección sin escribir la dirección.

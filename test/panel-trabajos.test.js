@@ -254,8 +254,10 @@ test("la navegacion del panel cambia entre consultas y trabajos", () => {
 
   assert.match(navegacion, /href="\/admin\/consultas"/);
   assert.match(navegacion, /href="\/admin\/trabajos"/);
+  assert.match(navegacion, /href="\/admin\/servicios"/);
   assert.match(navegacion, /actual === "consultas"/);
   assert.match(navegacion, /actual === "trabajos"/);
+  assert.match(navegacion, /actual === "servicios"/);
   assert.match(navegacion, /aria-current/);
   assert.match(navegacion, /aria-label="Secciones del panel"/);
 });
@@ -297,18 +299,39 @@ test("la api de servicios adicionales exige sesion para listar y crear", () => {
   assert.match(ruta, /Cache-Control/);
 });
 
-test("el formulario permite crear y reutilizar un servicio adicional", () => {
+test("los trabajos eligen servicios existentes sin crearlos en el formulario", () => {
   const formulario = leerArchivo("components/FormularioTrabajo.js");
   const panel = leerArchivo("components/PanelTrabajos.js");
 
-  assert.match(formulario, /Agregar un nuevo servicio/);
-  assert.match(formulario, /trabajo-servicio-nuevo/);
-  assert.match(formulario, /trabajo-servicio-detalle/);
-  assert.match(formulario, /trabajo-servicio-descripcion/);
-  assert.match(formulario, /fetch\("\/api\/admin\/servicios"/);
+  assert.match(formulario, /serviciosAdicionalesIniciales\.map/);
+  assert.doesNotMatch(formulario, /fetch\("\/api\/admin\/servicios"/);
+  assert.doesNotMatch(formulario, /Agregar un nuevo servicio/);
   assert.match(formulario, /serviciosAdicionalesIniciales/);
   assert.match(panel, /serviciosAdicionalesIniciales/);
   assert.match(panel, /servicio_nombre/);
+});
+
+test("el panel administra servicios desde una pagina privada separada", () => {
+  const pagina = leerArchivo("app/admin/servicios/page.js");
+  const panel = leerArchivo("components/PanelServicios.js");
+
+  assert.match(pagina, /await exigirSesion\(\)/);
+  assert.match(pagina, /listarServiciosAdicionales/);
+  assert.match(pagina, /NavegacionPanel actual="servicios"/);
+  assert.match(pagina, /PanelServicios/);
+  assert.match(panel, /fetch\("\/api\/admin\/servicios"/);
+  assert.match(panel, /Guardar servicio/);
+  assert.match(panel, /servicios\.map/);
+  assert.doesNotMatch(panel, /\/api\/admin\/trabajos/);
+});
+
+test("crear servicios revalida la pagina de servicios y no crea trabajos", () => {
+  const ruta = leerArchivo("app/api/admin/servicios/route.js");
+  const panel = leerArchivo("components/PanelServicios.js");
+
+  assert.match(ruta, /revalidatePath\("\/servicios"\)/);
+  assert.match(panel, /fetch\("\/api\/admin\/servicios"/);
+  assert.doesNotMatch(panel, /\/api\/admin\/trabajos/);
 });
 
 test("la API invalida la ficha pública al crear un servicio", () => {

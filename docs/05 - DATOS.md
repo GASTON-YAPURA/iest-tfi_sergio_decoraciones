@@ -28,7 +28,7 @@ La base de datos es PostgreSQL (Neon) y tiene cuatro tablas: `trabajos` (la gale
 
 ## Tabla `servicios_adicionales`
 
-Guarda servicios que Sergio crea al cargar un trabajo. Se reutilizan en el formulario, en los filtros/etiquetas de la galería y como fichas de `/servicios`. No se eliminan al borrar un trabajo.
+Guarda servicios que Sergio crea desde la sección Servicios del panel. Se reutilizan como categorías seleccionables en el formulario de trabajos, en los filtros/etiquetas de la galería y como fichas de `/servicios`. Crear un servicio no crea un trabajo y borrar un trabajo no elimina su servicio.
 
 | Campo | Tipo | Descripción |
 |---|---|---|
