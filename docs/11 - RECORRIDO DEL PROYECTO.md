@@ -43,7 +43,7 @@ Este documento cuenta **cómo se construyó** el sitio de Sergio Decoraciones: q
 | `/api/consultas` | POST | Valida y guarda una consulta del formulario |
 | `/api/admin/ingresar` | POST | Verifica credenciales y crea la sesión |
 | `/api/admin/sesion` | GET | Informa al menú si hay una sesión válida, sin devolver datos privados |
-| `/api/admin/servicios` | GET / POST | Lista y crea servicios adicionales, con sesión |
+| `/api/admin/servicios` | GET / POST / PATCH / DELETE | Lista, crea, oculta/muestra y borra servicios adicionales, con sesión |
 | `/api/admin/consultas` | GET / PATCH / DELETE | Lista, marca como atendida, archiva, restaura o borra una consulta |
 | `/api/admin/consultas/pdf` | GET | Descarga las consultas filtradas en PDF |
 | `/api/admin/trabajos` | GET / POST / PATCH / DELETE | Lista, crea, edita, oculta o borra un trabajo |
@@ -532,6 +532,24 @@ Cambiar la contraseña temporal y publicar en Vercel con las variables de entorn
 
 ---
 
+## 10.5 Etapa 13: Visibilidad y borrado de servicios
+
+**Objetivo:** permitir que Sergio oculte, vuelva a mostrar y borre servicios personalizados desde `/admin/servicios`, sin alterar los seis servicios fijos ni dejar trabajos con categorías rotas.
+
+1. **Persistencia:** `servicios_adicionales.visible` se agrega con `DEFAULT TRUE`, también para las bases existentes.
+2. **Visibilidad:** el panel lista servicios visibles y ocultos; `/servicios` consulta solo los visibles. Los ocultos siguen disponibles como categoría de trabajos.
+3. **Borrado protegido:** la API exige sesión. La consulta de borrado solo elimina un servicio si ningún trabajo (visible u oculto) lo tiene asignado; si sigue existiendo pero está en uso, responde `409`.
+4. **Interfaz:** cada servicio personalizado del panel tiene acciones Ocultar/Mostrar y Borrar. El borrado pide confirmación; errores y resultados se anuncian al usuario.
+5. **Actualización pública:** tanto el cambio de visibilidad como el borrado revalidan `/servicios`.
+
+### Pruebas y comprobaciones
+
+- `test/base-datos.test.js`, `test/panel-trabajos.test.js` y `test/servicios.test.js` cubren migración, persistencia, permisos, referencias, interfaz y filtrado público.
+- La migración aditiva de `visible` se aplicó y verificó en la base configurada.
+- `npm test` pasó **111 pruebas**, `npm run build` terminó correctamente y `git diff --check` no detectó errores.
+
+---
+
 ## 11. El arreglo del menú del celular (caso de estudio)
 
 Vale la pena contarlo completo porque fue un problema que **no era de CSS**.
@@ -695,7 +713,7 @@ components/
   RespuestaWhatsApp.js      mensaje editable antes de WhatsApp
   PanelTrabajos.js          listado, visibilidad y borrado de trabajos
   FormularioTrabajo.js      alta y edición de un trabajo con sus fotos
-  PanelServicios.js         alta separada y listado de servicios
+  PanelServicios.js         alta separada, visibilidad y borrado de servicios
   BotonWhatsApp.js          enlace wa.me
   BotonLlamar.js            enlace tel:
 

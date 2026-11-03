@@ -28,7 +28,7 @@ La base de datos es PostgreSQL (Neon) y tiene cuatro tablas: `trabajos` (la gale
 
 ## Tabla `servicios_adicionales`
 
-Guarda servicios que Sergio crea desde la sección Servicios del panel. Se reutilizan como categorías seleccionables en el formulario de trabajos, en los filtros/etiquetas de la galería y como fichas de `/servicios`. Crear un servicio no crea un trabajo y borrar un trabajo no elimina su servicio.
+Guarda servicios que Sergio crea desde la sección Servicios del panel. Se reutilizan como categorías seleccionables en el formulario de trabajos, en los filtros/etiquetas de la galería y como fichas de `/servicios`. Crear un servicio no crea un trabajo y borrar un trabajo no elimina su servicio. Los servicios ocultos no aparecen en `/servicios`, pero permanecen en el panel y disponibles como categoría. No se puede borrar un servicio que esté asignado a algún trabajo.
 
 | Campo | Tipo | Descripción |
 |---|---|---|
@@ -36,6 +36,7 @@ Guarda servicios que Sergio crea desde la sección Servicios del panel. Se reuti
 | `nombre` | `VARCHAR(80)`, obligatorio | Nombre visible, único sin distinguir mayúsculas y minúsculas |
 | `detalle` | `VARCHAR(120)`, opcional para filas creadas antes de esta etapa | Texto breve que acompaña el nombre en `/servicios` |
 | `descripcion` | `TEXT`, opcional para filas creadas antes de esta etapa | Descripción del servicio en `/servicios` |
+| `visible` | `BOOLEAN`, obligatorio, por defecto `TRUE` | Si se muestra como ficha en `/servicios`; el panel incluye también los ocultos |
 
 ## Tabla `trabajo_fotos`
 
@@ -93,7 +94,8 @@ CREATE TABLE IF NOT EXISTS servicios_adicionales (
   id          SERIAL PRIMARY KEY,
   nombre      VARCHAR(80) NOT NULL,
   detalle     VARCHAR(120),
-  descripcion TEXT
+  descripcion TEXT,
+  visible     BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS servicios_adicionales_nombre_idx
@@ -103,6 +105,8 @@ ALTER TABLE servicios_adicionales
   ADD COLUMN IF NOT EXISTS detalle VARCHAR(120);
 ALTER TABLE servicios_adicionales
   ADD COLUMN IF NOT EXISTS descripcion TEXT;
+ALTER TABLE servicios_adicionales
+  ADD COLUMN IF NOT EXISTS visible BOOLEAN NOT NULL DEFAULT TRUE;
 
 CREATE TABLE IF NOT EXISTS consultas (
   id        SERIAL PRIMARY KEY,

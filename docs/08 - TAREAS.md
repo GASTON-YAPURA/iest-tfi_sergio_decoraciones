@@ -167,3 +167,17 @@ La IA trabaja una tarea por vez, en orden, y la marca con `[x]` al terminarla. A
 - [x] Agregar pruebas para navegación, permisos y separación de altas
 - [x] Ejecutar `npm test` y `npm run build`
 - [x] Actualizar `memory.md` y `11 - RECORRIDO DEL PROYECTO.md`
+
+## Etapa 13: Visibilidad y borrado de servicios
+
+> Desde el panel se pueden ocultar, volver a mostrar y borrar servicios personalizados. Los ocultos dejan de aparecer en `/servicios`, pero siguen en el panel y disponibles como categorías. No se borran servicios que estén asignados a trabajos. Los seis servicios fijos no se modifican desde el panel.
+
+- [x] Actualizar requisitos, datos, arquitectura, diseño y seguridad
+- [x] Agregar visibilidad persistente a servicios personalizados con migración idempotente
+- [x] Mostrar solo los servicios visibles en `/servicios` y todos en el panel
+- [x] Agregar acciones protegidas para ocultar/mostrar y borrar servicios personalizados
+- [x] Bloquear el borrado cuando haya trabajos asociados y mostrar un mensaje claro
+- [x] Agregar confirmación y estados/error accesibles a las acciones del panel
+- [x] Agregar pruebas para permisos, referencias, persistencia, página pública y panel
+- [x] Ejecutar `npm test`, `npm run build` y `git diff --check`
+- [x] Actualizar `memory.md` y `11 - RECORRIDO DEL PROYECTO.md`

@@ -1,7 +1,7 @@
 import BotonLlamar from "../../components/BotonLlamar";
 import BotonWhatsApp from "../../components/BotonWhatsApp";
 import { SERVICIOS } from "../../lib/servicios";
-import { listarServiciosAdicionales } from "../../lib/servicios-adicionales";
+import { listarServiciosAdicionalesVisibles } from "../../lib/servicios-adicionales";
 import { IMAGEN_COMPARTIDA } from "../../lib/sitio";
 
 export const metadata = {
@@ -23,7 +23,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function PaginaServicios() {
-  const serviciosAdicionales = await listarServiciosAdicionales();
+  const serviciosAdicionales = await listarServiciosAdicionalesVisibles();
 
   return (
     <>

@@ -105,7 +105,7 @@ sergio-decoraciones/
 | `app/sitemap.js` | Genera `sitemap.xml` con las páginas públicas para Google |
 | `app/api/` | Rutas del servidor que leen y escriben en la base de datos |
 | `app/api/admin/sesion/route.js` | Informa al menú si hay una sesión válida, sin exponer datos del usuario |
-| `app/api/admin/servicios/route.js` | Lista y crea servicios adicionales, siempre con sesión |
+| `app/api/admin/servicios/route.js` | Lista, crea, oculta, muestra y borra servicios adicionales, siempre con sesión |
 | `app/admin/servicios/page.js` | Sección privada para crear y consultar servicios |
 | `components/` | Piezas de pantalla reutilizables |
 | `components/MenuPrincipal.js` | Menú de navegación con la página activa, acceso al panel solo con sesión y botón de tres rayas en celular |
@@ -114,7 +114,7 @@ sergio-decoraciones/
 | `components/TablaConsultas.js` | Listado de consultas con buscador, filtros, paginado y acciones |
 | `components/RespuestaWhatsApp.js` | Cuadro para escribir el mensaje antes de abrir WhatsApp |
 | `components/FormularioTrabajo.js` | Alta y edición de un trabajo con sus fotos, con vista previa |
-| `components/PanelServicios.js` | Formulario y listado de servicios; no crea trabajos |
+| `components/PanelServicios.js` | Formulario y listado de servicios, con controles de visibilidad y borrado |
 | `lib/db.js` | Único lugar donde se conecta con la base de datos |
 | `lib/trabajos.js` | Consultas y cambios de trabajos y servicios adicionales |
 | `lib/imagen.js` | Valida tipo, peso y medidas de una foto antes de guardarla |

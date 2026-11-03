@@ -20,6 +20,8 @@ test("el esquema define las tablas de trabajos, fotos, servicios y consultas", (
   assert.match(esquema, /descripcion\s+TEXT/);
   assert.match(esquema, /ADD COLUMN IF NOT EXISTS detalle/);
   assert.match(esquema, /ADD COLUMN IF NOT EXISTS descripcion/);
+  assert.match(esquema, /visible\s+BOOLEAN NOT NULL DEFAULT TRUE/);
+  assert.match(esquema, /ADD COLUMN IF NOT EXISTS visible BOOLEAN NOT NULL DEFAULT TRUE/);
   assert.match(
     esquema,
     /CREATE UNIQUE INDEX IF NOT EXISTS servicios_adicionales_nombre_idx/
@@ -77,7 +79,10 @@ test("los servicios adicionales guardan y consultan datos con parametros", () =>
   );
   assert.match(servicios, /VALUES \(\$1, \$2, \$3\)/);
   assert.match(servicios, /\[datos\.nombre, datos\.detalle, datos\.descripcion\]/);
-  assert.match(servicios, /SELECT id, nombre, detalle, descripcion/);
+  assert.match(servicios, /SELECT id, nombre, detalle, descripcion, visible/);
   assert.match(servicios, /WHERE id = \$1/);
   assert.match(servicios, /\[id\]/);
+  assert.match(servicios, /WHERE visible = TRUE/);
+  assert.match(servicios, /SET visible = \$2/);
+  assert.match(servicios, /NOT EXISTS \([\s\S]*FROM trabajos[\s\S]*trabajos\.servicio/);
 });

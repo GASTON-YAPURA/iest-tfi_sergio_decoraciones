@@ -27,6 +27,7 @@
 | RF21 | Agregar desde el panel servicios personalizados reutilizables para clasificar trabajos | Media |
 | RF22 | Mostrar cada servicio personalizado en la página Servicios con su nombre, detalle y descripción | Media |
 | RF23 | Separar Consultas, Trabajos y Servicios en secciones independientes del panel | Media |
+| RF24 | Desde el panel, ocultar, volver a mostrar y borrar servicios personalizados | Media |
 
 ## Requerimientos no funcionales
 
@@ -102,3 +103,6 @@
 - El nombre del servicio se valida y no se permiten duplicados sin distinguir mayúsculas y minúsculas
 - El nombre, detalle y descripción se validan en el servidor
 - La navegación privada permite pasar entre Consultas, Trabajos y Servicios y marca la sección activa
+- Los servicios personalizados se pueden ocultar y volver a mostrar sin borrarlos; los ocultos no aparecen en `/servicios` pero siguen listados en el panel y disponibles como categoría de trabajos
+- El borrado definitivo de un servicio personalizado pide confirmación y se rechaza mientras haya trabajos que lo usen
+- Los seis servicios fijos no se ocultan ni borran desde el panel

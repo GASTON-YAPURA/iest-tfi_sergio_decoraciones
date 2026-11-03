@@ -20,6 +20,7 @@ export default function PanelServicios({ serviciosIniciales }) {
   const [detalle, setDetalle] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [guardando, setGuardando] = useState(false);
+  const [procesando, setProcesando] = useState(null);
   const [aviso, setAviso] = useState("");
   const [error, setError] = useState("");
 
@@ -74,6 +75,97 @@ export default function PanelServicios({ serviciosIniciales }) {
       setError("No pudimos guardar el servicio. Revisá tu conexión.");
     } finally {
       setGuardando(false);
+    }
+  }
+
+  async function cambiarVisibilidad(servicio) {
+    setProcesando({ id: servicio.id, accion: "visibilidad" });
+    setAviso("");
+    setError("");
+
+    try {
+      const respuesta = await fetch("/api/admin/servicios", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: servicio.id,
+          visible: !servicio.visible,
+        }),
+      });
+
+      if (respuesta.status === 401) {
+        router.push("/admin");
+        router.refresh();
+        return;
+      }
+
+      const resultado = await leerRespuesta(respuesta);
+
+      if (!respuesta.ok) {
+        setError(resultado.error ?? "No pudimos cambiar la visibilidad.");
+        return;
+      }
+
+      setServicios((actuales) =>
+        actuales.map((actual) =>
+          actual.id === servicio.id ? resultado.servicio : actual
+        )
+      );
+      setAviso(
+        resultado.servicio.visible
+          ? `El servicio "${servicio.nombre}" vuelve a verse en el sitio.`
+          : `El servicio "${servicio.nombre}" quedó oculto en el sitio.`
+      );
+      router.refresh();
+    } catch {
+      setError("No pudimos cambiar la visibilidad. Revisá tu conexión.");
+    } finally {
+      setProcesando(null);
+    }
+  }
+
+  async function borrar(servicio) {
+    const confirmado = window.confirm(
+      `¿Borrar el servicio "${servicio.nombre}"? No se puede recuperar. Si está asignado a algún trabajo, primero tendrás que reasignarlo.`
+    );
+
+    if (!confirmado) {
+      return;
+    }
+
+    setProcesando({ id: servicio.id, accion: "borrar" });
+    setAviso("");
+    setError("");
+
+    try {
+      const respuesta = await fetch("/api/admin/servicios", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: servicio.id }),
+      });
+
+      if (respuesta.status === 401) {
+        router.push("/admin");
+        router.refresh();
+        return;
+      }
+
+      const resultado = await leerRespuesta(respuesta);
+
+      if (!respuesta.ok) {
+        setError(resultado.error ?? "No pudimos borrar el servicio.");
+        return;
+      }
+
+      setServicios((actuales) =>
+        actuales.filter((actual) => actual.id !== servicio.id)
+      );
+      setAviso(`El servicio "${servicio.nombre}" se borró para siempre.`);
+      router.refresh();
+    } catch {
+      setError("No pudimos borrar el servicio. Revisá tu conexión.");
+    } finally {
+      setProcesando(null);
     }
   }
 
@@ -165,10 +257,53 @@ export default function PanelServicios({ serviciosIniciales }) {
               </span>
               <div className="servicio-contenido">
                 <h3>{servicio.nombre}</h3>
+                <p className="trabajo-meta">
+                  <span
+                    className={
+                      servicio.visible
+                        ? "estado-trabajo estado-visible"
+                        : "estado-trabajo estado-oculto"
+                    }
+                  >
+                    {servicio.visible ? "Visible" : "Oculto"}
+                  </span>
+                </p>
                 {servicio.detalle ? (
                   <p className="servicio-detalle">{servicio.detalle}</p>
                 ) : null}
                 {servicio.descripcion ? <p>{servicio.descripcion}</p> : null}
+                <div className="trabajo-acciones">
+                  <button
+                    type="button"
+                    className="boton-secundario boton-chico"
+                    onClick={() => cambiarVisibilidad(servicio)}
+                    disabled={procesando?.id === servicio.id}
+                    aria-label={
+                      servicio.visible
+                        ? `Ocultar el servicio ${servicio.nombre}`
+                        : `Mostrar el servicio ${servicio.nombre}`
+                    }
+                  >
+                    {procesando?.id === servicio.id &&
+                    procesando.accion === "visibilidad"
+                      ? "Guardando..."
+                      : servicio.visible
+                        ? "Ocultar"
+                        : "Mostrar"}
+                  </button>
+                  <button
+                    type="button"
+                    className="boton-peligro boton-chico"
+                    onClick={() => borrar(servicio)}
+                    disabled={procesando?.id === servicio.id}
+                    aria-label={`Borrar el servicio ${servicio.nombre}`}
+                  >
+                    {procesando?.id === servicio.id &&
+                    procesando.accion === "borrar"
+                      ? "Borrando..."
+                      : "Borrar"}
+                  </button>
+                </div>
               </div>
             </li>
           ))}

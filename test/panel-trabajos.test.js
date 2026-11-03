@@ -11,6 +11,7 @@ import {
   calcularMedidas,
 } from "../lib/limites-imagen.js";
 import {
+  esServicioAdicionalValido,
   MAXIMO_FOTOS,
   revisarNombreServicioAdicional,
   revisarFotosParaActualizar,
@@ -94,6 +95,9 @@ test("valida nombres de servicios adicionales y evita duplicados", () => {
     /Ya existe/
   );
   assert.equal(revisarTrabajo({ ...TRABAJO_VALIDO, servicio: "extra-12" }).error, undefined);
+  assert.equal(esServicioAdicionalValido("extra-12"), true);
+  assert.equal(esServicioAdicionalValido("extra-0"), false);
+  assert.equal(esServicioAdicionalValido("extra-2147483648"), false);
   assert.match(
     revisarTrabajo({ ...TRABAJO_VALIDO, servicio: "extra-0" }).error,
     /servicio disponible/
@@ -290,12 +294,17 @@ test("la api de servicios adicionales exige sesion para listar y crear", () => {
 
   assert.match(ruta, /export async function GET/);
   assert.match(ruta, /export async function POST/);
-  assert.equal((ruta.match(/leerSesion\(\)/g) ?? []).length, 2);
+  assert.match(ruta, /export async function PATCH/);
+  assert.match(ruta, /export async function DELETE/);
+  assert.equal((ruta.match(/leerSesion\(\)/g) ?? []).length, 4);
   assert.match(ruta, /listarServiciosAdicionales/);
   assert.match(ruta, /crearServicioAdicional/);
+  assert.match(ruta, /actualizarVisibilidadServicioAdicional/);
+  assert.match(ruta, /borrarServicioAdicional/);
   assert.match(ruta, /revisarServicioAdicional/);
   assert.match(ruta, /status: 401/);
   assert.match(ruta, /status: 409/);
+  assert.match(ruta, /status: 404/);
   assert.match(ruta, /Cache-Control/);
 });
 
@@ -321,6 +330,11 @@ test("el panel administra servicios desde una pagina privada separada", () => {
   assert.match(pagina, /PanelServicios/);
   assert.match(panel, /fetch\("\/api\/admin\/servicios"/);
   assert.match(panel, /Guardar servicio/);
+  assert.match(panel, /method: "PATCH"/);
+  assert.match(panel, /method: "DELETE"/);
+  assert.match(panel, /window\.confirm/);
+  assert.match(panel, /Ocultar/);
+  assert.match(panel, /Borrar/);
   assert.match(panel, /servicios\.map/);
   assert.doesNotMatch(panel, /\/api\/admin\/trabajos/);
 });
@@ -328,10 +342,15 @@ test("el panel administra servicios desde una pagina privada separada", () => {
 test("crear servicios revalida la pagina de servicios y no crea trabajos", () => {
   const ruta = leerArchivo("app/api/admin/servicios/route.js");
   const panel = leerArchivo("components/PanelServicios.js");
+  const servicios = leerArchivo("app/servicios/page.js");
+  const modulo = leerArchivo("lib/servicios-adicionales.js");
 
   assert.match(ruta, /revalidatePath\("\/servicios"\)/);
   assert.match(panel, /fetch\("\/api\/admin\/servicios"/);
   assert.doesNotMatch(panel, /\/api\/admin\/trabajos/);
+  assert.match(servicios, /listarServiciosAdicionalesVisibles/);
+  assert.match(modulo, /WHERE visible = TRUE/);
+  assert.match(modulo, /NOT EXISTS \([\s\S]*FROM trabajos[\s\S]*trabajos\.servicio/);
 });
 
 test("la API invalida la ficha pública al crear un servicio", () => {

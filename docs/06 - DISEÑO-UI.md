@@ -70,6 +70,9 @@ El enlace `/admin` no aparece para visitantes sin sesión ni en el pie de págin
 ### Panel de servicios (`/admin/servicios`)
 
 - Sección separada para consultar servicios y agregar una ficha personalizada con nombre, detalle breve y descripción.
+- El listado de servicios personalizados muestra su estado (visible u oculto) y acciones "Ocultar/Mostrar" y "Borrar". Los seis servicios fijos no tienen acciones administrativas.
+- Ocultar quita la ficha de `/servicios`, pero la conserva en el panel y como categoría seleccionable en Trabajos.
+- Borrar pide confirmación; si el servicio está asignado a uno o más trabajos, se informa que primero hay que reasignarlos.
 - Crear un servicio no crea un trabajo. Los servicios personalizados quedan disponibles como categorías opcionales en el formulario de trabajos.
 - La navegación del panel presenta Consultas, Trabajos y Servicios, con la sección actual marcada.
 - **Foto principal:** es la primera de la lista. Se avisa con una etiqueta "Portada".
@@ -81,6 +84,7 @@ El enlace `/admin` no aparece para visitantes sin sesión ni en el pie de págin
 
 - Se conservan las seis fichas actuales sin cambios.
 - Después de ellas se muestran las fichas adicionales guardadas, con nombre, detalle y descripción.
+- No se muestran las fichas adicionales ocultas.
 - Los servicios adicionales antiguos que no tengan detalle o descripción muestran solo los datos disponibles; no se inventa contenido.
 
 ## Pantalla de trabajos

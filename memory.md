@@ -15,13 +15,13 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Identidad de marca (logo, paleta, tipografías) | Hecha: `IDENTIDAD-MARCA.md` |
 | Especificaciones (`01` a `10` y `AGENTS.md`) | Hechas |
 | `Legends.md`, `Memory.md` y `Commits.md` | Hechos |
-| Código del sitio | Etapas 8 a 12 completas: panel privado `/admin` con secciones separadas para consultas, trabajos y servicios |
+| Código del sitio | Etapas 8 a 13 completas: panel privado `/admin` con secciones separadas para consultas, trabajos y servicios |
 | SEO y calidad (Etapa 8) | Hechos: `lib/sitio.js`, `robots.txt`, `sitemap.xml`, metadatos por página, contraste, lista de seguridad y pruebas |
 | Fotos de trabajos en la base (Etapa 9) | Hechas: tabla `trabajo_fotos`, `/api/trabajos/[id]/foto`, importación con `npm run db:fotos`, galería y visor con varias fotos |
 | Panel completo de consultas y trabajos (Etapa 9) | Hecho: consultas (buscar, filtrar, paginar, archivar, restaurar, borrar y exportar PDF) y trabajos (CRUD, varias fotos con texto alternativo y orden, compresión en el navegador, ocultar/mostrar y borrar con confirmación); las mutaciones revalidan inmediatamente el inicio y la galería pública |
 | Ingreso del panel | Hecho: el formulario permite mostrar u ocultar la contraseña con un botón accesible |
 | Regreso al panel desde el sitio | Hecho: «Panel admin» aparece junto a «Contacto» solo con una sesión válida; el menú del sitio permite revisar la página pública sin cerrar sesión |
-| Servicios adicionales para trabajos | Hecho: se crean en la sección Servicios, con nombre, detalle y descripción; aparecen como fichas en `/servicios` y se pueden asignar como categoría a trabajos. Crear un trabajo o un servicio no crea el otro; 111 pruebas y build correctos |
+| Servicios adicionales para trabajos | Hecho: se crean en la sección Servicios, con nombre, detalle y descripción; aparecen como fichas en `/servicios` y se pueden asignar como categoría a trabajos. Crear un trabajo o un servicio no crea el otro. Se pueden ocultar y volver a mostrar; el borrado se bloquea mientras haya trabajos asociados. 111 pruebas y build correctos |
 | Declaración de IA | Hecha: `docs/DECLARACION-IA.md` y `multimedia/FICHAS-IA.md` (fotos con prompts de ChatGPT e imágenes de Gemini) |
 | Publicación en Vercel | Pendiente: variables de entorno, contraseña definitiva y deploy con HTTPS |
 | Informe escrito del TP | Pendiente |
@@ -89,6 +89,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 03/11/2026 | Etapa 13: los servicios personalizados se pueden ocultar/mostrar y borrar; ocultos fuera de `/servicios` pero presentes en el panel; borrado bloqueado con trabajos asociados; migración aplicada y verificada; 111 pruebas y build correctos |
 | 03/11/2026 | Etapa 12: panel organizado en Consultas, Trabajos y Servicios; alta de trabajos y servicios separada; el selector de trabajo mantiene los servicios existentes; 111 pruebas y build correctos |
 | 03/11/2026 | Etapa 11: servicios personalizados con detalle y descripción en la página `/servicios`; migración idempotente y validaciones añadidas, 109 pruebas y build correctos |
 | 03/11/2026 | Etapa 10: catálogo de servicios adicionales reutilizables para trabajos; alta protegida, etiquetas y filtros públicos; corregido el `RETURNING` del alta/edición, 107 pruebas y build correctos; se mantienen las seis fichas fijas de `/servicios` |
