@@ -19,6 +19,22 @@ test("el boton del menu informa su estado y controla la navegacion", () => {
   assert.match(menu, /onClick=\{alternarMenu\}/);
 });
 
+test("el menu muestra el regreso al panel solo con una sesion confirmada", () => {
+  const menu = leerArchivo("components/MenuPrincipal.js");
+  const ruta = leerArchivo("app/api/admin/sesion/route.js");
+
+  assert.match(menu, /fetch\("\/api\/admin\/sesion"/);
+  assert.match(menu, /sesionActiva \?/);
+  assert.match(menu, /href="\/admin"/);
+  assert.match(menu, />\s*Panel admin\s*</);
+  assert.ok(menu.indexOf("Panel admin") < menu.indexOf("Contacto"));
+  assert.match(menu, /useState\(false\)/);
+  assert.match(menu, /addEventListener\("focus"/);
+  assert.match(ruta, /leerSesion\(\)/);
+  assert.match(ruta, /autenticada: Boolean\(sesion\)/);
+  assert.match(ruta, /Cache-Control.*no-store/);
+});
+
 test("el menu se cierra con Escape, al tocar fuera y al cambiar de ruta", () => {
   const menu = leerArchivo("components/MenuPrincipal.js");
 

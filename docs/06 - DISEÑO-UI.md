@@ -16,7 +16,7 @@ El diseño sigue el mockup de la página de inicio: encabezado blanco con el log
 
 ## Estructura común (`app/layout.js`)
 
-- **Encabezado:** fondo blanco. A la izquierda va el logo: versión horizontal en computadora y monograma SD en celular. En el centro y a la derecha, el menú: INICIO, SERVICIOS, TRABAJOS, NOSOTROS y el botón CONTACTO.
+- **Encabezado:** fondo blanco. A la izquierda va el logo: versión horizontal en computadora y monograma SD en celular. En el centro y a la derecha, el menú: INICIO, SERVICIOS, TRABAJOS, NOSOTROS y el botón CONTACTO. Con la sesión de Sergio iniciada, aparece también el enlace PANEL ADMIN junto a CONTACTO; al salir, deja de aparecer.
 - **Menú:** letras mayúsculas con espacio entre letras, en Negro Carbón. La página activa va en Ocre Profundo con un subrayado del mismo color. En celular se convierte en menú de tres rayas.
 - **Pie de página:** fondo Negro Carbón, logo horizontal blanco y los datos de contacto en blanco.
 - **Botón flotante de WhatsApp:** circular, abajo a la derecha, fijo mientras se navega. Fondo Ocre Profundo e ícono blanco.
@@ -49,7 +49,7 @@ El diseño sigue el mockup de la página de inicio: encabezado blanco con el log
 
 ## Panel privado de Sergio
 
-El enlace `/admin` no aparece en el menú ni en el pie de página. Sergio entra escribiendo la dirección o desde un favorito de su navegador.
+El enlace `/admin` no aparece para visitantes sin sesión ni en el pie de página. Con la sesión de Sergio iniciada, el menú público muestra «Panel admin» junto a «Contacto» para volver al panel después de revisar el sitio. Desde el menú común del panel se puede abrir «Trabajos» para comprobar los cambios en la página pública sin cerrar la sesión.
 
 - **Ingreso:** tarjeta centrada sobre fondo blanco, con el monograma SD arriba, los campos de usuario y contraseña y el botón principal "Ingresar". El campo de contraseña tiene un botón accesible para mostrar u ocultar lo escrito. Si los datos no son correctos se muestra el mensaje "Usuario o contraseña incorrectos".
 - **Encabezado del panel:** título "Consultas recibidas", una bajada corta y el botón secundario "Salir" a la derecha. En celular se apila.

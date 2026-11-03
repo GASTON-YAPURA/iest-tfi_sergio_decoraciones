@@ -20,6 +20,7 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 | Fotos de trabajos en la base (Etapa 9) | Hechas: tabla `trabajo_fotos`, `/api/trabajos/[id]/foto`, importación con `npm run db:fotos`, galería y visor con varias fotos |
 | Panel completo de consultas y trabajos (Etapa 9) | Hecho: consultas (buscar, filtrar, paginar, archivar, restaurar, borrar y exportar PDF) y trabajos (CRUD, varias fotos con texto alternativo y orden, compresión en el navegador, ocultar/mostrar y borrar con confirmación); las mutaciones revalidan inmediatamente el inicio y la galería pública |
 | Ingreso del panel | Hecho: el formulario permite mostrar u ocultar la contraseña con un botón accesible |
+| Regreso al panel desde el sitio | Hecho: «Panel admin» aparece junto a «Contacto» solo con una sesión válida; el menú del sitio permite revisar la página pública sin cerrar sesión |
 | Declaración de IA | Hecha: `docs/DECLARACION-IA.md` y `multimedia/FICHAS-IA.md` (fotos con prompts de ChatGPT e imágenes de Gemini) |
 | Publicación en Vercel | Pendiente: variables de entorno, contraseña definitiva y deploy con HTTPS |
 | Informe escrito del TP | Pendiente |
@@ -30,13 +31,14 @@ Stack: Next.js (React) + PostgreSQL (Neon) + GitHub + Vercel.
 
 | Tema | Decisión | Motivo |
 |---|---|---|
+| Regreso al panel | El menú consulta `/api/admin/sesion` y solo muestra «Panel admin» con sesión válida; volver a `/admin` abre la sección de consultas | Permite revisar trabajos publicados desde el sitio y regresar al panel sin usar la flecha Atrás ni exponer el enlace a visitantes |
 | Actualización de trabajos públicos | Las rutas del panel invalidan `/` y `/trabajos` después de cada cambio exitoso en el trabajo o sus fotos | Las páginas usan regeneración cada hora, pero las modificaciones del panel deben verse en la siguiente visita sin esperar |
 | Stack | React con Next.js, PostgreSQL en Neon, GitHub y Vercel | Se mantiene el stack del emprendimiento modelo (Ursus), que ya se tenía planeado usar |
 | Estilos | CSS con variables, sin Tailwind ni Bootstrap | Colores y tipografías se escriben una sola vez en `globals.css` |
 | Contacto | WhatsApp con mensaje prellenado, botón de llamada y formulario | Es como los clientes llegan hoy a Sergio |
 | Precios | No se publican; marcador `$ 0` | Se consultan por WhatsApp o llamada |
 | Número de WhatsApp y teléfono | Marcador `+54 9 3837 000000` en `lib/contacto.js` | Lo cambia Sergio si hace falta |
-| Panel privado | Entrada por `/admin`, sin aparecer en el menú ni en Google | Sergio ve las consultas sin tocar la base de datos |
+| Panel privado | Entrada por `/admin`, noindex en buscadores y enlace visible en el menú solo con sesión activa | Sergio ve las consultas sin tocar la base de datos y puede regresar desde la página pública |
 | Acceso al panel | Un solo usuario; contraseña como hash bcrypt en variables de entorno; sesión de 8 horas; 5 intentos fallidos cada 15 minutos | No hace falta una tabla de usuarios |
 | Acceso a la base | `@neondatabase/serverless` | Driver oficial de Neon, compatible con Vercel y con consultas parametrizadas |
 | Carga de trabajos | Desde el panel privado, con título, servicio, descripción, visibilidad y varias fotos guardadas en la base | Sergio puede corregir sus trabajos sin tocar código ni la base |
@@ -85,6 +87,7 @@ Pago online, cuentas de clientes, tienda, precios publicados, redes sociales int
 
 | Fecha | Cambio |
 |---|---|
+| 03/11/2026 | Acceso de regreso al panel en el menú público solo con sesión activa; ruta de estado de sesión sin exponer datos; 102 pruebas y build correctos |
 | 03/11/2026 | Corrección del panel de trabajos: invalidación de caché del inicio y la galería tras altas, ediciones, cambios de fotos, visibilidad y borrados; 101 pruebas y build correctos |
 | 03/11/2026 | Etapa 9: el ingreso al panel permite mostrar u ocultar la contraseña con un control accesible; 100 pruebas y build correctos |
 | 02/11/2026 | Etapa 9: la exportación de consultas pasó de CSV a PDF (`pdf-lib` en el servidor, tabla A4 con cabecera de marca, acentos, paginado y nombre con fecha); 99 pruebas y build correctos |

@@ -84,4 +84,4 @@ export const metadata = {
 - [x] Direcciones en minúsculas y sin tildes: `/trabajos`, `/servicios`
 - [ ] El logo y la imagen para compartir se ven al compartir un enlace
 - [ ] PageSpeed Insights de 90 o más
-- [x] Las páginas de `/admin` tienen `noindex` y no están en el menú
+- [x] Las páginas de `/admin` tienen `noindex`; el enlace al panel solo aparece en el menú con la sesión iniciada

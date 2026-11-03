@@ -72,7 +72,8 @@
 - Se pueden descargar las consultas en un PDF
 - Arriba se ve cuántas consultas quedan pendientes
 - El botón Salir cierra la sesión
-- El enlace al panel no aparece en el menú del sitio
+- Sin sesión, el enlace al panel no aparece en el menú del sitio
+- Con sesión iniciada, el menú muestra «Panel admin» junto a «Contacto» para volver al panel después de revisar los cambios en la página pública
 
 ### Panel de trabajos (RF19, RF20)
 

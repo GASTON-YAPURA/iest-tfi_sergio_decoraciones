@@ -14,7 +14,9 @@ const ENLACES = [
 export default function MenuPrincipal() {
   const rutaActual = usePathname();
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [sesionActiva, setSesionActiva] = useState(false);
   const contenedorMenu = useRef(null);
+  const panelAdminActivo = estaActivo("/admin");
 
   function alternarMenu() {
     setMenuAbierto((abierto) => !abierto);
@@ -35,6 +37,42 @@ export default function MenuPrincipal() {
   // Cierra el menu al cambiar de pagina, por ejemplo con el boton "atras" del celular.
   useEffect(() => {
     setMenuAbierto(false);
+  }, [rutaActual]);
+
+  useEffect(() => {
+    let componenteActivo = true;
+
+    async function comprobarSesion() {
+      try {
+        const respuesta = await fetch("/api/admin/sesion", {
+          cache: "no-store",
+        });
+
+        if (!respuesta.ok) {
+          throw new Error("No se pudo comprobar la sesión del panel.");
+        }
+
+        const resultado = await respuesta.json();
+
+        if (componenteActivo) {
+          setSesionActiva(resultado.autenticada === true);
+        }
+      } catch (error) {
+        console.error("No se pudo comprobar la sesión del panel", error);
+
+        if (componenteActivo) {
+          setSesionActiva(false);
+        }
+      }
+    }
+
+    comprobarSesion();
+    window.addEventListener("focus", comprobarSesion);
+
+    return () => {
+      componenteActivo = false;
+      window.removeEventListener("focus", comprobarSesion);
+    };
   }, [rutaActual]);
 
   // Cierra con Escape, al tocar fuera del menu y al volver al tamano de escritorio.
@@ -123,6 +161,18 @@ export default function MenuPrincipal() {
               </li>
             );
           })}
+          {sesionActiva ? (
+            <li>
+              <Link
+                href="/admin"
+                className={`menu-enlace ${panelAdminActivo ? "menu-enlace-activo" : ""}`}
+                aria-current={panelAdminActivo ? "page" : undefined}
+                onClick={cerrarMenu}
+              >
+                Panel admin
+              </Link>
+            </li>
+          ) : null}
           <li>
             <Link
               href="/contacto"

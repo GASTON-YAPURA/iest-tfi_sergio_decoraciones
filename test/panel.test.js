@@ -191,11 +191,13 @@ test("el listado, la busqueda y el archivo usan SQL con parametros", () => {
   assert.doesNotMatch(consultas, /ILIKE '%/);
 });
 
-test("el panel no aparece en el menu y las paginas son noindex", () => {
+test("el panel solo aparece en el menu para una sesion y sus paginas son noindex", () => {
   const menu = leerArchivo("components/MenuPrincipal.js");
   const layout = leerArchivo("app/admin/layout.js");
 
-  assert.doesNotMatch(menu, /\/admin/);
+  assert.match(menu, /sesionActiva \?/);
+  assert.match(menu, /href="\/admin"/);
+  assert.match(menu, />\s*Panel admin\s*</);
   assert.match(layout, /robots: \{/);
   assert.match(layout, /index: false/);
   assert.match(layout, /follow: false/);

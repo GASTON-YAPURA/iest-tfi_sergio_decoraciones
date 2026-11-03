@@ -28,6 +28,7 @@ sergio-decoraciones/
 │       ├── trabajos/[id]/foto/route.js ← entrega una foto guardada en la base
 │       ├── consultas/route.js     ← guarda una consulta
 │       └── admin/
+│           ├── sesion/route.js    ← informa si la sesión sigue activa, sin devolver datos privados
 │           ├── ingresar/route.js  ← valida usuario y contraseña
 │           ├── consultas/route.js ← lista, busca, archiva y borra consultas
 │           ├── consultas/pdf/route.js ← descarga las consultas en PDF
@@ -98,8 +99,9 @@ sergio-decoraciones/
 | `app/robots.js` | Genera `robots.txt`: deja leer el sitio público y bloquea `/admin` y `/api/` |
 | `app/sitemap.js` | Genera `sitemap.xml` con las páginas públicas para Google |
 | `app/api/` | Rutas del servidor que leen y escriben en la base de datos |
+| `app/api/admin/sesion/route.js` | Informa al menú si hay una sesión válida, sin exponer datos del usuario |
 | `components/` | Piezas de pantalla reutilizables |
-| `components/MenuPrincipal.js` | Menú de navegación con la página activa y el botón de tres rayas en celular |
+| `components/MenuPrincipal.js` | Menú de navegación con la página activa, acceso al panel solo con sesión y botón de tres rayas en celular |
 | `components/GaleriaTrabajos.js` | Galería de trabajos con el filtro por servicio y el visor de foto |
 | `components/FormularioConsulta.js` | Formulario con nombre, teléfono y mensaje, con aviso de uso de datos y mensajes de estado |
 | `components/TablaConsultas.js` | Listado de consultas con buscador, filtros, paginado y acciones |

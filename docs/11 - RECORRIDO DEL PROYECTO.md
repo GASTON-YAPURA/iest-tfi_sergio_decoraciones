@@ -29,7 +29,7 @@ Este documento cuenta **cómo se construyó** el sitio de Sergio Decoraciones: q
 | `/trabajos` | Galería completa con filtro y visor de fotos | Estática, se regenera cada hora |
 | `/nosotros` | Quién es Sergio y cómo trabaja | Estática |
 | `/contacto` | WhatsApp, llamada y formulario de consulta | Estática |
-| `/admin` | Ingreso con usuario y contraseña | Dinámica, fuera del menú |
+| `/admin` | Ingreso con usuario y contraseña | Dinámica; el menú solo lo muestra con sesión activa |
 | `/admin/consultas` | Listado privado de consultas, con búsqueda, filtros, archivo y PDF | Dinámica, protegida |
 | `/admin/trabajos` | Listado y formulario privado de trabajos con sus fotos | Dinámica, protegida |
 
@@ -41,6 +41,7 @@ Este documento cuenta **cómo se construyó** el sitio de Sergio Decoraciones: q
 | `/api/trabajos/[id]/foto` | GET | Entrega una foto guardada en la base (oculta si el trabajo no se ve) |
 | `/api/consultas` | POST | Valida y guarda una consulta del formulario |
 | `/api/admin/ingresar` | POST | Verifica credenciales y crea la sesión |
+| `/api/admin/sesion` | GET | Informa al menú si hay una sesión válida, sin devolver datos privados |
 | `/api/admin/consultas` | GET / PATCH / DELETE | Lista, marca como atendida, archiva, restaura o borra una consulta |
 | `/api/admin/consultas/pdf` | GET | Descarga las consultas filtradas en PDF |
 | `/api/admin/trabajos` | GET / POST / PATCH / DELETE | Lista, crea, edita, oculta o borra un trabajo |
@@ -209,7 +210,7 @@ Las nueve etapas están en `08 - TAREAS.md`. Cada una tiene sus tareas con casil
    - En escritorio (900 px o más): enlaces en fila.
    - En celular: botón de tres rayas y panel desplegable.
    - Marca la página activa con `usePathname` y `aria-current="page"`.
-   - El enlace a `/admin` **no** está en el menú (es privado).
+   - El enlace a `/admin` solo aparece en el menú cuando la sesión está activa; los visitantes no lo ven.
 
 5. **Se escribió el CSS base**: contenedor centrado de 1120 px, encabezado pegajoso (`sticky`), pie oscuro, botones primario y secundario, foco visible para teclado.
 
@@ -413,7 +414,7 @@ Es la etapa con más cuidado, porque acá hay datos de terceros.
 | Variables en Vercel | Cargar `DATABASE_URL`, `ADMIN_USUARIO`, `ADMIN_CLAVE_HASH`, `SESION_SECRETA` y `SITIO_URL` |
 | Contraseña definitiva | Reemplazar la clave temporal del panel y actualizar `ADMIN_CLAVE_HASH` |
 | Publicación | Deploy en Vercel con HTTPS |
-| Privacidad | Confirmar que `/admin` no aparece en el menú ni en Google |
+| Privacidad | Confirmar que `/admin` no aparece en el menú sin sesión ni en Google |
 | Pruebas de dispositivo | Celular, tablet y computadora (RNF01) |
 | Velocidad | PageSpeed Insights: menos de 3 segundos (RNF02) |
 | Contacto real | Probar WhatsApp y llamada desde un celular real |
@@ -615,6 +616,7 @@ app/
     trabajos/route.js       GET trabajos
     trabajos/[id]/foto/route.js entrega una foto de la base
     consultas/route.js      POST consulta
+    admin/sesion/route.js   informa si la sesión sigue activa, sin datos privados
     admin/ingresar/route.js POST ingreso
     admin/consultas/route.js GET, PATCH y DELETE consultas (protegido)
     admin/consultas/pdf/route.js descarga PDF (protegido)
@@ -706,7 +708,7 @@ docs/                       especificaciones del proyecto
 | Fotos dentro de la base | No hace falta un servicio externo ni una carpeta pública; se entregan por una ruta con control de visibilidad |
 | Sin precios publicados | Se consultan por WhatsApp o llamada |
 | Sin cuentas de clientes ni pagos | No forman parte del objetivo del sitio |
-| `/admin` fuera del menú y con `noindex` | Solo Sergio debe llegar ahí |
+| `/admin` solo aparece en el menú con sesión y tiene `noindex` | Los visitantes no ven el acceso; Sergio puede regresar al panel |
 | Un usuario y una contraseña | No hace falta una tabla de usuarios para una sola persona |
 | Pruebas con `node:test` | Viene con Node, sin instalar nada extra |
 
