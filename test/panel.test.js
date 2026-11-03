@@ -212,6 +212,27 @@ test("el ingreso usa el formulario y redirige si ya hay sesion", () => {
   assert.match(pagina, /redirect\("\/admin\/consultas"\)/);
 });
 
+test("el ingreso permite mostrar y ocultar la contraseña", () => {
+  const formulario = leerArchivo("components/FormularioIngreso.js");
+  const estilos = leerArchivo("app/globals.css");
+
+  assert.match(
+    formulario,
+    /const \[mostrarClave, setMostrarClave\] = useState\(false\)/
+  );
+  assert.match(formulario, /type=\{mostrarClave \? "text" : "password"\}/);
+  assert.match(formulario, /type="button"/);
+  assert.match(
+    formulario,
+    /aria-label=\{\s*mostrarClave \? "Ocultar contraseña" : "Mostrar contraseña"/
+  );
+  assert.match(formulario, /aria-pressed=\{mostrarClave\}/);
+  assert.match(formulario, /setMostrarClave\(!mostrarClave\)/);
+  assert.match(formulario, /aria-hidden="true"/);
+  assert.match(estilos, /\.campo-clave input \{[\s\S]*padding-right:/);
+  assert.match(estilos, /\.boton-visibilidad-clave:focus-visible/);
+});
+
 test("la pagina de consultas exige sesion antes de leer la base", () => {
   const pagina = leerArchivo("app/admin/consultas/page.js");
   const posicionSesion = pagina.indexOf("exigirSesion()");

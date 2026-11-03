@@ -43,7 +43,7 @@ sergio-decoraciones/
 │   ├── BotonLlamar.js             ← llama por teléfono
 │   ├── MenuPrincipal.js           ← menú de navegación y versión de tres rayas
 │   ├── FormularioConsulta.js      ← formulario de consulta
-│   ├── FormularioIngreso.js       ← usuario y contraseña del panel
+│   ├── FormularioIngreso.js      ← usuario, contraseña y control de visibilidad
 │   ├── TablaConsultas.js          ← listado, filtros y acciones de las consultas
 │   ├── RespuestaWhatsApp.js       ← cuadro para editar el mensaje antes de enviarlo
 │   ├── ListaTrabajos.js           ← listado de trabajos del panel
